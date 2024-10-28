@@ -132,8 +132,8 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
                                                                  attendanceData,
                                                                }) => {
   const {styles} = useStyle({test: true});
-  const [selectDate, setSelectDate] = React.useState<Dayjs>(dayjs());
-  const [panelDateDate, setPanelDate] = React.useState<Dayjs>(dayjs());
+  const [selectDate] = React.useState<Dayjs>(dayjs());
+  const [panelDateDate] = React.useState<Dayjs>(dayjs());
 
   const getBadgeStatus = (status: string) => {
     switch (status) {
