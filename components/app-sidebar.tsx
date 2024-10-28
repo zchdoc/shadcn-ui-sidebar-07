@@ -61,11 +61,13 @@ const data = {
       items: [
         {
           title: "History",
-          url: "/dashboard/history",
+          url: "history",
+          icon: History,
         },
         {
           title: "Manual Clock",
-          url: "/dashboard/manual-clock",
+          url: "manual-clock",
+          icon: Clock,
         },
       ],
     },
@@ -154,14 +156,18 @@ const data = {
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  onViewChange?: (view: string) => void;
+}
+
+export function AppSidebar({ onViewChange, ...props }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={data.navMain} onViewChange={onViewChange} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>

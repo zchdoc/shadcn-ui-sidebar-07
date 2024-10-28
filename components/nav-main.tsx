@@ -1,7 +1,6 @@
 "use client"
 
 import { ChevronRight, type LucideIcon } from "lucide-react"
-import { useRouter, usePathname } from "next/navigation"
 
 import {
   Collapsible,
@@ -19,9 +18,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 
-export function NavMain({
-  items,
-}: {
+interface NavMainProps {
   items: {
     title: string
     url: string
@@ -30,15 +27,16 @@ export function NavMain({
     items?: {
       title: string
       url: string
+      icon?: LucideIcon
     }[]
   }[]
-}) {
-  const router = useRouter()
-  const pathname = usePathname()
+  onViewChange?: (view: string) => void
+}
 
+export function NavMain({ items, onViewChange }: NavMainProps) {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, url: string) => {
     e.preventDefault()
-    router.push(url)
+    onViewChange?.(url)
   }
 
   return (
@@ -49,7 +47,7 @@ export function NavMain({
           <Collapsible
             key={item.title}
             asChild
-            defaultOpen={item.isActive || item.items?.some(subItem => subItem.url === pathname)}
+            defaultOpen={item.isActive}
             className="group/collapsible"
           >
             <SidebarMenuItem>
@@ -64,14 +62,12 @@ export function NavMain({
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton 
-                        asChild
-                        isActive={pathname === subItem.url}
-                      >
-                        <a 
+                      <SidebarMenuSubButton asChild>
+                        <a
                           href={subItem.url}
                           onClick={(e) => handleClick(e, subItem.url)}
                         >
+                          {subItem.icon && <subItem.icon className="mr-2" />}
                           <span>{subItem.title}</span>
                         </a>
                       </SidebarMenuSubButton>

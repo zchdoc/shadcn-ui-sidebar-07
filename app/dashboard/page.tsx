@@ -1,6 +1,6 @@
 "use client"
 
-import { usePathname } from "next/navigation"
+import { useState } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { ManualClock } from "@/components/attendance/manual-clock"
@@ -21,39 +21,11 @@ import {
 } from "@/components/ui/sidebar"
 
 export default function Page() {
-  const pathname = usePathname()
-
-  const getContent = () => {
-    switch (pathname) {
-      case "/dashboard/history":
-        return (
-          <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Attendance History</h1>
-            <HistoryView />
-          </div>
-        )
-      case "/dashboard/manual-clock":
-        return (
-          <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Manual Clock</h1>
-            <div className="max-w-md mx-auto">
-              <ManualClock />
-            </div>
-          </div>
-        )
-      default:
-        return (
-          <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Welcome to Dashboard</h1>
-            <p>Select an option from the sidebar to get started.</p>
-          </div>
-        )
-    }
-  }
+  const [activeView, setActiveView] = useState<"default" | "history" | "manual-clock">("default")
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
+    <SidebarProvider defaultOpen>
+      <AppSidebar onViewChange={setActiveView} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4 w-full justify-between">
@@ -67,7 +39,11 @@ export default function Page() {
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="hidden md:block" />
                   <BreadcrumbItem>
-                    <BreadcrumbPage>Management</BreadcrumbPage>
+                    <BreadcrumbPage>
+                      {activeView === "history" ? "History" : 
+                       activeView === "manual-clock" ? "Manual Clock" : 
+                       "Management"}
+                    </BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
@@ -76,7 +52,24 @@ export default function Page() {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          {getContent()}
+          {activeView === "history" ? (
+            <div className="container mx-auto p-4">
+              <h1 className="text-2xl font-bold mb-4">Attendance History</h1>
+              <HistoryView />
+            </div>
+          ) : activeView === "manual-clock" ? (
+            <div className="container mx-auto p-4">
+              <h1 className="text-2xl font-bold mb-4">Manual Clock</h1>
+              <div className="max-w-md mx-auto">
+                <ManualClock />
+              </div>
+            </div>
+          ) : (
+            <div className="container mx-auto p-4">
+              <h1 className="text-2xl font-bold mb-4">Welcome to Dashboard</h1>
+              <p>Select an option from the sidebar to get started.</p>
+            </div>
+          )}
         </div>
       </SidebarInset>
     </SidebarProvider>
