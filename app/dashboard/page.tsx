@@ -61,7 +61,7 @@ export default function Page() {
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           {activeView === "history" ? (
             <div className="container mx-auto p-4">
-              <h1 className="text-2xl font-bold mb-4">Attendance History</h1>
+              {/*<h1 className="text-2xl font-bold mb-4">Attendance History</h1>*/}
               <HistoryView/>
             </div>
           ) : activeView === "manual-clock" ? (

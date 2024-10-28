@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import {format} from "date-fns"
 import {Calendar as CalendarIcon} from "lucide-react"
 import {useMediaQuery} from "@/hooks/use-media-query"
 import {Calendar as NextUICalendar} from "@nextui-org/calendar"
@@ -23,15 +24,7 @@ import {
 } from "@/components/ui/popover"
 import {Input} from "@/components/ui/input"
 import {useToast} from "@/components/ui/use-toast"
-import {addDays, format} from "date-fns"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import AttendanceCalendar from '@/components/attendance/attendance-calendar'
+import AttendanceCalendar from '@/components/attendance/attendance-calendar';
 import {useState} from 'react';
 import {ConfigProvider, theme} from 'antd';
 import locale from 'antd/locale/zh_CN';
@@ -50,8 +43,8 @@ interface AttendanceRecord {
 
 export function HistoryView() {
   const [employeeId, setEmployeeId] = React.useState("3000002")
-  const [startDate, setStartDate] = React.useState<Date>()
-  const [endDate, setEndDate] = React.useState<Date>()
+  const [startDate, setStartDate] = React.useState<Date>(new Date())
+  const [endDate, setEndDate] = React.useState<Date>(new Date())
   const [attendanceRecords, setAttendanceRecords] = useState([]);
   const [loading, setLoading] = React.useState(false)
   const {toast} = useToast()
@@ -165,36 +158,21 @@ export function HistoryView() {
                   <Button
                     variant={"outline"}
                     className={cn(
-                      "w-[240px] justify-start text-left font-normal",
+                      "w-full justify-start text-left font-normal",
                       !startDate && "text-muted-foreground"
                     )}
                   >
-                    <CalendarIcon/>
-                    {startDate ? format(startDate, "PPP") : <span>Pick a startDate</span>}
+                    <CalendarIcon className="mr-2 h-4 w-4"/>
+                    {startDate ? format(startDate, "PPP") : <span>Start date</span>}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent
-                  align="start"
-                  className="flex w-auto flex-col space-y-2 p-2"
-                >
-                  <Select
-                    onValueChange={(value) =>
-                      setStartDate(addDays(new Date(), parseInt(value)))
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select"/>
-                    </SelectTrigger>
-                    <SelectContent position="popper">
-                      <SelectItem value="0">Today</SelectItem>
-                      <SelectItem value="1">Tomorrow</SelectItem>
-                      <SelectItem value="3">In 3 days</SelectItem>
-                      <SelectItem value="7">In a week</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <div className="rounded-md border">
-                    <Calendar mode="single" selected={startDate} onSelect={setStartDate}/>
-                  </div>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={startDate}
+                    onSelect={setStartDate}
+                    initialFocus
+                  />
                 </PopoverContent>
               </Popover>
               <Popover>
@@ -202,36 +180,21 @@ export function HistoryView() {
                   <Button
                     variant={"outline"}
                     className={cn(
-                      "w-[240px] justify-start text-left font-normal",
+                      "w-full justify-start text-left font-normal",
                       !endDate && "text-muted-foreground"
                     )}
                   >
-                    <CalendarIcon/>
-                    {endDate ? format(endDate, "PPP") : <span>Pick a endDate</span>}
+                    <CalendarIcon className="mr-2 h-4 w-4"/>
+                    {endDate ? format(endDate, "PPP") : <span>End date</span>}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent
-                  align="start"
-                  className="flex w-auto flex-col space-y-2 p-2"
-                >
-                  <Select
-                    onValueChange={(value) =>
-                      setEndDate(addDays(new Date(), parseInt(value)))
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select"/>
-                    </SelectTrigger>
-                    <SelectContent position="popper">
-                      <SelectItem value="0">Today</SelectItem>
-                      <SelectItem value="1">Tomorrow</SelectItem>
-                      <SelectItem value="3">In 3 days</SelectItem>
-                      <SelectItem value="7">In a week</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <div className="rounded-md border">
-                    <Calendar mode="single" selected={endDate} onSelect={setEndDate}/>
-                  </div>
+                <PopoverContent className="w-auto p-0" align="end">
+                  <Calendar
+                    mode="single"
+                    selected={endDate}
+                    onSelect={setEndDate}
+                    initialFocus
+                  />
                 </PopoverContent>
               </Popover>
             </div>
@@ -241,10 +204,15 @@ export function HistoryView() {
               </Button>
             </div>
           </div>
+          {/*Calendar*/}
         </CardContent>
         <CardFooter/>
       </Card>
       <Card>
+        <CardHeader>
+          <CardTitle/>
+          <CardDescription/>
+        </CardHeader>
         <CardContent>
           <div className="mt-4">
             {isMobile ? (
