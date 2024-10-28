@@ -1,10 +1,10 @@
 "use client"
 
-import { useState } from "react"
-import { AppSidebar } from "@/components/app-sidebar"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { ManualClock } from "@/components/attendance/manual-clock"
-import { HistoryView } from "@/components/attendance/history-view"
+import {useState} from "react"
+import {AppSidebar} from "@/components/app-sidebar"
+import {ThemeToggle} from "@/components/theme-toggle"
+import {ManualClock} from "@/components/attendance/manual-clock"
+import {HistoryView} from "@/components/attendance/history-view"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,7 +13,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
+import {Separator} from "@/components/ui/separator"
 import {
   SidebarInset,
   SidebarProvider,
@@ -25,43 +25,43 @@ export default function Page() {
 
   return (
     <SidebarProvider defaultOpen>
-      <AppSidebar onViewChange={setActiveView} />
+      <AppSidebar onViewChange={() => setActiveView}/>
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4 w-full justify-between">
             <div className="flex items-center gap-2">
-              <SidebarTrigger className="-ml-1" />
-              <Separator orientation="vertical" className="mr-2 h-4" />
+              <SidebarTrigger className="-ml-1"/>
+              <Separator orientation="vertical" className="mr-2 h-4"/>
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
                     <BreadcrumbLink href="#">Attendance</BreadcrumbLink>
                   </BreadcrumbItem>
-                  <BreadcrumbSeparator className="hidden md:block" />
+                  <BreadcrumbSeparator className="hidden md:block"/>
                   <BreadcrumbItem>
                     <BreadcrumbPage>
-                      {activeView === "history" ? "History" : 
-                       activeView === "manual-clock" ? "Manual Clock" : 
-                       "Management"}
+                      {activeView === "history" ? "History" :
+                        activeView === "manual-clock" ? "Manual Clock" :
+                          "Management"}
                     </BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
             </div>
-            <ThemeToggle />
+            <ThemeToggle/>
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           {activeView === "history" ? (
             <div className="container mx-auto p-4">
               <h1 className="text-2xl font-bold mb-4">Attendance History</h1>
-              <HistoryView />
+              <HistoryView/>
             </div>
           ) : activeView === "manual-clock" ? (
             <div className="container mx-auto p-4">
               <h1 className="text-2xl font-bold mb-4">Manual Clock</h1>
               <div className="max-w-md mx-auto">
-                <ManualClock />
+                <ManualClock/>
               </div>
             </div>
           ) : (

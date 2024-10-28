@@ -4,7 +4,7 @@ import * as React from "react"
 import {format} from "date-fns"
 import {Calendar as CalendarIcon} from "lucide-react"
 import {useMediaQuery} from "@/hooks/use-media-query"
-import {Calendar as AntCalendar} from "antd"
+// import {Calendar as AntCalendar} from "antd"
 import {Calendar as NextUICalendar} from "@nextui-org/calendar"
 import {cn} from "@/lib/utils"
 import {Button} from "@/components/ui/button"
@@ -16,6 +16,14 @@ import {
 } from "@/components/ui/popover"
 import {Input} from "@/components/ui/input"
 import {useToast} from "@/components/ui/use-toast"
+import AttendanceCalendar from '@/components/attendance/attendance-calendar';
+import {useState} from 'react';
+import {ConfigProvider, theme} from 'antd';
+import locale from 'antd/locale/zh_CN';
+import dayjs from "dayjs";
+import "dayjs/locale/zh-cn";
+
+dayjs.locale("zh-cn");
 
 interface AttendanceRecord {
   id: number
@@ -29,7 +37,7 @@ export function HistoryView() {
   const [employeeId, setEmployeeId] = React.useState("3000002")
   const [startDate, setStartDate] = React.useState<Date>()
   const [endDate, setEndDate] = React.useState<Date>()
-  const [records, setRecords] = React.useState<AttendanceRecord[]>([])
+  const [attendanceRecords, setAttendanceRecords] = useState([]);
   const [loading, setLoading] = React.useState(false)
   const {toast} = useToast()
   const isMobile = useMediaQuery("(max-width: 768px)")
@@ -65,7 +73,9 @@ export function HistoryView() {
       console.log('response:', response);
       const data = await response.json()
       console.log('data:', data);
-      setRecords(data.data || [])
+      console.log('data:', JSON.stringify(data));
+      // setRecords(data.data || [])
+      setAttendanceRecords(data || [])
     }
     catch (error: unknown) { // 指定error的类型为unknown
       if (error instanceof Error) { // 使用instanceof检查错误是否为Error类型
@@ -90,23 +100,31 @@ export function HistoryView() {
     }
 
   }
+  const formatAttendanceData = (records: AttendanceRecord[][]) => {
+    const formattedData: { [key: string]: AttendanceRecord[] } = {};
+    // 判断 records 是否为空数组 是否为 undefined 是否为 null
+    if (!records || records.length === 0) {
+      return formattedData;
+    }
+    // console.info('records:', records)
 
-  const dateCellRender = (value: any) => {
-    const dateStr = format(value.toDate(), "yyyy-MM-dd")
-    const dayRecords = records.filter(record => record.date === dateStr)
+    records.forEach((dayRecords) => {
+      dayRecords.forEach((record) => {
+        if (!formattedData[record.date]) {
+          formattedData[record.date] = [];
+        }
+        formattedData[record.date].push({
+          date: record.date, // 确保包含 date 属性
+          time: record.time,
+          signInStateStr: record.signInStateStr,
+          beLateTime: record.beLateTime,
+          id: record.id,
+        });
+      });
+    });
 
-    if (dayRecords.length === 0) return null
-
-    return (
-      <div className="text-xs">
-        {dayRecords.map((record, index) => (
-          <div key={index} className="truncate">
-            {record.time} - {record.signInStateStr}
-          </div>
-        ))}
-      </div>
-    )
-  }
+    return formattedData;
+  };
 
   return (
     <div className="space-y-4">
@@ -177,9 +195,14 @@ export function HistoryView() {
             onChange={() => {}}
           />
         ) : (
-          <AntCalendar
-            cellRender={dateCellRender}
-          />
+          // <AntCalendar
+          //   cellRender={dateCellRender}
+          // />
+          <ConfigProvider locale={locale} theme={{algorithm: theme.darkAlgorithm}}>
+            <AttendanceCalendar
+              attendanceData={formatAttendanceData(attendanceRecords)}
+            />
+          </ConfigProvider>
         )}
       </div>
     </div>
