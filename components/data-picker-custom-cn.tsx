@@ -36,7 +36,8 @@ const DateTimePickerCn = ({
   const [hours, setHours] = React.useState(date ? date.getHours() : 0)
   const [minutes, setMinutes] = React.useState(date ? date.getMinutes() : 0)
   const [seconds, setSeconds] = React.useState(date ? date.getSeconds() : 0)
-
+  // 添加 Popover 开关状态控制
+  const [open, setOpen] = React.useState(false)
   React.useEffect(() => {
     if (date) {
       const newDate = new Date(date)
@@ -56,7 +57,7 @@ const DateTimePickerCn = ({
   }
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
@@ -135,6 +136,12 @@ const DateTimePickerCn = ({
               ))}
             </SelectContent>
           </Select>
+          <Button
+            size="sm"
+            onClick={() => setOpen(false)}
+          >
+            确定
+          </Button>
         </div>
       </PopoverContent>
     </Popover>
