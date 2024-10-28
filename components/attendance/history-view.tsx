@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import {useMediaQuery} from "@/hooks/use-media-query"
-import {Calendar as NextUICalendar} from "@nextui-org/calendar"
 import {cn} from "@/lib/utils"
 import {Button} from "@/components/ui/button"
 import {
@@ -14,13 +13,14 @@ import {
 import {Input} from "@/components/ui/input"
 import {useToast} from "@/components/ui/use-toast"
 import AttendanceCalendar from '@/components/attendance/attendance-calendar'
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {ConfigProvider, theme} from 'antd';
 import locale from 'antd/locale/zh_CN';
 import dayjs from "dayjs";
 import "dayjs/locale/zh-cn";
 import DateTimePickerCn from '@/components/data-picker-custom-cn';
 import { format} from "date-fns"
+import MobileAttendanceCalendar from '@/components/attendance/record-on-mobile-calendar';
 dayjs.locale("zh-cn");
 
 interface AttendanceRecord {
@@ -39,7 +39,12 @@ export function HistoryView() {
   const [loading, setLoading] = React.useState(false)
   const {toast} = useToast()
   const isMobile = useMediaQuery("(max-width: 768px)")
-
+  useEffect(() => {
+    // 设置 startDate 默认为当天 00:00:00
+    setStartDate(dayjs().startOf("day").toDate());
+    // 设置 endDate 默认为当天 23:59:59
+    setEndDate(dayjs().endOf("day").toDate());
+  }, [attendanceRecords]);
   const fetchRecords = async () => {
     if (!employeeId || !startDate || !endDate) {
       toast({
@@ -158,8 +163,11 @@ export function HistoryView() {
         <CardContent>
           <div className="mt-4 content-center items-center">
             {isMobile ? (
-              <NextUICalendar
-                onChange={() => {}}
+              // <NextUICalendar
+              //   onChange={() => {}}
+              // />
+              <MobileAttendanceCalendar
+                attendanceData={formatAttendanceData(attendanceRecords)}
               />
             ) : (
               <ConfigProvider locale={locale} theme={{algorithm: theme.darkAlgorithm}}>

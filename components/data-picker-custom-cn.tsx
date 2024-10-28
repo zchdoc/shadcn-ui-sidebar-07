@@ -31,7 +31,7 @@ const DateTimePickerCn = ({
                             date,
                             setDate,
                             label = "选择日期和时间",
-                            className // 接收 className
+                            className
                           }: DateTimePickerProps) => {
   const [hours, setHours] = React.useState(date ? date.getHours() : 0)
   const [minutes, setMinutes] = React.useState(date ? date.getMinutes() : 0)
