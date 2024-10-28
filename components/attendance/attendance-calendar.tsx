@@ -134,21 +134,44 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
   const {styles} = useStyle({test: true});
   const [selectDate] = React.useState<Dayjs>(dayjs());
   const [panelDateDate] = React.useState<Dayjs>(dayjs());
-
+  /**
+   * 正常 success
+   * 迟到 error
+   * 旷工 error
+   * 早退 error
+   * 加班 success
+   * 正常签到 success
+   * 正常签退 success
+   * 请假 success
+   * 周日不考勤 success
+   * 周六签退 success
+   * @param status
+   * 下面的 状态(processing)需要测试
+   * case "加班": return "processing";
+   */
   const getBadgeStatus = (status: string) => {
     switch (status) {
+      case "正常":
+      case "加班":
       case "正常签到":
-        return "success";
       case "正常签退":
+      case "请假":
+      case "周日不考勤":
+      case "周六签退":
+      case "请假(系统)":
+      case "未排班(系统)":
         return "success";
       case "迟到":
-        return "warning";
-      case "加班":
-        return "processing";
-      case "未签退":
+      case "旷工":
+      case "早退":
         return "error";
+      case "未签到(系统)":
+      case "未签退(系统)":
+      case "未签到":
+      case "未签退":
+        return "warning";
       default:
-        return "default";
+        return "error";
     }
   };
 
