@@ -24,18 +24,30 @@ interface DateTimePickerProps {
   date: Date | undefined
   setDate: (date: Date | undefined) => void
   label?: string
-  className?: string // 添加 className 属性
+  className?: string
+  componentId?: string
 }
 
 const DateTimePickerCn = ({
                             date,
                             setDate,
                             label = "选择日期和时间",
-                            className
+                            className,
+                            componentId = "DateTimePickerCn",
                           }: DateTimePickerProps) => {
+  console.log('componentId:', componentId);
+  console.log('date:', date);
   const [hours, setHours] = React.useState(date ? date.getHours() : 0)
   const [minutes, setMinutes] = React.useState(date ? date.getMinutes() : 0)
   const [seconds, setSeconds] = React.useState(date ? date.getSeconds() : 0)
+  // 添加这个 useEffect 来监听 date 的变化
+  React.useEffect(() => {
+    if (date) {
+      setHours(date.getHours())
+      setMinutes(date.getMinutes())
+      setSeconds(date.getSeconds())
+    }
+  }, [date])
   // 添加 Popover 开关状态控制
   const [open, setOpen] = React.useState(false)
   React.useEffect(() => {

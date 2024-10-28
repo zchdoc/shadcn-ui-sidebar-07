@@ -19,8 +19,10 @@ import locale from 'antd/locale/zh_CN';
 import dayjs from "dayjs";
 import "dayjs/locale/zh-cn";
 import DateTimePickerCn from '@/components/data-picker-custom-cn';
-import { format} from "date-fns"
+import {format} from "date-fns"
 import MobileAttendanceCalendar from '@/components/attendance/record-on-mobile-calendar';
+import {ManualClock} from '@/components/attendance/manual-clock';
+
 dayjs.locale("zh-cn");
 
 interface AttendanceRecord {
@@ -133,6 +135,7 @@ export function HistoryView() {
 
   return (
     <div className={cn("flex gap-2", isMobile ? "flex-col" : "flex-row")}>
+      {/*查询参数*/}
       <Card>
         <CardHeader/>
         <CardContent>
@@ -147,8 +150,8 @@ export function HistoryView() {
               />
             </div>
             <div className="flex flex-col space-y-1.5 w-60">
-              <DateTimePickerCn date={startDate} setDate={setStartDate} label={"开始日期"} className={"w-60"}/>
-              <DateTimePickerCn date={endDate} setDate={setEndDate} label={"结束日期"} className={"w-60"}/>
+              <DateTimePickerCn componentId={`1${startDate}`} date={startDate} setDate={setStartDate} label={"开始日期"} className={"w-60"}/>
+              <DateTimePickerCn componentId={`2${endDate}`} date={endDate} setDate={setEndDate} label={"结束日期"} className={"w-60"}/>
             </div>
             <div className="flex">
               <Button className="w-60" onClick={fetchRecords} disabled={loading}>
@@ -159,6 +162,7 @@ export function HistoryView() {
         </CardContent>
         <CardFooter/>
       </Card>
+      {/*查询结果*/}
       <Card>
         <CardContent>
           <div className="mt-4 content-center items-center">
@@ -177,6 +181,14 @@ export function HistoryView() {
               </ConfigProvider>
             )}
           </div>
+        </CardContent>
+        <CardFooter/>
+      </Card>
+      {/*  模拟参数*/}
+      <Card>
+        <CardHeader/>
+        <CardContent>
+          <ManualClock/>
         </CardContent>
         <CardFooter/>
       </Card>

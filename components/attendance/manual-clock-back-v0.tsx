@@ -2,22 +2,25 @@
 
 import * as React from "react"
 import {format} from "date-fns"
+import {Calendar as CalendarIcon} from "lucide-react"
 
+import {cn} from "@/lib/utils"
 import {Button} from "@/components/ui/button"
+import {Calendar} from "@/components/ui/calendar"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import {Input} from "@/components/ui/input"
 import {useToast} from "@/components/ui/use-toast"
-import DateTimePickerCn from '@/components/data-picker-custom-cn';
-import {useEffect} from 'react';
 
 export function ManualClock() {
   const [date, setDate] = React.useState<Date>()
   const [employeeId, setEmployeeId] = React.useState("3000002")
   const [loading, setLoading] = React.useState(false)
   const {toast} = useToast()
-  useEffect(() => {
-    // 设置 date 默认为当前时间
-    setDate(new Date())
-  }, []);
+
   const handleClockIn = async () => {
     if (!date || !employeeId) {
       toast({
@@ -85,7 +88,28 @@ export function ManualClock() {
         />
       </div>
       <div className="space-y-2">
-        <DateTimePickerCn componentId={`3${date}`} date={date} setDate={setDate} label={"模拟日期"} className={"w-full"}/>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                "w-full justify-start text-left font-normal",
+                !date && "text-muted-foreground"
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4"/>
+              {date ? format(date, "PPP HH:mm:ss") : <span>Pick a date</span>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0">
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={setDate}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
       </div>
       <Button
         className="w-full"
