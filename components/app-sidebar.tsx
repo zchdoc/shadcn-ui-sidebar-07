@@ -12,6 +12,8 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
+  History,
+  Clock,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -59,15 +61,11 @@ const data = {
       items: [
         {
           title: "History",
-          url: "#",
+          url: "/dashboard/history",
         },
         {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
+          title: "Manual Clock",
+          url: "/dashboard/manual-clock",
         },
       ],
     },

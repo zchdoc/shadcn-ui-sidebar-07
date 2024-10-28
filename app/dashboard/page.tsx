@@ -1,3 +1,6 @@
+"use client"
+
+import { usePathname } from "next/navigation"
 import { AppSidebar } from "@/components/app-sidebar"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { ManualClock } from "@/components/attendance/manual-clock"
@@ -18,6 +21,36 @@ import {
 } from "@/components/ui/sidebar"
 
 export default function Page() {
+  const pathname = usePathname()
+
+  const getContent = () => {
+    switch (pathname) {
+      case "/dashboard/history":
+        return (
+          <div className="container mx-auto p-4">
+            <h1 className="text-2xl font-bold mb-4">Attendance History</h1>
+            <HistoryView />
+          </div>
+        )
+      case "/dashboard/manual-clock":
+        return (
+          <div className="container mx-auto p-4">
+            <h1 className="text-2xl font-bold mb-4">Manual Clock</h1>
+            <div className="max-w-md mx-auto">
+              <ManualClock />
+            </div>
+          </div>
+        )
+      default:
+        return (
+          <div className="container mx-auto p-4">
+            <h1 className="text-2xl font-bold mb-4">Welcome to Dashboard</h1>
+            <p>Select an option from the sidebar to get started.</p>
+          </div>
+        )
+    }
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -43,16 +76,7 @@ export default function Page() {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl bg-card p-6 shadow">
-              <h2 className="text-lg font-semibold mb-4">Manual Clock</h2>
-              <ManualClock />
-            </div>
-            <div className="rounded-xl bg-card p-6 shadow">
-              <h2 className="text-lg font-semibold mb-4">Attendance History</h2>
-              <HistoryView />
-            </div>
-          </div>
+          {getContent()}
         </div>
       </SidebarInset>
     </SidebarProvider>

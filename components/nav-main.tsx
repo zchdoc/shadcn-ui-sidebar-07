@@ -1,6 +1,7 @@
 "use client"
 
 import { ChevronRight, type LucideIcon } from "lucide-react"
+import { useRouter, usePathname } from "next/navigation"
 
 import {
   Collapsible,
@@ -32,6 +33,14 @@ export function NavMain({
     }[]
   }[]
 }) {
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, url: string) => {
+    e.preventDefault()
+    router.push(url)
+  }
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -40,7 +49,7 @@ export function NavMain({
           <Collapsible
             key={item.title}
             asChild
-            defaultOpen={item.isActive}
+            defaultOpen={item.isActive || item.items?.some(subItem => subItem.url === pathname)}
             className="group/collapsible"
           >
             <SidebarMenuItem>
@@ -55,8 +64,14 @@ export function NavMain({
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
+                      <SidebarMenuSubButton 
+                        asChild
+                        isActive={pathname === subItem.url}
+                      >
+                        <a 
+                          href={subItem.url}
+                          onClick={(e) => handleClick(e, subItem.url)}
+                        >
                           <span>{subItem.title}</span>
                         </a>
                       </SidebarMenuSubButton>
