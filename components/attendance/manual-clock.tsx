@@ -92,7 +92,7 @@ export function ManualClock() {
         onClick={handleClockIn}
         disabled={loading}
       >
-        {loading ? "Processing..." : "Clock In"}
+        {loading ? "Processing..." : "模拟"}
       </Button>
     </div>
   )

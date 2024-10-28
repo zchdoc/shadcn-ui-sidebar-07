@@ -181,6 +181,9 @@ export function HistoryView() {
               </ConfigProvider>
             )}
           </div>
+          <Button className="w-full" onClick={fetchRecords} disabled={loading}>
+            {loading ? "Loading..." : "查询"}
+          </Button>
         </CardContent>
         <CardFooter/>
       </Card>

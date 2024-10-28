@@ -35,8 +35,7 @@ const DateTimePickerCn = ({
                             className,
                             componentId = "DateTimePickerCn",
                           }: DateTimePickerProps) => {
-  console.log('componentId:', componentId);
-  console.log('date:', date);
+  if(componentId) {}
   const [hours, setHours] = React.useState(date ? date.getHours() : 0)
   const [minutes, setMinutes] = React.useState(date ? date.getMinutes() : 0)
   const [seconds, setSeconds] = React.useState(date ? date.getSeconds() : 0)
