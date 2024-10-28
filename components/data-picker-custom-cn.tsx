@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import {Calendar as CalendarIcon} from "lucide-react"
 import {cn} from "@/lib/utils"
@@ -22,9 +24,15 @@ interface DateTimePickerProps {
   date: Date | undefined
   setDate: (date: Date | undefined) => void
   label?: string
+  className?: string // 添加 className 属性
 }
 
-const DateTimePickerCn = ({date, setDate, label = "选择日期和时间"}: DateTimePickerProps) => {
+const DateTimePickerCn = ({
+                            date,
+                            setDate,
+                            label = "选择日期和时间",
+                            className // 接收 className
+                          }: DateTimePickerProps) => {
   const [hours, setHours] = React.useState(date ? date.getHours() : 0)
   const [minutes, setMinutes] = React.useState(date ? date.getMinutes() : 0)
   const [seconds, setSeconds] = React.useState(date ? date.getSeconds() : 0)
@@ -44,7 +52,6 @@ const DateTimePickerCn = ({date, setDate, label = "选择日期和时间"}: Date
   const secondsOptions = Array.from({length: 60}, (_, i) => i)
 
   const formatDate = (date: Date) => {
-    // 使用 date-fns 的中文格式化
     return format(date, 'PPP HH:mm:ss', {locale: zhCN})
   }
 
@@ -54,8 +61,9 @@ const DateTimePickerCn = ({date, setDate, label = "选择日期和时间"}: Date
         <Button
           variant={"outline"}
           className={cn(
-            "w-[280px] justify-start text-left font-normal",
-            !date && "text-muted-foreground"
+            "justify-start text-left font-normal", // 移除固定宽度
+            !date && "text-muted-foreground",
+            className // 应用传入的 className
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4"/>
@@ -78,7 +86,6 @@ const DateTimePickerCn = ({date, setDate, label = "选择日期和时间"}: Date
               setDate(undefined)
             }
           }}
-          // 设置日历组件为中文
           locale={zhCN}
           initialFocus
         />

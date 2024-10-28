@@ -8,10 +8,8 @@ import {Button} from "@/components/ui/button"
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card"
 import {Input} from "@/components/ui/input"
 import {useToast} from "@/components/ui/use-toast"
@@ -22,7 +20,7 @@ import locale from 'antd/locale/zh_CN';
 import dayjs from "dayjs";
 import "dayjs/locale/zh-cn";
 import DateTimePickerCn from '@/components/data-picker-custom-cn';
-
+import { format} from "date-fns"
 dayjs.locale("zh-cn");
 
 interface AttendanceRecord {
@@ -54,17 +52,18 @@ export function HistoryView() {
 
     setLoading(true)
     try {
+      const reqBody = JSON.stringify({
+        employeeId,
+        startDate: format(startDate, "yyyy-MM-dd HH:mm:ss"),
+        endDate: format(endDate, "yyyy-MM-dd HH:mm:ss"),
+      });
+      console.log('reqBody:', reqBody);
       const response = await fetch("/api/attendance/history", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-
-        body: JSON.stringify({
-          employeeId,
-          startDate: startDate,
-          endDate: endDate,
-        }),
+        body: reqBody,
       })
 
       if (!response.ok) {
@@ -130,24 +129,24 @@ export function HistoryView() {
   return (
     <div className={cn("flex gap-2", isMobile ? "flex-col" : "flex-row")}>
       <Card>
-        <CardHeader>
-          <CardTitle></CardTitle>
-          <CardDescription></CardDescription>
-        </CardHeader>
+        <CardHeader/>
         <CardContent>
-          <div className="flex flex-col space-y-1.5">
-            <Input
-              type="text"
-              placeholder="编号"
-              value={employeeId}
-              onChange={(e) => setEmployeeId(e.target.value)}
-            />
-            <div className="flex flex-col space-y-1.5 w-full">
-              <DateTimePickerCn date={startDate} setDate={setStartDate} label={"开始日期"}/>
-              <DateTimePickerCn date={endDate} setDate={setEndDate} label={"结束日期"}/>
+          <div className="flex flex-col space-y-1.5 content-center items-center">
+            <div className="flex">
+              <Input
+                className="w-60"
+                type="text"
+                placeholder="编号"
+                value={employeeId}
+                onChange={(e) => setEmployeeId(e.target.value)}
+              />
+            </div>
+            <div className="flex flex-col space-y-1.5 w-60">
+              <DateTimePickerCn date={startDate} setDate={setStartDate} label={"开始日期"} className={"w-60"}/>
+              <DateTimePickerCn date={endDate} setDate={setEndDate} label={"结束日期"} className={"w-60"}/>
             </div>
             <div className="flex">
-              <Button className="w-full" onClick={fetchRecords} disabled={loading}>
+              <Button className="w-60" onClick={fetchRecords} disabled={loading}>
                 {loading ? "Loading..." : "查询"}
               </Button>
             </div>
@@ -157,7 +156,7 @@ export function HistoryView() {
       </Card>
       <Card>
         <CardContent>
-          <div className="mt-4">
+          <div className="mt-4 content-center items-center">
             {isMobile ? (
               <NextUICalendar
                 onChange={() => {}}
