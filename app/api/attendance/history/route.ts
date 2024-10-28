@@ -11,12 +11,9 @@ export async function POST(req: Request) {
     const uri = '/xb/zk/attendance/v2/record.do';
     const tmpOpenId = 'o45LO4l28n6aa4dFCXB3BBYOFWNs';
     const tmpUserVerifyNumber = '15824821718';
-    const params = `?userNo=${employeeId}
-    &timeStart=${startDate}
-    &timeEnd=${endDate}
-    &openId=${tmpOpenId}
-    &userVerifyNumber=${tmpUserVerifyNumber}`;
+    const params = `?userNo=${employeeId}&timeStart=${startDate}&timeEnd=${endDate}&openId=${tmpOpenId}&userVerifyNumber=${tmpUserVerifyNumber}`;
     const fullUrl = `${url}${uri}${params}`;
+    console.log('fullUrl:', fullUrl);
     const response = await fetch(fullUrl,
       {
         method: "GET",

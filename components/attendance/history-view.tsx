@@ -4,7 +4,6 @@ import * as React from "react"
 import {format} from "date-fns"
 import {Calendar as CalendarIcon} from "lucide-react"
 import {useMediaQuery} from "@/hooks/use-media-query"
-// import {Calendar as AntCalendar} from "antd"
 import {Calendar as NextUICalendar} from "@nextui-org/calendar"
 import {cn} from "@/lib/utils"
 import {Button} from "@/components/ui/button"
@@ -69,7 +68,9 @@ export function HistoryView() {
         }),
       })
 
-      if (!response.ok) throw new Error("Failed to fetch records")
+      if (!response.ok) {
+        throw new Error("Failed to fetch records")
+      }
       console.log('response:', response);
       const data = await response.json()
       console.log('data:', data);
@@ -77,7 +78,8 @@ export function HistoryView() {
       // setRecords(data.data || [])
       setAttendanceRecords(data || [])
     }
-    catch (error: unknown) { // 指定error的类型为unknown
+      // 指定error的类型为unknown
+    catch (error: unknown) {
       if (error instanceof Error) { // 使用instanceof检查错误是否为Error类型
         console.error(error); // 打印错误信息到控制台
         toast({
@@ -187,7 +189,7 @@ export function HistoryView() {
         onClick={fetchRecords}
         disabled={loading}
       >
-        {loading ? "Loading..." : "View Records"}
+        {loading ? "Loading..." : "查询"}
       </Button>
       <div className="mt-4">
         {isMobile ? (
