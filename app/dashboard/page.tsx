@@ -1,6 +1,6 @@
 "use client"
 
-import {useState} from "react"
+import {useCallback, useState} from "react"
 import {AppSidebar} from "@/components/app-sidebar"
 import {ThemeToggle} from "@/components/theme-toggle"
 import {ManualClock} from "@/components/attendance/manual-clock"
@@ -23,9 +23,16 @@ import {
 export default function Page() {
   const [activeView, setActiveView] = useState<"default" | "history" | "manual-clock">("default")
 
+  const onAppSidebarViewChange = useCallback(function (e: string) {
+    if (["default", "history", "manual-clock"].includes(e)) {
+      console.log(e);
+      setActiveView(e as "default" | "history" | "manual-clock");
+    }
+  }, []);
+
   return (
     <SidebarProvider defaultOpen>
-      <AppSidebar onViewChange={() => setActiveView}/>
+      <AppSidebar onViewChange={onAppSidebarViewChange}/>
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4 w-full justify-between">
