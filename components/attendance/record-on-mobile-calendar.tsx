@@ -90,29 +90,23 @@ const MobileAttendanceCalendar: React.FC<MobileAttendanceCalendarProps> = ({atte
    * default: return "bg-gray-100 dark:bg-gray-800"
    */
   function getSignInStateClass(signInStateStr: string) {
-    switch (signInStateStr) {
-      case "正常":
-      case "加班":
-      case "正常签到":
-      case "正常签退":
-      case "请假":
-      case "周日不考勤":
-      case "周六签退":
-      case "请假(系统)":
-      case "未排班(系统)":
-        return "bg-green-100 dark:bg-green-900/20"
-      case "未签到(系统)":
-      case "未签退(系统)":
-      case "未签到":
-      case "未签退":
-        return "bg-yellow-100 dark:bg-yellow-900/20"
-      case "迟到":
-      case "旷工":
-      case "早退":
-        return "bg-red-100 dark:bg-red-900/20"
+    const successKeywords = ["正常", "加班", "请假",//
+      "正常签到", "正常签退", "周六签退", "工作加班", "周日无班",//
+      "周日不考勤", "请假(系统)", "未排班(系统)"];
+    const warningKeywords = ["未签到(系统)", "未签退(系统)", "未签到", "未签退"];
+    const errorKeywords = ["迟到", "旷工", "早退"];
 
-      default:
-        return "bg-gray-100 dark:bg-red-900/20"
+    if (successKeywords.some(keyword => signInStateStr.includes(keyword))) {
+      return "bg-green-100 dark:bg-green-900/20";
+    }
+    else if (warningKeywords.some(keyword => signInStateStr.includes(keyword))) {
+      return "bg-yellow-100 dark:bg-yellow-900/20";
+    }
+    else if (errorKeywords.some(keyword => signInStateStr.includes(keyword))) {
+      return "bg-red-100 dark:bg-red-900/20";
+    }
+    else {
+      return "bg-gray-100 dark:bg-red-900/20";
     }
   }
 

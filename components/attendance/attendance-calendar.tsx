@@ -150,28 +150,23 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
    * case "加班": return "processing";
    */
   const getBadgeStatus = (status: string) => {
-    switch (status) {
-      case "正常":
-      case "加班":
-      case "正常签到":
-      case "正常签退":
-      case "请假":
-      case "周日不考勤":
-      case "周六签退":
-      case "请假(系统)":
-      case "未排班(系统)":
-        return "success";
-      case "迟到":
-      case "旷工":
-      case "早退":
-        return "error";
-      case "未签到(系统)":
-      case "未签退(系统)":
-      case "未签到":
-      case "未签退":
-        return "warning";
-      default:
-        return "error";
+    const successKeywords = ["正常", "加班", "请假",//
+      "正常签到", "正常签退", "周六签退", "工作加班", "周日无班",//
+      "周日不考勤", "请假(系统)", "未排班(系统)"];
+    const warningKeywords = ["未签到(系统)", "未签退(系统)", "未签到", "未签退"];
+    const errorKeywords = ["迟到", "旷工", "早退"];
+
+    if (successKeywords.some(keyword => status.includes(keyword))) {
+      return "success";
+    }
+    else if (errorKeywords.some(keyword => status.includes(keyword))) {
+      return "error";
+    }
+    else if (warningKeywords.some(keyword => status.includes(keyword))) {
+      return "warning";
+    }
+    else {
+      return "error";
     }
   };
 
