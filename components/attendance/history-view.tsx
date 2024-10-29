@@ -41,12 +41,13 @@ export function HistoryView() {
   const [loading, setLoading] = React.useState(false)
   const {toast} = useToast()
   const isMobile = useMediaQuery("(max-width: 768px)")
+  // [attendanceRecords] 改为空数组，只在组件挂载时执行一次
   useEffect(() => {
     // 设置 startDate 默认为当天 00:00:00
     setStartDate(dayjs().startOf("day").toDate());
     // 设置 endDate 默认为当天 23:59:59
     setEndDate(dayjs().endOf("day").toDate());
-  }, [attendanceRecords]);
+  }, []);
   const fetchRecords = async () => {
     if (!employeeId || !startDate || !endDate) {
       toast({
