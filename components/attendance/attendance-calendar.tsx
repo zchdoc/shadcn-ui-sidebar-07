@@ -29,9 +29,10 @@ interface AttendanceCalendarProps {
 }
 
 const useStyle = createStyles(({token, css, cx}) => {
+  // font-size: ${token.fontSizeSM}px; 12px
   const lunar = css`
     color: ${token.colorTextTertiary};
-    font-size: ${token.fontSizeSM}px;
+    font-size: 9px;
     margin-left: 4px;
   `;
   const weekend = css`
@@ -40,6 +41,11 @@ const useStyle = createStyles(({token, css, cx}) => {
       opacity: 0.4;
     }
   `;
+  // 添加阳历日期的样式
+  const solarDate = css`
+    font-size: 16px;
+  `;
+
   return {
     wrapper: css`
       width: 450px;
@@ -47,6 +53,27 @@ const useStyle = createStyles(({token, css, cx}) => {
       border-radius: ${token.borderRadiusOuter};
       padding: 5px;
     `,
+    // dateCell: css`
+    //   position: relative;
+    //   height: 100%;
+    //   &:before {
+    //     content: "";
+    //     position: absolute;
+    //     inset-inline-start: 0;
+    //     inset-inline-end: 0;
+    //     top: 0;
+    //     bottom: 0;
+    //     margin: 0;
+    //     background: transparent;
+    //     transition: background-color 300ms;
+    //     border-radius: ${token.borderRadiusOuter}px;
+    //     border: 1px solid transparent;
+    //     box-sizing: border-box;
+    //   }
+    //   &:hover:before {
+    //     background: rgba(0, 0, 0, 0.04);
+    //   }
+    // `,
     dateCell: css`
       position: relative;
       height: 100%;
@@ -57,9 +84,11 @@ const useStyle = createStyles(({token, css, cx}) => {
         inset-inline-end: 0;
         top: 0;
         bottom: 0;
-        margin: 0;
+        margin: auto;     // 新增：用于居中
+        //max-width: 40px;  // 新增：限制背景大小
+        //max-height: 40px; // 新增：限制背景大小
         background: transparent;
-        transition: background-color 300ms;
+        transition: background-color 600ms;
         border-radius: ${token.borderRadiusOuter}px;
         border: 1px solid transparent;
         box-sizing: border-box;
@@ -84,11 +113,11 @@ const useStyle = createStyles(({token, css, cx}) => {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 2px 8px;
+      padding: 1px 8px;
     `,
     recordsWrapper: css`
       flex: 1;
-      padding: 4px 8px;
+      padding-top: 1px;
     `,
     lunar,
     current: css`
@@ -102,7 +131,7 @@ const useStyle = createStyles(({token, css, cx}) => {
       }
       .${cx(lunar)} {
         color: ${token.colorTextLightSolid};
-        opacity: 0.9;
+        opacity: 0.4;
       }
       .${cx(weekend)} {
         color: ${token.colorTextLightSolid};
@@ -122,18 +151,28 @@ const useStyle = createStyles(({token, css, cx}) => {
       background: ${token.colorPrimary};
       &:hover {
         background: ${token.colorPrimary};
-        opacity: 0.8;
+        opacity: 0.1;
       }
     `,
     weekend,
+    solarDate,
   };
 });
 const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
                                                                  attendanceData,
                                                                }) => {
   const {styles} = useStyle({test: true});
-  const [selectDate] = React.useState<Dayjs>(dayjs());
-  const [panelDateDate] = React.useState<Dayjs>(dayjs());
+  const [selectDate, setSelectDate] = React.useState<Dayjs>(dayjs());
+  const [panelDateDate, setPanelDate] = React.useState<Dayjs>(dayjs());
+
+  // 添加日期选择处理函数
+  const onDateChange: CalendarProps<Dayjs>['onSelect'] = (value, selectInfo) => {
+    if (selectInfo.source === 'date') {
+      setSelectDate(value);
+      setPanelDate(value);
+    }
+  };
+
   /**
    * 正常 success
    * 迟到 error
@@ -200,7 +239,7 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
             listStyle: "none",
             padding: 0,
             margin: 0,
-            fontSize: "12px",
+            fontSize: "8px",
           }}
         >
           {records.map((record, index) => (
@@ -248,7 +287,7 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
           <div className={styles.text}>
             <div className={styles.dateWrapper}>
               <span
-                className={classNames({
+                className={classNames(styles.solarDate,{
                   [styles.weekend]: isWeekend,
                   gray: !panelDateDate.isSame(date, "month"),
                 })}
@@ -286,6 +325,7 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
     <Calendar
       fullCellRender={cellRender}
       fullscreen={false}
+      onSelect={onDateChange}
       headerRender={({value, type, onChange, onTypeChange}) => {
         const start = 0;
         const end = 12;
