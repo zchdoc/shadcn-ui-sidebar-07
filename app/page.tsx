@@ -6,7 +6,9 @@ import { useRouter } from 'next/navigation' // 改用 useRouter
 import { Button } from '@/components/ui/button'
 import * as React from 'react'
 import { useAuth } from '@/components/auth-provider'
-
+import { useCallback } from 'react'
+import { SecureStorage } from '@/lib/secure-storage'
+import { validateToken } from '@/lib/auth'
 export default function Home() {
   const { isAuthenticated, username } = useAuth()
   const router = useRouter() // 初始化 router
