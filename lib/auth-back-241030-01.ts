@@ -1,25 +1,22 @@
-import { SecureStorage } from './secure-storage';
-import { encrypt, decrypt } from './crypto';
 // 预设的用户名和密码
 export const AUTH_CREDENTIALS = {
   username: '15824821718',
   password: 'zch15824821718'
 };
+
 // localStorage和cookie的key
 export const AUTH_KEY = 'auth_token';
 
-// 生成token时进行加密
+// 简单的token生成
 export function generateToken(username: string): string {
-  const token = btoa(`${username}_${Date.now()}`);
-  return encrypt(token);
+  return btoa(`${username}_${Date.now()}`);
 }
 
-// 验证token时先解密
+// 验证token
 export function validateToken(token: string | null): boolean {
   if (!token) return false;
   try {
-    const decryptedToken = decrypt(token);
-    const decoded = atob(decryptedToken);
+    const decoded = atob(token);
     return decoded.startsWith(AUTH_CREDENTIALS.username);
   } catch {
     return false;
@@ -29,16 +26,15 @@ export function validateToken(token: string | null): boolean {
 // 保存认证信息
 export function saveAuth(token: string) {
   if (typeof window !== 'undefined') {
-    SecureStorage.setItem(AUTH_KEY, token);
-    // Cookie 也使用加密存储
-    document.cookie = `${AUTH_KEY}=${encrypt(token)}; path=/; max-age=86400; Secure; SameSite=Strict`;
+    localStorage.setItem(AUTH_KEY, token);
+    document.cookie = `auth_token=${token}; path=/; max-age=86400`; // 24小时过期
   }
 }
 
 // 清除认证
 export function clearAuth() {
   if (typeof window !== 'undefined') {
-    SecureStorage.removeItem(AUTH_KEY);
-    document.cookie = `${AUTH_KEY}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+    localStorage.removeItem(AUTH_KEY);
+    document.cookie = `auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
   }
 }

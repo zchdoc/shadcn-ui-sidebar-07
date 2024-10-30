@@ -3,6 +3,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { AUTH_KEY, validateToken } from '@/lib/auth';
+import { SecureStorage } from '@/lib/secure-storage';
+import { decrypt } from '@/lib/crypto';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -21,18 +23,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const checkAuth = () => {
-      const token = localStorage.getItem(AUTH_KEY);
+      // 从 SecureStorage 获取 token
+      const token = SecureStorage.getItem(AUTH_KEY);
       const isValid = validateToken(token);
       setIsAuthenticated(isValid);
 
       if (isValid && token) {
         try {
-          // 从 token 中解析用户名
-          const decoded = atob(token);
+          // 解密 token 并获取用户名
+          const decryptedToken = decrypt(token);
+          const decoded = atob(decryptedToken);
           const extractedUsername = decoded.split('_')[0];
           setUsername(extractedUsername);
         } catch {
           setUsername(null);
+          setIsAuthenticated(false);
         }
       } else {
         setUsername(null);
@@ -56,7 +61,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
-  }, [pathname]);
+  }, [pathname, router]);
 
   if (isLoading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
