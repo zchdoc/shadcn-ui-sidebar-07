@@ -1,7 +1,7 @@
 // 预设的用户名和密码
 export const AUTH_CREDENTIALS = {
-  username: 'admin',
-  password: 'admin123'
+  username: '15824821718',
+  password: 'zch15824821718'
 };
 
 // localStorage和cookie的key

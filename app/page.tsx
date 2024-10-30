@@ -13,7 +13,7 @@ export default function Home() {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 5000);
     router.replace('/about');
   };
 
@@ -72,6 +72,7 @@ export default function Home() {
               className="dark:invert"
               src="https://nextjs.org/icons/vercel.svg"
               alt="Vercel logomark"
+              style={{width: 'auto', height: 'auto'}}
               width={20}
               height={20}
             />
