@@ -19,8 +19,14 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { useAuth } from "@/components/auth-provider"
 
 export default function Page() {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return null; // 让 layout 处理未认证状态
+  }
   const [activeView, setActiveView] = useState<"default" | "history" | "manual-clock">("history")
 
   const onAppSidebarViewChange = useCallback(function (e: string) {
