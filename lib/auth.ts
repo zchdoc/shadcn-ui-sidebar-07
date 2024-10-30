@@ -29,9 +29,14 @@ export function validateToken(token: string | null): boolean {
 // 保存认证信息
 export function saveAuth(token: string) {
   if (typeof window !== 'undefined') {
-    SecureStorage.setItem(AUTH_KEY, token);
-    // Cookie 也使用加密存储
-    document.cookie = `${AUTH_KEY}=${encrypt(token)}; path=/; max-age=86400; Secure; SameSite=Strict`;
+    // 使用 try-catch 包装存储操作
+    try {
+      SecureStorage.setItem(AUTH_KEY, token);
+      document.cookie = `${AUTH_KEY}=${token}; path=/; max-age=86400; Secure; SameSite=Strict`;
+      console.log('Auth saved successfully');
+    } catch (error) {
+      console.error('Error saving auth:', error);
+    }
   }
 }
 

@@ -23,44 +23,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const checkAuth = () => {
-      // 从 SecureStorage 获取 token
       const token = SecureStorage.getItem(AUTH_KEY);
+      console.log('AuthProvider - Checking token:', token);
+      
       const isValid = validateToken(token);
+      console.log('AuthProvider - Token valid:', isValid);
+      
       setIsAuthenticated(isValid);
-
+  
       if (isValid && token) {
         try {
-          // 解密 token 并获取用户名
           const decryptedToken = decrypt(token);
           const decoded = atob(decryptedToken);
           const extractedUsername = decoded.split('_')[0];
           setUsername(extractedUsername);
-        } catch {
+        } catch (error) {
+          console.error('Token decryption error:', error);
           setUsername(null);
           setIsAuthenticated(false);
         }
       } else {
         setUsername(null);
       }
-
-      // 如果在非登录页面且未认证，重定向到登录页
+  
+      // 只在非登录页且未认证时重定向
       if (!isValid && pathname !== '/login') {
-        router.replace(`/login?callbackUrl=${encodeURIComponent(pathname)}`);
+        const currentPath = pathname === '/' ? '/dashboard' : pathname;
+        router.replace(`/login?callbackUrl=${encodeURIComponent(currentPath)}`);
       }
+      
       setIsLoading(false);
     };
-
+  
     checkAuth();
-
-    // 监听存储变化
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === AUTH_KEY) {
-        checkAuth();
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
   }, [pathname, router]);
 
   if (isLoading) {
