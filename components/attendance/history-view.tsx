@@ -65,7 +65,6 @@ export function HistoryView() {
         startDate: format(startDate, "yyyy-MM-dd HH:mm:ss"),
         endDate: format(endDate, "yyyy-MM-dd HH:mm:ss"),
       });
-      console.log('reqBody:', reqBody);
       const response = await fetch("/api/attendance/history", {
         method: "POST",
         headers: {
@@ -77,17 +76,13 @@ export function HistoryView() {
       if (!response.ok) {
         throw new Error("Failed to fetch records")
       }
-      console.log('response:', response);
       const data = await response.json()
-      console.log('data:', data);
-      console.log('data:', JSON.stringify(data));
       // setRecords(data.data || [])
       setAttendanceRecords(data || [])
     }
       // 指定error的类型为unknown
     catch (error: unknown) {
       if (error instanceof Error) { // 使用instanceof检查错误是否为Error类型
-        console.error(error); // 打印错误信息到控制台
         toast({
           title: "Error",
           description: error.message || "Failed to fetch records", // 显示更详细的错误信息
@@ -95,7 +90,6 @@ export function HistoryView() {
         });
       }
       else {
-        console.error("Unexpected error", error); // 处理未知类型的错误
         toast({
           title: "Error",
           description: "Unexpected error occurred", // 显示未知错误信息
@@ -114,7 +108,6 @@ export function HistoryView() {
     if (!records || records.length === 0) {
       return formattedData;
     }
-    // console.info('records:', records)
 
     records.forEach((dayRecords) => {
       dayRecords.forEach((record) => {

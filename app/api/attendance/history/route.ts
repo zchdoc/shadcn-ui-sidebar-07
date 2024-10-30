@@ -13,21 +13,17 @@ export async function POST(req: Request) {
     const tmpUserVerifyNumber = '15824821718';
     const params = `?userNo=${employeeId}&timeStart=${startDate}&timeEnd=${endDate}&openId=${tmpOpenId}&userVerifyNumber=${tmpUserVerifyNumber}`;
     const fullUrl = `${url}${uri}${params}`;
-    console.log('fullUrl:', fullUrl);
     const response = await fetch(fullUrl,
       {
         method: "GET",
         headers: myHeaders,
       }
     )
-    // console.log('response0:', response)
     if (!response.ok) {
-      console.error(`${fullUrl} request error: ${response}`);
       throw new Error("Failed to fetch records")
     }
 
     const data = await response.json()
-    // console.log('data0:', data)
     return NextResponse.json(data)
   }
   catch (error) {

@@ -12,7 +12,6 @@ export function AuthReset() {
   const router = useRouter()
 
   const handleReset = () => {
-    console.info("trash")
     clearAuth()
     setIsAuthenticated(false)
     router.push('/login')

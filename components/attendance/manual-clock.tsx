@@ -53,7 +53,6 @@ export function ManualClock() {
     }
     catch (error: unknown) {
       if (error instanceof Error) { // 使用instanceof检查错误是否为Error类型
-        console.error(error); // 打印错误信息到控制台
         toast({
           title: "Error",
           description: error.message || "Failed to clock in", // 显示更详细的错误信息
@@ -61,7 +60,6 @@ export function ManualClock() {
         });
       }
       else {
-        console.error("Unexpected error", error); // 处理未知类型的错误
         toast({
           title: "Error",
           description: "Failed to clock in",
