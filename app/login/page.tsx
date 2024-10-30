@@ -30,20 +30,20 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     try {
       if (username === AUTH_CREDENTIALS.username && password === AUTH_CREDENTIALS.password) {
         const token = generateToken(username);
         saveAuth(token);
         setIsAuthenticated(true);
-        
+
         toast({
           title: "Success",
           description: "Login successful! Redirecting...",
         });
 
         const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
-        
+
         // 使用 setTimeout 确保 toast 消息能够显示
         setTimeout(() => {
           router.replace(callbackUrl);
@@ -56,11 +56,14 @@ export default function LoginPage() {
         });
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "An error occurred during login",
-        variant: "destructive",
-      });
+      if (error instanceof Error){
+        toast({
+          title: "Error",
+          description: "An error occurred during login",
+          variant: "destructive",
+        });
+      }
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -94,8 +97,8 @@ export default function LoginPage() {
                 autoComplete="current-password"
               />
             </div>
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               className="w-full"
               disabled={isLoading}
             >
