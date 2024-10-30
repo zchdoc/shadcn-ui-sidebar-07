@@ -1,27 +1,32 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { clearAuth } from "@/lib/auth"
-import { useAuth } from "@/components/auth-provider"
-import { useRouter } from "next/navigation"
+import {Button} from "@/components/ui/button"
+import {clearAuth} from "@/lib/auth"
+import {useAuth} from "@/components/auth-provider"
+import {useRouter} from "next/navigation"
+
+// import {Trash2} from 'lucide-react';
 
 export function AuthReset() {
-  const { setIsAuthenticated } = useAuth()
+  const {setIsAuthenticated} = useAuth()
   const router = useRouter()
 
   const handleReset = () => {
+    console.info("trash")
     clearAuth()
     setIsAuthenticated(false)
     router.push('/login')
   }
 
   return (
-    <Button 
-      variant="outline" 
+    // <Trash2 onClick={handleReset}/>
+    <Button
+      variant="link"
       onClick={handleReset}
-      className="gap-2"
+      size={'sm'}
+      className={'h-4'}
     >
-      Reset Auth
+      Auth Reset
     </Button>
   )
 }

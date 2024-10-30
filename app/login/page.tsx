@@ -1,12 +1,12 @@
 "use client"
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { AUTH_CREDENTIALS, AUTH_KEY, generateToken } from '@/lib/auth';
+import { AUTH_CREDENTIALS, saveAuth, generateToken, validateToken } from '@/lib/auth';
 import { useAuth } from '@/components/auth-provider';
 
 export default function LoginPage() {
@@ -14,8 +14,18 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { toast } = useToast();
   const { setIsAuthenticated } = useAuth();
+
+  // 检查是否已经登录
+  useEffect(() => {
+    const token = localStorage.getItem('auth_token');
+    if (validateToken(token)) {
+      const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+      router.replace(callbackUrl);
+    }
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,7 +34,7 @@ export default function LoginPage() {
     try {
       if (username === AUTH_CREDENTIALS.username && password === AUTH_CREDENTIALS.password) {
         const token = generateToken(username);
-        localStorage.setItem(AUTH_KEY, token);
+        saveAuth(token);
         setIsAuthenticated(true);
         
         toast({
@@ -32,9 +42,11 @@ export default function LoginPage() {
           description: "Login successful! Redirecting...",
         });
 
+        const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+        
         // 使用 setTimeout 确保 toast 消息能够显示
         setTimeout(() => {
-          router.push('/dashboard');
+          router.replace(callbackUrl);
         }, 1000);
       } else {
         toast({
