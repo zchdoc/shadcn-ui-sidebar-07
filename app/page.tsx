@@ -5,8 +5,10 @@ import Image from "next/image";
 import {useRouter} from 'next/navigation'; // 改用 useRouter
 import {Button} from "@/components/ui/button"
 import * as React from 'react';
+import {useAuth} from '@/components/auth-provider';
 
 export default function Home() {
+  const { isAuthenticated, username } = useAuth();
   const router = useRouter(); // 初始化 router
   const [loading, setLoading] = React.useState(false)
   const redirectToAbout = () => {
@@ -28,7 +30,12 @@ export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <header className="row-start-1 flex flex-col gap-4 items-center">
-        <h1 className="text-6xl font-bold">Welcome to Next.js!</h1>
+        <h1 className="text-6xl font-bold">Welcome  to Next.js!</h1>
+        {isAuthenticated ? (
+          <p>Welcome, {username}!</p>
+        ) : (
+          <p>Please log in</p>
+        )}
       </header>
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <Image
