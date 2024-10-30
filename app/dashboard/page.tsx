@@ -21,11 +21,11 @@ import {
 } from "@/components/ui/sidebar"
 
 export default function Page() {
-  const [activeView, setActiveView] = useState<"default" | "history" | "manual-clock">("default")
+  const [activeView, setActiveView] = useState<"default" | "history" | "manual-clock">("history")
 
   const onAppSidebarViewChange = useCallback(function (e: string) {
     if (["default", "history", "manual-clock"].includes(e)) {
-      setActiveView(e as "default" | "history" | "manual-clock");
+      setActiveView(e as "history" | "manual-clock" | "default");
     }
   }, []);
 
