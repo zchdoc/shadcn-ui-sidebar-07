@@ -29,6 +29,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { AuthReset } from "@/components/auth-reset"
 
 export function NavUser({
   user,
@@ -103,6 +104,7 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
+              <AuthReset />
               <LogOut />
               Log out
             </DropdownMenuItem>
