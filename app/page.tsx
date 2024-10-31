@@ -21,15 +21,6 @@ export default function Home() {
     router.replace('/about')
   }
 
-  // const redirectToDashboard = () => {
-  //   setLoading(true);
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //   }, 5000);
-  //   // router.push router.replace (不会在历史记录中添加新条目)
-  //   router.push('/dashboard');
-  // };
-
   const redirectToDashboard = useCallback(() => {
     // 添加延时和状态检查
     const token = SecureStorage.getItem('auth_token')

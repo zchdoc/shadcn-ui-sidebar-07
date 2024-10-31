@@ -30,7 +30,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!isAuthenticated && pathname !== '/login') {
       debouncedRedirect(`/login?callbackUrl=${encodeURIComponent(pathname)}`)
     }
-  }, [isAuthenticated, pathname])
+  }, [isAuthenticated, pathname, debouncedRedirect])
 
   useEffect(() => {
     const checkAuth = () => {
