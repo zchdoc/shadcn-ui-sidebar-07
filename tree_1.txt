@@ -1,0 +1,87 @@
+.
+├── README.md
+├── app
+│ ├── api
+│ │ └── attendance
+│ │     ├── clock-in
+│ │     │ └── route.ts
+│ │     ├── history
+│ │     │ └── route.ts
+│ │     └── route.ts
+│ ├── dashboard
+│ │ ├── layout.tsx
+│ │ └── page.tsx
+│ ├── fonts
+│ │ └── font-back-241030.zip
+│ ├── globals.css
+│ ├── layout.tsx
+│ ├── login
+│ │ └── page.tsx
+│ └── page.tsx
+├── components
+│ ├── app-sidebar.tsx
+│ ├── attendance
+│ │ ├── attendance-calendar.tsx
+│ │ ├── history-view.tsx
+│ │ ├── manual-clock.tsx
+│ │ └── record-on-mobile-calendar.tsx
+│ ├── auth-provider.tsx
+│ ├── auth-reset.tsx
+│ ├── authentication
+│ │ ├── auth-index.tsx
+│ │ └── components
+│ │     ├── user-auth-form.tsx
+│ │     └── user-login-form.tsx
+│ ├── data-picker-custom-cn.tsx
+│ ├── data-picker-custom.tsx
+│ ├── icons.tsx
+│ ├── nav-main.tsx
+│ ├── nav-projects.tsx
+│ ├── nav-user.tsx
+│ ├── team-switcher.tsx
+│ ├── theme-provider.tsx
+│ ├── theme-toggle.tsx
+│ ├── toaster.tsx
+│ └── ui
+│     ├── avatar.tsx
+│     ├── breadcrumb.tsx
+│     ├── button.tsx
+│     ├── calendar.tsx
+│     ├── card.tsx
+│     ├── collapsible.tsx
+│     ├── dropdown-menu.tsx
+│     ├── input.tsx
+│     ├── label.tsx
+│     ├── popover.tsx
+│     ├── select.tsx
+│     ├── separator.tsx
+│     ├── sheet.tsx
+│     ├── sidebar.tsx
+│     ├── skeleton.tsx
+│     ├── toast.tsx
+│     ├── tooltip.tsx
+│     ├── use-toast-back.ts
+│     └── use-toast.ts
+├── components.json
+├── hooks
+│ ├── use-media-query.ts
+│ └── use-mobile.tsx
+├── lib
+│ ├── auth.ts
+│ ├── crypto.ts
+│ ├── secure-storage.ts
+│ └── utils.ts
+├── middleware.ts
+├── next-env.d.ts
+├── next.config.js
+├── package-lock.json
+├── package.json
+├── postcss.config.mjs
+├── public
+│ ├── avatars
+│ │ └── shadcn.jpg
+│ └── grid.svg
+├── tailwind.config.ts
+├── tree.txt
+├── tree_1.txt
+└── tsconfig.json
