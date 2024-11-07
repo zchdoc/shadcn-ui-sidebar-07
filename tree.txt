@@ -1,0 +1,172 @@
+.
+├── README.md
+├── app
+│ ├── api
+│ │ └── attendance
+│ │     ├── clock-in
+│ │     │ └── route.ts
+│ │     ├── history
+│ │     │ └── route.ts
+│ │     └── route.ts
+│ ├── dashboard
+│ │ ├── layout.tsx
+│ │ └── page.tsx
+│ ├── fonts
+│ │ └── font-back-241030.zip
+│ ├── globals.css
+│ ├── layout.tsx
+│ ├── login
+│ │ └── page.tsx
+│ └── page.tsx
+├── components
+│ ├── app-sidebar.tsx
+│ ├── attendance
+│ │ ├── attendance-calendar.tsx
+│ │ ├── history-view.tsx
+│ │ ├── manual-clock.tsx
+│ │ └── record-on-mobile-calendar.tsx
+│ ├── auth-provider.tsx
+│ ├── auth-reset.tsx
+│ ├── authentication
+│ │ ├── auth-index.tsx
+│ │ └── components
+│ │     └── user-auth-form.tsx
+│ ├── data-picker-custom-cn.tsx
+│ ├── data-picker-custom.tsx
+│ ├── icons.tsx
+│ ├── nav-main.tsx
+│ ├── nav-projects.tsx
+│ ├── nav-user.tsx
+│ ├── team-switcher.tsx
+│ ├── theme-provider.tsx
+│ ├── theme-toggle.tsx
+│ ├── toaster.tsx
+│ └── ui
+│     ├── avatar.tsx
+│     ├── breadcrumb.tsx
+│     ├── button.tsx
+│     ├── calendar.tsx
+│     ├── card.tsx
+│     ├── collapsible.tsx
+│     ├── dropdown-menu.tsx
+│     ├── input.tsx
+│     ├── label.tsx
+│     ├── popover.tsx
+│     ├── select.tsx
+│     ├── separator.tsx
+│     ├── sheet.tsx
+│     ├── sidebar.tsx
+│     ├── skeleton.tsx
+│     ├── toast.tsx
+│     ├── tooltip.tsx
+│     ├── use-toast-back.ts
+│     └── use-toast.ts
+├── components.json
+├── hooks
+│ ├── use-media-query.ts
+│ └── use-mobile.tsx
+├── lib
+│ ├── auth.ts
+│ ├── crypto.ts
+│ ├── secure-storage.ts
+│ └── utils.ts
+├── middleware.ts
+├── next-env.d.ts
+├── next.config.js
+├── package-lock.json
+├── package.json
+├── postcss.config.mjs
+├── public
+│ ├── avatars
+│ │ └── shadcn.jpg
+│ └── grid.svg
+├── tailwind.config.ts
+├── tree.txt
+└── tsconfig.json
+
+帮我修改一下 /app/login/page.tsx 页面，里面有一个组件 AuthenticationPage ，
+这个组件在 /components/authentication/auth-index.tsx 里面，现在只有 注册 没有 login 功能，
+我想把它改成可以登录，目前左边为黑色 是一些无用的介绍性文字，右边是注册组件，右边的主题是根据系统颜色主题自动切换的，
+我想把它改成下面这样：
+1.添加一个登录组件，左边显示登录组件，右边显示注册组件，点击右上角的 login 右边的注册组件消失，左边显示登录组件，
+默认显示登录组件。
+2.左右两边的颜色都根据系统主题颜色切换，但是颜色要相反，例如目前是登录状态，则左边为系统主题色，右边为主题色的反色，
+
+
+    下面是以前的登录功能代码，帮我添加上去实现登录跳转功能
+
+      const [username, setUsername] = useState("")
+      const [password, setPassword] = useState("")
+      const [isLoading, setIsLoading] = useState(false)
+      const router = useRouter()
+      const searchParams = useSearchParams()
+      const { toast } = useToast()
+      const { setIsAuthenticated } = useAuth()
+
+      // 检查是否已经登录
+      useEffect(() => {
+        // NBkLCXZ5WBg5PQRBcFovKw53dWJ2KTUDZgRFASoKGFNSWgFONwJhbnIEClU+V1h5
+        const token = SecureStorage.getItem("auth_token")
+        console.log("Token:", token) // 调试日志
+        if (token !== null && token !== undefined) {
+          const decryptedToken = decrypt(token)
+          console.log("Decrypted token:", decryptedToken)
+          const encryptToken = encrypt(decryptedToken)
+          console.log("Encrypt token:", encryptToken)
+        }
+
+        if (validateToken(token)) {
+          const callbackUrl = searchParams?.get("callbackUrl") || "/dashboard"
+          router.push(callbackUrl)
+        }
+      }, [router, searchParams])
+
+      const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        try {
+          if (username === AUTH_CREDENTIALS.username && password === AUTH_CREDENTIALS.password) {
+            const token = generateToken(username);
+
+            // 先保存认证信息
+            await saveAuth(token);
+
+            // 确保认证状态更新
+            setIsAuthenticated(true);
+
+            // 等待一个短暂的延时以确保状态更新完成
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+            const callbackUrl = searchParams?.get('callbackUrl') || '/dashboard';
+
+            // 使用 replace 而不是 push
+            router.replace(callbackUrl);
+
+            toast({
+              title: "登录成功",
+              description: "正在跳转到主页面...",
+            });
+          } else {
+            console.log("Invalid credentials") // 调试日志
+            toast({
+              title: "登录失败",
+              description: "用户名或密码错误",
+              variant: "destructive",
+            })
+          }
+        } catch (error) {
+          if (error instanceof Error) {
+            toast({
+              title: "错误",
+              description: "登录过程中发生错误",
+              variant: "destructive",
+            })
+          } else {
+            alert(error)
+          }
+        } finally {
+          setIsLoading(false)
+        }
+      }
+
