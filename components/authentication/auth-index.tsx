@@ -1,13 +1,14 @@
 "use client"
 
-import {useState} from "react";
+import React, {useState} from "react";
 import {cn} from "@/lib/utils";
-import {Button} from "@/components/ui/button";
 import {UserAuthForm} from "./components/user-auth-form";
 import {UserLoginForm} from "./components/user-login-form";
 import {ThemeToggle} from "@/components/theme-toggle";
 import {DescriptionText} from "./components/description-text";
 import {Card, CardContent, CardHeader} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+
 
 export default function AuthenticationPage() {
   const [showLogin, setShowLogin] = useState(true);
@@ -33,6 +34,21 @@ export default function AuthenticationPage() {
           : "bg-muted/50 text-muted-foreground"
       )}>
         {/* 斜边装饰 */}
+        {/*<div className="relative z-20 flex items-center text-lg font-medium">*/}
+        {/*  <svg*/}
+        {/*    xmlns="http://www.w3.org/2000/svg"*/}
+        {/*    viewBox="0 0 24 24"*/}
+        {/*    fill="none"*/}
+        {/*    stroke="currentColor"*/}
+        {/*    strokeWidth="2"*/}
+        {/*    strokeLinecap="round"*/}
+        {/*    strokeLinejoin="round"*/}
+        {/*    className="mr-2 h-6 w-6"*/}
+        {/*  >*/}
+        {/*    <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"/>*/}
+        {/*  </svg>*/}
+        {/*  Attendance System*/}
+        {/*</div>*/}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-blue-100/20 to-indigo-100/20 dark:from-blue-900/20 dark:to-indigo-900/20"/>
           <div className="absolute right-0 inset-y-0 w-[120%] bg-muted/50 transform translate-x-[10%] skew-x-12"
@@ -41,21 +57,6 @@ export default function AuthenticationPage() {
           <div className="absolute right-0 inset-y-0 w-[120%] bg-background transform translate-x-[10%] skew-x-12"
                style={{display: showLogin ? 'block' : 'none'}}
           />
-        </div>
-        <div className="relative z-20 flex items-center text-lg font-medium">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="mr-2 h-6 w-6"
-          >
-            <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"/>
-          </svg>
-          Attendance System
         </div>
         <div className="relative z-20 flex flex-col flex-1 mt-20">
           {showLogin ? (
@@ -106,5 +107,4 @@ export default function AuthenticationPage() {
       </div>
     </div>
   )
-    ;
 }
