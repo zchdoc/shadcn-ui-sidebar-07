@@ -1,0 +1,156 @@
+.
+├── README.md
+├── app
+│ ├── api
+│ │ └── attendance
+│ │     ├── clock-in
+│ │     │ └── route.ts
+│ │     ├── history
+│ │     │ └── route.ts
+│ │     └── route.ts
+│ ├── dashboard
+│ │ ├── layout.tsx
+│ │ └── page.tsx
+│ ├── fonts
+│ │ └── font-back-241030.zip
+│ ├── globals.css
+│ ├── layout.tsx
+│ ├── login
+│ │ └── page.tsx
+│ └── page.tsx
+├── components
+│ ├── app-sidebar.tsx
+│ ├── attendance
+│ │ ├── attendance-calendar.tsx
+│ │ ├── history-view.tsx
+│ │ ├── manual-clock.tsx
+│ │ └── record-on-mobile-calendar.tsx
+│ ├── auth-provider.tsx
+│ ├── auth-reset.tsx
+│ ├── authentication
+│ │ ├── auth-index.tsx
+│ │ └── components
+│ │     ├── description-text.tsx
+│ │     ├── user-auth-form.tsx
+│ │     └── user-login-form.tsx
+│ ├── data-picker-custom-cn.tsx
+│ ├── data-picker-custom.tsx
+│ ├── icons.tsx
+│ ├── nav-main.tsx
+│ ├── nav-projects.tsx
+│ ├── nav-user.tsx
+│ ├── next
+│ │ └── UserIcon.jsx
+│ ├── team-switcher.tsx
+│ ├── theme-provider.tsx
+│ ├── theme-toggle.tsx
+│ ├── toaster.tsx
+│ └── ui
+│     ├── avatar.tsx
+│     ├── breadcrumb.tsx
+│     ├── button.tsx
+│     ├── calendar.tsx
+│     ├── card.tsx
+│     ├── collapsible.tsx
+│     ├── dropdown-menu.tsx
+│     ├── input.tsx
+│     ├── label.tsx
+│     ├── popover.tsx
+│     ├── select.tsx
+│     ├── separator.tsx
+│     ├── sheet.tsx
+│     ├── sidebar.tsx
+│     ├── skeleton.tsx
+│     ├── toast.tsx
+│     ├── tooltip.tsx
+│     ├── use-toast-back.ts
+│     └── use-toast.ts
+├── components.json
+├── hooks
+│ ├── use-media-query.ts
+│ └── use-mobile.tsx
+├── lib
+│ ├── auth.ts
+│ ├── crypto.ts
+│ ├── secure-storage.ts
+│ └── utils.ts
+├── middleware.ts
+├── next-env.d.ts
+├── next.config.js
+├── package-lock.json
+├── package.json
+├── postcss.config.mjs
+├── public
+│ ├── avatars
+│ │ └── shadcn.jpg
+│ └── grid.svg
+├── tailwind.config.ts
+├── tree.txt
+└── tsconfig.json
+
+上面是我做的一个 next.js 的项目的目录结构，我现在遇到了一个问题：
+这个项目有一个登录页面 在 /components/authentication 这个组件里，初次登陆之后会跳转到
+http://localhost:3000 即 /app/page.tsx 页面，这个页面上有一个按钮 Go To Dashboard
+点击之后可以跳转到 http://localhost:3000/dashboard 即 /components/dashboard/page.tsx 页面
+但是当我关闭浏览器下次在打开 http://localhost:3000的时候 会自动跳转到 http://localhost:3000/dashboard
+在经过一番排查后 我发现 middleware.ts 文件中有一段代码：
+
+  if (request.nextUrl.pathname === '/login') {
+    const authToken = request.cookies.get('auth_token')?.value
+    if (authToken && validateToken(authToken)) {
+      // return NextResponse.redirect(new URL('/dashboard', request.url))
+      return NextResponse.redirect(new URL('/', request.url))
+    }
+    return NextResponse.next()
+  }
+其中有一句 return NextResponse.redirect(new URL('/dashboard', request.url))
+我把这行代码替换成 return NextResponse.redirect(new URL('/', request.url))
+这样的话，当用户第一次登录成功之后，就不会再自动跳转到 /dashboard 页面了，而是直接跳转到 /app/page.tsx 页面
+但是现在又出现了另外一个问题 就是无论我在哪个页面 刷新之后都会自动跳转到 / 页面也就是 /app/page.tsx 页面
+
+帮我处理下这个问题 下面是 middleware.ts 文件的代码，我该修改哪些地方怎么修改，请给出修改后的代码：
+import {NextResponse} from 'next/server'
+import type {NextRequest} from 'next/server'
+import {validateToken} from '@/lib/auth'
+
+let isRedirecting = false
+
+export function middleware(request: NextRequest) {
+  // 如果已经在登录页面，且有有效token，重定向到dashboard
+
+  if (request.nextUrl.pathname === '/login') {
+    const authToken = request.cookies.get('auth_token')?.value
+    if (authToken && validateToken(authToken)) {
+      // return NextResponse.redirect(new URL('/dashboard', request.url))
+      return NextResponse.redirect(new URL('/', request.url))
+    }
+    return NextResponse.next()
+  }
+
+  // 排除静态资源和API路由
+  if (request.nextUrl.pathname.startsWith('/_next') || request.nextUrl.pathname.startsWith('/api') || request.nextUrl.pathname.startsWith('/favicon')) {
+    return NextResponse.next()
+  }
+
+  // 获取token
+  const authToken = request.cookies.get('auth_token')?.value
+
+  // 如果没有token或token无效，重定向到登录页
+  if (!authToken || !validateToken(authToken)) {
+    // 防止重定向循环
+    if (isRedirecting) {
+      return NextResponse.next()
+    }
+
+    isRedirecting = true
+    setTimeout(() => {
+      isRedirecting = false
+    }, 100)
+
+    const loginUrl = new URL('/login', request.url)
+    loginUrl.searchParams.set('callbackUrl', request.nextUrl.pathname)
+    return NextResponse.redirect(loginUrl)
+  }
+
+  return NextResponse.next()
+}
