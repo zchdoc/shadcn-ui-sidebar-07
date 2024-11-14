@@ -11,6 +11,7 @@ import {useToast} from "@/components/ui/use-toast";
 import Link from "next/link";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
+  className?: string;
 }
 
 export function UserAuthForm({className, ...props}: UserAuthFormProps) {
@@ -50,11 +51,20 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
         description: "Registration successful! Please login.",
       });
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Something went wrong. Please try again.",
-        variant: "destructive",
-      });
+      if (error instanceof Error) {
+        toast({
+          title: "Error",
+          description: "1.Something went wrong. Please try again.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "2.Something went wrong. Please try again.",
+          variant: "destructive",
+        });
+        console.error(error);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -111,7 +121,7 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
               onChange={handleInputChange}
             />
           </div>
-          <Button >
+          <Button>
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin"/>
             )}
