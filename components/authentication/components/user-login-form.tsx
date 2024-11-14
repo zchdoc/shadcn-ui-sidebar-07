@@ -16,6 +16,7 @@ import {decrypt, encrypt} from "@/lib/crypto";
 import Link from "next/link";
 
 interface UserLoginFormProps extends React.HTMLAttributes<HTMLDivElement> {
+  className?: string;
 }
 
 export function UserLoginForm({className, ...props}: UserLoginFormProps) {
