@@ -9,6 +9,7 @@ import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import {useToast} from "@/components/ui/use-toast";
 import Link from "next/link";
+import {DescriptionText} from "@/components/authentication/components/description-text";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -72,14 +73,15 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <div className="flex flex-col space-y-2 text-center">
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Create an account
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Enter your details below to create your account
-        </p>
-      </div>
+      {/*<div className="flex flex-col space-y-2 text-center">*/}
+      {/*  <h1 className="text-2xl font-semibold tracking-tight">*/}
+      {/*    Create an account*/}
+      {/*  </h1>*/}
+      {/*  <p className="text-sm text-muted-foreground">*/}
+      {/*    Enter your details below to create your account*/}
+      {/*  </p>*/}
+      {/*</div>*/}
+      <DescriptionText mode="register"/>
       <form onSubmit={onSubmit}>
         <div className="grid gap-4">
           <div className="grid gap-2">

@@ -14,6 +14,7 @@ import {useAuth} from "@/components/auth-provider";
 import {SecureStorage} from "@/lib/secure-storage";
 import {decrypt, encrypt} from "@/lib/crypto";
 import Link from "next/link";
+import {DescriptionText} from "@/components/authentication/components/description-text";
 
 interface UserLoginFormProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -110,14 +111,15 @@ export function UserLoginForm({className, ...props}: UserLoginFormProps) {
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <div className="flex flex-col space-y-2 text-center">
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Login to your account
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Enter your credentials below to login
-        </p>
-      </div>
+      {/*<div className="flex flex-col space-y-2 text-center">*/}
+      {/*  <h1 className="text-2xl font-semibold tracking-tight">*/}
+      {/*    Login to your account*/}
+      {/*  </h1>*/}
+      {/*  <p className="text-sm text-muted-foreground">*/}
+      {/*    Enter your credentials below to login*/}
+      {/*  </p>*/}
+      {/*</div>*/}
+      <DescriptionText mode="login"/>
       <form onSubmit={onSubmit}>
         <div className="grid gap-4">
           <div className="grid gap-2">
