@@ -28,7 +28,7 @@ export default function AuthenticationPage() {
   }, [showLogin]);
 
   return (
-    <div className="container relative min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0 overflow-hidden">
+    <div>
       {/* Top bar */}
       <div className="absolute right-4 top-4 flex items-center gap-2 md:right-8 md:top-8 z-50">
         <div className="relative z-20 flex items-center text-lg font-medium">
@@ -47,7 +47,7 @@ export default function AuthenticationPage() {
           Attendance System
           <ThemeToggle/>
           <Button
-            variant="outline"
+            variant="link"
             onClick={() => setShowLogin(!showLogin)}
             className="relative px-4 py-2 w-24"
           >
@@ -56,67 +56,18 @@ export default function AuthenticationPage() {
         </div>
       </div>
       {/* Left side */}
-      <div className={cn("relative flex min-h-screen flex-col p-10 lg:min-h-screen")}>
-        {/* Left 斜边装饰 */}
-        <div className="absolute inset-0">
-          <div className={cn(
-            "absolute inset-0 bg-gradient-to-br transition-colors duration-300",
-            showLogin
-              ? "from-blue-100/20 to-indigo-100/20 dark:from-blue-900/20 dark:to-indigo-900/20"
-              : "from-indigo-100/20 to-blue-100/20 dark:from-indigo-900/20 dark:to-blue-900/20"
-          )}/>
-          <div className="absolute left-0 inset-y-0 w-[120%] bg-muted/50 transform -translate-x-[10%] -skew-x-12"
-               style={{display: showLogin ? 'block' : 'none'}}
-          />
-          <div className="absolute left-0 inset-y-0 w-[120%] bg-background transform -translate-x-[10%] -skew-x-12"
-               style={{display: showLogin ? 'none' : 'block'}}
-          />
-        </div>
-        <div className="relative z-20 flex flex-col flex-1 mt-20">
-          {showLogin && (
-            <Card
-              ref={loginCardRef}
-              className="bg-background flex flex-col"
-              style={{minHeight: contentHeight ? `${contentHeight}px` : 'auto'}}
-            >
-              <CardHeader>login</CardHeader>
-              <CardContent className="flex flex-col justify-center">
-                <UserLoginForm/>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-      </div>
-      {/* Right side */}
-      <div className={cn("relative flex min-h-screen flex-col p-10 lg:min-h-screen")}>
-        {/* Right 斜边装饰 */}
-        <div className="absolute inset-0">
-          <div className={cn(
-            "absolute inset-0 bg-gradient-to-br transition-colors duration-300",
-            showLogin
-              ? "from-indigo-100/20 to-blue-100/20 dark:from-indigo-900/20 dark:to-blue-900/20"
-              : "from-blue-100/20 to-indigo-100/20 dark:from-blue-900/20 dark:to-indigo-900/20"
-          )}/>
-          <div className="absolute left-0 inset-y-0 w-[120%] bg-muted/50 transform -translate-x-[90%] -skew-x-12"
-               style={{display: showLogin ? 'block' : 'none'}}
-          />
-          <div className="absolute left-0 inset-y-0 w-[120%] bg-background transform -translate-x-[90%] -skew-x-12"
-               style={{display: showLogin ? 'none' : 'block'}}
-          />
-        </div>
-        <div className="relative z-20 flex flex-col flex-1 mt-20">
-          {!showLogin && (
-            <Card
-              ref={registerCardRef}
-              className="bg-background flex flex-col"
-              style={{minHeight: contentHeight ? `${contentHeight}px` : 'auto'}}
-            >
-              <CardHeader>reg</CardHeader>
-              <CardContent className="flex flex-col justify-center">
-                <UserAuthForm/>
-              </CardContent>
-            </Card>
-          )}
+      <div className={cn("relative flex min-h-screen flex-col p-28 lg:min-h-screen")}>
+        <div className="relative z-20 flex flex-col flex-1 mt-20 items-center">
+          <Card
+            ref={showLogin ? loginCardRef : registerCardRef}
+            className="bg-background flex flex-col"
+            style={{minHeight: contentHeight ? `${contentHeight}px` : 'auto'}}
+          >
+            <CardHeader>{showLogin ? 'Login' : 'Reg'}</CardHeader>
+            <CardContent className="flex flex-col justify-center">
+              {showLogin ? (<UserLoginForm/>) : (<UserAuthForm/>)}
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

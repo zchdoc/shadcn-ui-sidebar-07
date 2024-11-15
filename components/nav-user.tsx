@@ -6,7 +6,7 @@ import {
   ChevronsUpDown,
   CreditCard,
   LogOut,
-  Sparkles,
+  Sparkles, Trash2,
 } from "lucide-react"
 
 import {
@@ -29,7 +29,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import {AuthReset} from "@/components/auth-reset"
+import {clearAuth} from "@/lib/auth";
+import {useAuth} from "@/components/auth-provider";
+import {useRouter} from "next/navigation";
 
 export function NavUser({
                           user,
@@ -41,7 +43,14 @@ export function NavUser({
   }
 }) {
   const {isMobile} = useSidebar()
+  const {setIsAuthenticated} = useAuth()
+  const router = useRouter()
 
+  const handleReset = () => {
+    clearAuth()
+    setIsAuthenticated(false)
+    router.push('/login')
+  }
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -64,7 +73,7 @@ export function NavUser({
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-            side={isMobile ? "bottom" : "right"}
+            side={isMobile ? "bottom" : "bottom"}
             align="end"
             sideOffset={4}
           >
@@ -102,8 +111,9 @@ export function NavUser({
                 Notifications
               </DropdownMenuItem>
               <DropdownMenuSeparator/>
-              <DropdownMenuItem>
-                <AuthReset/>
+              <DropdownMenuItem onClick={handleReset}>
+                <Trash2/>
+                Auth Reset
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator/>

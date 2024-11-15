@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
+import type {Metadata} from "next";
 // import localFont from "next/font/local";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/toaster";
-import { AuthProvider } from "@/components/auth-provider";
+import {ThemeProvider} from "@/components/theme-provider";
+import {Toaster} from "@/components/toaster";
+import {AuthProvider} from "@/components/auth-provider";
 import "./globals.css";
 
 // const geistSans = localFont({
@@ -22,8 +22,8 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
-}: Readonly<{
+                                     children,
+                                   }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
@@ -36,12 +36,12 @@ export default function RootLayout({
       enableSystem
       disableTransitionOnChange
     >
-          <AuthProvider>
-      {children}
-          </AuthProvider>
+      <AuthProvider>
+        {children}
+      </AuthProvider>
       <Toaster/>
     </ThemeProvider>
     </body>
     </html>
-);
+  );
 }

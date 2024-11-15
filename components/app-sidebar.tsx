@@ -162,7 +162,7 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 
 export function AppSidebar({ onViewChange, ...props }: AppSidebarProps) {
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="offcanvas" {...props} variant="floating" side="left">
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
