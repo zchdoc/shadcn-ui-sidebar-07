@@ -1,0 +1,12 @@
+{
+    "windsurf.autocompleteSpeed": "fast",
+    "workbench.colorTheme": "Visual Studio Dark",
+    "editor.fontFamily": "Monaco, 'Courier New', monospace",
+    "editor.fontSize": 18,
+    "windsurf.enableConfig": {
+        
+        "*": true
+    },
+    "fittencode.languagePreference.displayPreference": "zh-cn",
+    "fittencode.languagePreference.commentPreference": "zh-cn"
+}

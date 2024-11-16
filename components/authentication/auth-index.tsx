@@ -11,20 +11,27 @@ import {Button} from "@/components/ui/button";
 export default function AuthenticationPage() {
   const [showLogin, setShowLogin] = useState(true);
   const [contentHeight, setContentHeight] = useState<number>(0);
+  const [contentWidth, setContentWidth] = useState<number>(0);
   const loginCardRef = useRef<HTMLDivElement>(null);
   const registerCardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const updateHeight = () => {
+    const updateDimensions = () => {
       const loginHeight = loginCardRef.current?.offsetHeight || 0;
       const registerHeight = registerCardRef.current?.offsetHeight || 0;
+      const loginWidth = loginCardRef.current?.offsetWidth || 0;
+      const registerWidth = registerCardRef.current?.offsetWidth || 0;
+      
       const maxHeight = Math.max(loginHeight, registerHeight);
+      const maxWidth = Math.max(loginWidth, registerWidth);
+      
       setContentHeight(maxHeight);
+      setContentWidth(maxWidth);
     };
 
-    updateHeight();
-    window.addEventListener('resize', updateHeight);
-    return () => window.removeEventListener('resize', updateHeight);
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
   }, [showLogin]);
 
   return (
@@ -55,14 +62,17 @@ export default function AuthenticationPage() {
           </Button>
         </div>
       </div>
-      {/* Left side */}
-      <div className={cn("relative flex min-h-screen flex-col p-28 lg:min-h-screen")}>
+      <div className={cn("relative flex min-h-screen flex-col p-8 lg:min-h-screen")}>
         <div className="relative z-20 flex flex-col flex-1 mt-20 items-center">
           <Card
             ref={showLogin ? loginCardRef : registerCardRef}
             className="bg-background flex flex-col"
-            style={{minHeight: contentHeight ? `${contentHeight}px` : 'auto'}}
-          >
+            style={{
+              minHeight: contentHeight ? `${contentHeight}px` : 'auto',
+              width: contentWidth ? `${contentWidth}px` : 'auto',
+              minWidth: '400px'
+            }}
+          > 
             <CardHeader>{showLogin ? 'Login' : 'Reg'}</CardHeader>
             <CardContent className="flex flex-col justify-center">
               {showLogin ? (<UserLoginForm/>) : (<UserAuthForm/>)}

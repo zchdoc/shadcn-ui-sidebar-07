@@ -169,14 +169,17 @@ export function UserLoginForm({className, ...props}: UserLoginFormProps) {
           </span>
         </div>
       </div>
-      <Button variant="outline" type="button" disabled={isLoading}>
-        {isLoading ? (
-          <Icons.spinner className="mr-2 h-4 w-4 animate-spin"/>
-        ) : (
-          <Icons.gitHub className="mr-2 h-4 w-4"/>
-        )}{" "}
-        GitHub
-      </Button>
+      <div className="flex items-center justify-center gap-4 mt-4">
+        <Button variant="outline" type="button" disabled={isLoading} className="w-full max-w-[100px]">
+          <Icons.google className="h-5 w-5" />
+        </Button>
+        <Button variant="outline" type="button" disabled={isLoading} className="w-full max-w-[100px]">
+          <Icons.apple className="h-5 w-5" />
+        </Button>
+        <Button variant="outline" type="button" disabled={isLoading} className="w-full max-w-[100px]">
+          <Icons.gitHub className="h-5 w-5" />
+        </Button>
+      </div>
       <p className="px-8 text-center text-sm text-muted-foreground">
         By clicking continue, you agree to our{" "}
         <Link
