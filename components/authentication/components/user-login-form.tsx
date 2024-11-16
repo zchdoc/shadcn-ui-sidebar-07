@@ -179,6 +179,12 @@ export function UserLoginForm({className, ...props}: UserLoginFormProps) {
         <Button variant="outline" type="button" disabled={isLoading} className="w-full max-w-[100px]">
           <Icons.gitHub className="h-5 w-5" />
         </Button>
+        <Button variant="outline" type="button" disabled={isLoading} className="w-full max-w-[100px]">
+          <Icons.wechat className="h-5 w-5" />
+        </Button>
+        <Button variant="outline" type="button" disabled={isLoading} className="w-full max-w-[100px]">
+          <Icons.alipay className="h-10 w-10" />
+        </Button>
       </div>
       <p className="px-8 text-center text-sm text-muted-foreground">
         By clicking continue, you agree to our{" "}
