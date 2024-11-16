@@ -87,6 +87,7 @@ export default function AuthenticationPage() {
 
       setContentHeight(maxHeight);
       setContentWidth(maxWidth);
+      setAnimationType('fade');
     };
 
     updateDimensions();
