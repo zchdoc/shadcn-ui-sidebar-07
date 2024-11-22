@@ -1,10 +1,18 @@
 import { SecureStorage } from './secure-storage';
 import { encrypt, decrypt } from './crypto';
+
 // 预设的用户名和密码
-export const AUTH_CREDENTIALS = {
-  username: '15824821718',
-  password: 'zch15824821718'
-};
+export const AUTH_CREDENTIALS = [
+  {
+    username: '15824821718',
+    password: 'zch15824821718'
+  },
+  {
+    username: '13783567624',
+    password: 'l13783567624'
+  }
+];
+
 // localStorage和cookie的key
 export const AUTH_KEY = 'auth_token';
 
@@ -20,7 +28,8 @@ export function validateToken(token: string | null): boolean {
   try {
     const decryptedToken = decrypt(token);
     const decoded = atob(decryptedToken);
-    return decoded.startsWith(AUTH_CREDENTIALS.username);
+    // Check if token starts with any of the valid usernames
+    return AUTH_CREDENTIALS.some(cred => decoded.startsWith(cred.username));
   } catch {
     return false;
   }

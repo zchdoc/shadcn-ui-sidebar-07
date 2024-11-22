@@ -62,10 +62,12 @@ export function UserLoginForm({className, ...props}: UserLoginFormProps) {
     setIsLoading(true);
 
     try {
-      if (
-        formData.username === AUTH_CREDENTIALS.username &&
-        formData.password === AUTH_CREDENTIALS.password
-      ) {
+      // 验证用户名和密码
+      const validUser = AUTH_CREDENTIALS.find(
+        cred => cred.username === formData.username && cred.password === formData.password
+      );
+
+      if (validUser) {
         const token = generateToken(formData.username);
 
         // 先保存认证信息
@@ -101,8 +103,6 @@ export function UserLoginForm({className, ...props}: UserLoginFormProps) {
           description: "登录过程中发生错误",
           variant: "destructive",
         });
-      } else {
-        alert(error);
       }
     } finally {
       setIsLoading(false);
