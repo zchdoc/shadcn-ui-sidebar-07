@@ -1,12 +1,13 @@
-"use client"
+"use client";
 
-import { ChevronRight, type LucideIcon } from "lucide-react"
+import { ChevronRight, type LucideIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+} from "@/components/ui/collapsible";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -16,28 +17,33 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 interface NavMainProps {
   items: {
-    title: string
-    url: string
-    icon?: LucideIcon
-    isActive?: boolean
+    title: string;
+    url: string;
+    icon?: LucideIcon;
+    isActive?: boolean;
     items?: {
-      title: string
-      url: string
-      icon?: LucideIcon
-    }[]
-  }[]
-  onViewChange?: (view: string) => void
+      title: string;
+      url: string;
+      icon?: LucideIcon;
+    }[];
+  }[];
+  onViewChange?: (view: string) => void;
 }
 
 export function NavMain({ items, onViewChange }: NavMainProps) {
+  const router = useRouter();
+
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, url: string) => {
-    e.preventDefault()
-    onViewChange?.(url)
-  }
+    e.preventDefault();
+    if (url && url !== "#") {
+      router.replace(url);
+      onViewChange?.(url);
+    }
+  };
 
   return (
     <SidebarGroup>
@@ -80,5 +86,5 @@ export function NavMain({ items, onViewChange }: NavMainProps) {
         ))}
       </SidebarMenu>
     </SidebarGroup>
-  )
+  );
 }
