@@ -20,57 +20,6 @@ export function ManualClock() {
     // 设置 date 默认为当前时间
     setDate(new Date());
   }, []);
-  // const handleClockIn = async () => {
-  //   if (!date || !employeeId) {
-  //     toast({
-  //       title: "Error",
-  //       description: "Please fill in all fields",
-  //       variant: "destructive",
-  //     });
-  //     return;
-  //   }
-
-  //   setLoading(true);
-  //   try {
-  //     const formattedDate = format(date, "yyyy-MM-dd HH:mm:ss");
-  //     const response = await fetch("/api/attendance/clock-in", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         employeeId,
-  //         timestamp: formattedDate,
-  //       }),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error("Failed to clock in");
-  //     }
-
-  //     toast({
-  //       title: "Success",
-  //       description: "Successfully clocked in",
-  //     });
-  //   } catch (error: unknown) {
-  //     if (error instanceof Error) {
-  //       // 使用instanceof检查错误是否为Error类型
-  //       toast({
-  //         title: "Error",
-  //         description: error.message || "Failed to clock in", // 显示更详细的错误信息
-  //         variant: "destructive",
-  //       });
-  //     } else {
-  //       toast({
-  //         title: "Error",
-  //         description: "Failed to clock in",
-  //         variant: "destructive",
-  //       });
-  //     }
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const handleClockIn = async () => {
     if (!date || !employeeId) {

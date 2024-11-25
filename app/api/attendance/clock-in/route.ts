@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest, res: NextResponse) {
+  console.debug("res:", res);
   const sn = req.nextUrl.searchParams.get("sn");
   const table = req.nextUrl.searchParams.get("table");
   const Stamp = req.nextUrl.searchParams.get("Stamp");
