@@ -10,11 +10,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
   console.log("Query Params:", { sn, table, Stamp });
   console.log("Request Body:", { data });
 
-  const serverUrl = "http://127.0.0.1:8081";
-  const url = `${serverUrl}/iclock/attDataCustom?sn=${sn}&table=${table}&Stamp=${Stamp}`;
+  // a2.4000063966.com:81 127.0.0.1:8081
+  const url = "http" + "://" + "a2.4000063966.com:81";
+  const uri = `${url}/iclock/attDataCustom?sn=${sn}&table=${table}&Stamp=${Stamp}`;
+  const fullUrl = `${url}${uri}`;
 
   try {
-    const response = await fetch(url, {
+    const response = await fetch(fullUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -28,8 +30,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     const contentType = response.headers.get("content-type");
     let result;
-    console.info('contentType:', contentType);
-    
+    console.info("contentType:", contentType);
+
     if (contentType && contentType.includes("application/json")) {
       result = await response.json();
     } else {

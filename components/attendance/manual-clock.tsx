@@ -22,6 +22,7 @@ export function ManualClock() {
   }, []);
 
   const handleClockIn = async () => {
+    setError(null);
     if (!date || !employeeId) {
       toast({
         title: "Error",
@@ -71,6 +72,10 @@ export function ManualClock() {
     } catch (err) {
       console.error("Error recording attendance:", err);
       setError("Failed to record attendance. Please try again.");
+      // 添加定时器，5秒后自动清除错误信息
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
 
       if (err instanceof Error) {
         // 使用instanceof检查错误是否为Error类型

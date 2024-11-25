@@ -97,7 +97,7 @@ const data = {
       items: [
         {
           title: "Introduction",
-          url: "/docs/introduction",
+          url: "#",
         },
         {
           title: "Get Started",
