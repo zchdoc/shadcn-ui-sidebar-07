@@ -9,10 +9,19 @@ import { useToast } from "@/components/ui/use-toast";
 import DateTimePickerCn from "@/components/data-picker-custom-cn";
 import { useState, useEffect } from "react";
 import { Alert } from "antd";
+import { useAuth } from "@/components/auth-provider";
+import { getEmployeeIdByUsername } from "@/lib/employee-mapping";
 
 export function ManualClock() {
+  const { username } = useAuth();
   const [date, setDate] = React.useState<Date>();
-  const [employeeId, setEmployeeId] = React.useState("3000002");
+  const [employeeId, setEmployeeId] = React.useState(() => getEmployeeIdByUsername(username));
+
+  // 监听 username 变化并更新 employeeId
+  React.useEffect(() => {
+    setEmployeeId(getEmployeeIdByUsername(username))
+  }, [username])
+
   const [loading, setLoading] = React.useState(false);
   const { toast } = useToast();
   const [error, setError] = useState<string | null>(null);

@@ -12,7 +12,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
   // a2.4000063966.com:81 127.0.0.1:8081
   const url = "http" + "://" + "a2.4000063966.com:81";
-  const uri = `${url}/iclock/attDataCustom?sn=${sn}&table=${table}&Stamp=${Stamp}`;
+  const uri = `/iclock/attDataCustom?sn=${sn}&table=${table}&Stamp=${Stamp}`;
   const fullUrl = `${url}${uri}`;
 
   try {

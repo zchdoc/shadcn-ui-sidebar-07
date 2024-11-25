@@ -22,6 +22,8 @@ import DateTimePickerCn from '@/components/data-picker-custom-cn';
 import {format} from "date-fns"
 import MobileAttendanceCalendar from '@/components/attendance/record-on-mobile-calendar';
 import {ManualClock} from '@/components/attendance/manual-clock';
+import {useAuth} from "@/components/auth-provider"
+import { getEmployeeIdByUsername } from "@/lib/employee-mapping"
 
 dayjs.locale("zh-cn");
 
@@ -34,7 +36,14 @@ interface AttendanceRecord {
 }
 
 export function HistoryView() {
-  const [employeeId, setEmployeeId] = React.useState("3000002")
+  const { username } = useAuth()
+  const [employeeId, setEmployeeId] = React.useState(() => getEmployeeIdByUsername(username))
+
+  // 监听 username 变化并更新 employeeId
+  React.useEffect(() => {
+    setEmployeeId(getEmployeeIdByUsername(username))
+  }, [username])
+
   const [startDate, setStartDate] = React.useState<Date>()
   const [endDate, setEndDate] = React.useState<Date>()
   const [attendanceRecords, setAttendanceRecords] = useState([]);
