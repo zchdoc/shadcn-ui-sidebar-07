@@ -6,8 +6,8 @@ export async function POST(req: Request) {
 
     const myHeaders = new Headers()
     myHeaders.append("User-Agent", "ApiFox/1.0.0 (https://apifox.com)")
-    // `http://a2.4000063966.com:81/xb/zk/attendance/v2/record.do?userNo=${employeeId}&timeStart=${startDate} 00:00:00&timeEnd=${endDate} 23:59:59&openId=o45LO4l28n6aa4dFCXB3BBYOFWNs&userVerifyNumber=15824821718`,
-    const url = 'http' + '://' + 'a2.4000063966.com:81';
+    // a2.4000063966.com:81 127.0.0.1:8081
+    const url = 'http' + '://' + '127.0.0.1:8081';
     const uri = '/xb/zk/attendance/v2/record.do';
     const tmpOpenId = 'o45LO4l28n6aa4dFCXB3BBYOFWNs';
     const tmpUserVerifyNumber = '15824821718';

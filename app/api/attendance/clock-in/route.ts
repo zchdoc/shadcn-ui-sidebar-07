@@ -1,46 +1,53 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest, res: NextResponse) {
+  const sn = req.nextUrl.searchParams.get("sn");
+  const table = req.nextUrl.searchParams.get("table");
+  const Stamp = req.nextUrl.searchParams.get("Stamp");
+  const { data } = await req.json();
+
+  console.log("Query Params:", { sn, table, Stamp });
+  console.log("Request Body:", { data });
+
+  const serverUrl = "http://127.0.0.1:8081";
+  const url = `${serverUrl}/iclock/attDataCustom?sn=${sn}&table=${table}&Stamp=${Stamp}`;
+
   try {
-    const { employeeId, timestamp } = await req.json()
-
-    const myHeaders = new Headers()
-    myHeaders.append("User-Agent", "Apifox/1.0.0 (https://apifox.com)")
-    myHeaders.append("Content-Type", "text/plain")
-
-    const raw = `${employeeId}\t${timestamp}\t0\t15\t\t0\t0`
-
-    const response = await fetch(
-      "http://a2.4000063966.com:81/iclock/cdata?SN=CJDE193560303&table=ATTLOG&Stamp=666",
-      {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-      }
-    )
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data }),
+    });
 
     if (!response.ok) {
-      throw new Error("Failed to clock in")
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    return NextResponse.json({ success: true })
+    const contentType = response.headers.get("content-type");
+    let result;
+    console.info('contentType:', contentType);
+    
+    if (contentType && contentType.includes("application/json")) {
+      result = await response.json();
+    } else {
+      result = await response.text();
+    }
+
+    return NextResponse.json(result);
   } catch (error) {
-    // return NextResponse.json(
-    //   { error: "Failed to clock in" },
-    //   { status: 500 }
-    // )
+    console.error("Error:", error);
     if (error instanceof Error) {
       return NextResponse.json(
-        {error: error.message || "Failed to clock in"},  // 使用 error.message
-        {status: 500}
-      )
-    }
-    else {
-      // 如果不是 Error 对象，返回一个通用的错误信息
+        { message: "Internal server error", error: error.message },
+        { status: 500 }
+      );
+    } else {
       return NextResponse.json(
-        {error: "Failed to clock in"},
-        {status: 500}
-      )
+        { message: "Internal server error", error: "Unknown error" },
+        { status: 500 }
+      );
     }
   }
 }
