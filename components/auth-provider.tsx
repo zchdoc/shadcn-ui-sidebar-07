@@ -5,8 +5,7 @@ import { useRouter, usePathname } from 'next/navigation'
 import { AUTH_KEY, validateToken } from '@/lib/auth'
 import { SecureStorage } from '@/lib/secure-storage'
 import { decrypt } from '@/lib/crypto'
-// auth-provider.tsx
-import { debounce } from '@/lib/utils'
+
 interface AuthContextType {
   isAuthenticated: boolean
   username: string | null
@@ -22,24 +21,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   const pathname = usePathname()
 
-  // ...在 AuthProvider 组件内
-  const debouncedRedirect = debounce((path: string) => {
-    router.replace(path)
-  }, 200)
   useEffect(() => {
-    if (!isAuthenticated && pathname !== '/login') {
-      debouncedRedirect(`/login?callbackUrl=${encodeURIComponent(pathname)}`)
-    }
-  }, [isAuthenticated, pathname, debouncedRedirect])
-
-  useEffect(() => {
-    const checkAuth = () => {
+    const checkAuth = async () => {
       const token = SecureStorage.getItem(AUTH_KEY)
       const isValid = validateToken(token)
 
-      // 避免在已经在登录页时进行状态更新
+      // Avoid state updates if on login page and token is valid
       if (pathname === '/login' && isValid) {
         router.replace('/dashboard')
+        setIsLoading(false)
         return
       }
 
@@ -60,15 +50,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUsername(null)
       }
 
-      // 只在特定条件下进行重定向
+      // Redirect if not authenticated and not on login page
       if (!isValid && pathname !== '/login') {
-        // 添加防抖，避免频繁重定向
-        const redirectTimeout = setTimeout(() => {
-          const currentPath = pathname === '/' ? '/dashboard' : pathname
-          router.replace(`/login?callbackUrl=${encodeURIComponent(currentPath)}`)
-        }, 100)
-
-        return () => clearTimeout(redirectTimeout)
+        router.replace(`/login?callbackUrl=${encodeURIComponent(pathname)}`)
       }
 
       setIsLoading(false)
