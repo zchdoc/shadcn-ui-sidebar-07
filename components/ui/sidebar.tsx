@@ -554,12 +554,14 @@ const SidebarMenuButton = React.forwardRef<
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : "button"
+    const Comp = asChild ? Slot : "div"
     const {isMobile, state} = useSidebar()
 
     const button = (
       <Comp
         ref={ref}
+        role="button"
+        tabIndex={0}
         data-sidebar="menu-button"
         data-size={size}
         data-active={isActive}
@@ -580,7 +582,9 @@ const SidebarMenuButton = React.forwardRef<
 
     return (
       <Tooltip>
-        <TooltipTrigger asChild>{button}</TooltipTrigger>
+        <TooltipTrigger asChild>
+          {button}
+        </TooltipTrigger>
         <TooltipContent
           side="right"
           align="center"

@@ -111,6 +111,7 @@ export function ManualClock() {
     <div className="space-y-4">
       <div className="space-y-2">
         <Input
+          disabled
           type="text"
           placeholder="Employee ID"
           value={employeeId}

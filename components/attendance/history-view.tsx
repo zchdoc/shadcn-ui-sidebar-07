@@ -115,25 +115,45 @@ export function HistoryView() {
   }
   const formatAttendanceData = (records: AttendanceRecord[][]) => {
     const formattedData: { [key: string]: AttendanceRecord[] } = {};
-    // 判断 records 是否为空数组 是否为 undefined 是否为 null
-    if (!records || records.length === 0) {
-      return formattedData;
-    }
+    
+    try {
+      // 如果 records 是字符串，尝试解析它
+      const recordsArray = typeof records === 'string' ? JSON.parse(records) : records;
+      
+      // 确保 recordsArray 是数组
+      if (!Array.isArray(recordsArray)) {
+        console.warn('Invalid records format:', recordsArray);
+        return formattedData;
+      }
 
-    records.forEach((dayRecords) => {
-      dayRecords.forEach((record) => {
-        if (!formattedData[record.date]) {
-          formattedData[record.date] = [];
+      // 处理每一天的记录
+      recordsArray.forEach((dayRecords) => {
+        if (!Array.isArray(dayRecords)) {
+          console.warn('Invalid day records format:', dayRecords);
+          return;
         }
-        formattedData[record.date].push({
-          date: record.date, // 确保包含 date 属性
-          time: record.time,
-          signInStateStr: record.signInStateStr,
-          beLateTime: record.beLateTime,
-          id: record.id,
+
+        dayRecords.forEach((record) => {
+          if (!record.date) {
+            console.warn('Record missing date:', record);
+            return;
+          }
+
+          if (!formattedData[record.date]) {
+            formattedData[record.date] = [];
+          }
+          formattedData[record.date].push({
+            date: record.date,
+            time: record.time,
+            signInStateStr: record.signInStateStr,
+            beLateTime: record.beLateTime,
+            id: record.id,
+          });
         });
       });
-    });
+    } catch (error) {
+      console.error('Error formatting attendance data:', error);
+    }
 
     return formattedData;
   };
