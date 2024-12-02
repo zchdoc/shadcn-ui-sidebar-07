@@ -53,7 +53,6 @@ export function HistoryView() {
   const isMobile = useMediaQuery("(max-width: 768px)")
   const { resolvedTheme } = useTheme()
   const isDarkMode = resolvedTheme === 'dark'
-  console.info('isDarkMode:', isDarkMode)
   // [attendanceRecords] 改为空数组，只在组件挂载时执行一次
   useEffect(() => {
     // // 设置 startDate 默认为当天 00:00:00

@@ -226,7 +226,6 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
     const records = attendanceData[dateStr];
     const { resolvedTheme } = useTheme()
     const isDarkMode = resolvedTheme === 'dark'
-    console.info('isDarkMode:', isDarkMode)
     if (!records || records.length === 0) {
       return null;
     }
