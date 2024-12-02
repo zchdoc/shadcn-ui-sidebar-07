@@ -68,26 +68,47 @@ export function UserLoginForm({className, ...props}: UserLoginFormProps) {
       );
 
       if (validUser) {
-        const token = generateToken(formData.username);
+        try {
+          const token = generateToken(formData.username);
+          console.log('Generated token:', token);
 
-        // 先保存认证信息
-        await saveAuth(token);
+          // 保存认证信息
+          await saveAuth(token);
+          
+          // 验证 token 是否正确保存
+          const savedToken = SecureStorage.getItem('auth_token');
+          console.log('Saved token:', savedToken);
+          
+          if (!savedToken || !validateToken(savedToken)) {
+            throw new Error('Token validation failed after save');
+          }
 
-        // 确保认证状态更新
-        setIsAuthenticated(true);
+          // 更新认证状态
+          setIsAuthenticated(true);
 
-        // 等待一个短暂的延时以确保状态更新完成
-        await new Promise(resolve => setTimeout(resolve, 100));
+          toast({
+            title: "登录成功",
+            description: "正在跳转到主页面...",
+          });
 
-        const callbackUrl = searchParams?.get('callbackUrl') || '/dashboard';
-
-        // 使用 replace 而不是 push
-        router.replace(callbackUrl);
-
-        toast({
-          title: "登录成功",
-          description: "正在跳转到主页面...",
-        });
+          // 强制指定跳转到 dashboard
+          const targetPath = '/dashboard';
+          console.log('Redirecting to:', targetPath);
+          
+          // 使用 Promise 和 setTimeout 确保状态更新完成
+          await new Promise(resolve => setTimeout(resolve, 100));
+          
+          // 使用 replace 进行跳转
+          window.location.href = targetPath; // 使用 window.location.href 进行硬跳转
+          
+        } catch (error) {
+          console.error('Login error:', error);
+          toast({
+            title: "登录失败",
+            description: error instanceof Error ? error.message : "认证过程出现错误，请重试",
+            variant: "destructive",
+          });
+        }
       } else {
         console.log("Invalid credentials"); // 调试日志
         toast({

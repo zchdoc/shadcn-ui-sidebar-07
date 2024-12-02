@@ -25,6 +25,8 @@ import { ManualClock } from '@/components/attendance/manual-clock';
 import { useAuth } from "@/components/auth-provider"
 import { getEmployeeIdByUsername } from "@/lib/employee-mapping"
 import { useTheme } from "next-themes"
+import { getClientInfo } from "@/lib/client-info"
+import { getClientInfoV1 } from "@/lib/client-info-v1"
 
 dayjs.locale("zh-cn");
 
@@ -74,10 +76,23 @@ export function HistoryView() {
 
     setLoading(true)
     try {
+      // 获取客户端信息并等待所有异步操作完成
+      const clientInfo = await getClientInfo();
+      
+      // 添加延迟以确保异步操作完成
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      console.info("Client Info Details:", JSON.stringify(clientInfo));
+
+      const clientInfoV1 = await getClientInfoV1();
+      console.info("clientInfoV1 Details:", JSON.stringify(clientInfoV1));
+
+
       const reqBody = JSON.stringify({
         employeeId,
         startDate: format(startDate, "yyyy-MM-dd HH:mm:ss"),
         endDate: format(endDate, "yyyy-MM-dd HH:mm:ss"),
+        clientInfo,
       });
       const response = await fetch("/api/attendance/history", {
         method: "POST",

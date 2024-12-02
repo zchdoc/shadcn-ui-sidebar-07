@@ -75,7 +75,7 @@ interface NavigatorWithBattery extends Navigator {
   webkitGetBattery?: () => Promise<BatteryManager>;
 }
 
-export async function getClientInfo(): Promise<ClientInfo> {
+export async function getClientInfoV2(): Promise<ClientInfo> {
   // 检查是否在客户端环境
   const isClient = typeof window !== 'undefined';
   

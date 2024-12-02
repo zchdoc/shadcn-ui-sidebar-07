@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/auth-provider';
 import { SecureStorage } from '@/lib/secure-storage';
@@ -13,47 +13,44 @@ export default function DashboardLayout({
 }) {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
+  const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
-    // 使用单次检查标志，避免重复检查
-    let isChecking = false;
+    const checkAuth = async () => {
+      try {
+        const token = SecureStorage.getItem('auth_token');
+        console.log('Dashboard Layout - Checking auth:', {
+          token: token ? 'exists' : 'missing',
+          isAuthenticated
+        });
 
-    const checkAuth = () => {
-      if (isChecking) return;
-      isChecking = true;
-
-      const token = SecureStorage.getItem('auth_token');
-      console.log('Dashboard Layout - Token check:', token ? 'exists' : 'missing');
-
-      if (!isAuthenticated || !validateToken(token)) {
-        console.log('Dashboard Layout - Redirecting to login');
-        // 使用 setTimeout 避免立即重定向
-        setTimeout(() => {
+        if (!isAuthenticated || !validateToken(token)) {
+          console.log('Dashboard Layout - Auth check failed, redirecting to login');
           router.replace('/login');
-        }, 100);
+          return;
+        }
+
+        console.log('Dashboard Layout - Auth check passed');
+        setIsChecking(false);
+      } catch (error) {
+        console.error('Dashboard Layout - Auth check error:', error);
+        router.replace('/login');
       }
-
-      isChecking = false;
     };
 
-    // 只在组件挂载时检查一次
     checkAuth();
-
-    // 清理函数
-    return () => {
-      isChecking = false;
-    };
   }, [isAuthenticated, router]);
 
-  // 如果已认证，直接渲染内容
-  if (isAuthenticated) {
-    return <>{children}</>;
+  if (isChecking) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white mx-auto mb-4"></div>
+          <p>正在验证身份...</p>
+        </div>
+      </div>
+    );
   }
 
-  // 未认证时显示加载状态，避免闪烁
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      Loading...
-    </div>
-  );
+  return isAuthenticated ? <>{children}</> : null;
 }
