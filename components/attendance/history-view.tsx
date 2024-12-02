@@ -1,28 +1,28 @@
 "use client"
 
 import * as React from "react"
-import {useMediaQuery} from "@/hooks/use-media-query"
-import {cn} from "@/lib/utils"
-import {Button} from "@/components/ui/button"
+import { useMediaQuery } from "@/hooks/use-media-query"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card"
-import {Input} from "@/components/ui/input"
-import {useToast} from "@/components/ui/use-toast"
+import { Input } from "@/components/ui/input"
+import { useToast } from "@/components/ui/use-toast"
 import AttendanceCalendar from '@/components/attendance/attendance-calendar'
-import {useEffect, useState} from 'react';
-import {ConfigProvider, theme} from 'antd';
+import { useEffect, useState } from 'react';
+import { ConfigProvider, theme } from 'antd';
 import locale from 'antd/locale/zh_CN';
 import dayjs from "dayjs";
 import "dayjs/locale/zh-cn";
 import DateTimePickerCn from '@/components/data-picker-custom-cn';
-import {format} from "date-fns"
+import { format } from "date-fns"
 import MobileAttendanceCalendar from '@/components/attendance/record-on-mobile-calendar';
-import {ManualClock} from '@/components/attendance/manual-clock';
-import {useAuth} from "@/components/auth-provider"
+import { ManualClock } from '@/components/attendance/manual-clock';
+import { useAuth } from "@/components/auth-provider"
 import { getEmployeeIdByUsername } from "@/lib/employee-mapping"
 import { useTheme } from "next-themes"
 
@@ -49,7 +49,7 @@ export function HistoryView() {
   const [endDate, setEndDate] = React.useState<Date>()
   const [attendanceRecords, setAttendanceRecords] = useState([]);
   const [loading, setLoading] = React.useState(false)
-  const {toast} = useToast()
+  const { toast } = useToast()
   const isMobile = useMediaQuery("(max-width: 768px)")
   const { resolvedTheme } = useTheme()
   const isDarkMode = resolvedTheme === 'dark'
@@ -95,7 +95,7 @@ export function HistoryView() {
       // setRecords(data.data || [])
       setAttendanceRecords(data || [])
     }
-      // 指定error的类型为unknown
+    // 指定error的类型为unknown
     catch (error: unknown) {
       if (error instanceof Error) { // 使用instanceof检查错误是否为Error类型
         toast({
@@ -119,11 +119,11 @@ export function HistoryView() {
   }
   const formatAttendanceData = (records: AttendanceRecord[][]) => {
     const formattedData: { [key: string]: AttendanceRecord[] } = {};
-    
+
     try {
       // 如果 records 是字符串，尝试解析它
       const recordsArray = typeof records === 'string' ? JSON.parse(records) : records;
-      
+
       // 确保 recordsArray 是数组
       if (!Array.isArray(recordsArray)) {
         console.warn('Invalid records format:', recordsArray);
@@ -166,7 +166,7 @@ export function HistoryView() {
     <div className={cn("flex gap-2", isMobile ? "flex-col" : "flex-row")}>
       {/*查询参数*/}
       <Card>
-        <CardHeader/>
+        <CardHeader />
         <CardContent>
           <div className="flex flex-col space-y-1.5 content-center items-center">
             <div className="flex">
@@ -179,8 +179,8 @@ export function HistoryView() {
               />
             </div>
             <div className="flex flex-col space-y-1.5 w-60">
-              <DateTimePickerCn componentId={`1${startDate}`} date={startDate} setDate={setStartDate} label={"开始日期"} className={"w-60"}/>
-              <DateTimePickerCn componentId={`2${endDate}`} date={endDate} setDate={setEndDate} label={"结束日期"} className={"w-60"}/>
+              <DateTimePickerCn componentId={`1${startDate}`} date={startDate} setDate={setStartDate} label={"开始日期"} className={"w-60"} />
+              <DateTimePickerCn componentId={`2${endDate}`} date={endDate} setDate={setEndDate} label={"结束日期"} className={"w-60"} />
             </div>
             <div className="flex">
               <Button className="w-60" onClick={fetchRecords} disabled={loading}>
@@ -189,7 +189,7 @@ export function HistoryView() {
             </div>
           </div>
         </CardContent>
-        <CardFooter/>
+        <CardFooter />
       </Card>
       {/*查询结果*/}
       <Card>
@@ -203,7 +203,9 @@ export function HistoryView() {
                 attendanceData={formatAttendanceData(attendanceRecords)}
               />
             ) : (
-              <ConfigProvider locale={locale} theme={{algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm}}>
+              <ConfigProvider
+                locale={locale}
+                theme={{ algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm }}>
                 <AttendanceCalendar
                   attendanceData={formatAttendanceData(attendanceRecords)}
                 />
@@ -214,15 +216,15 @@ export function HistoryView() {
             {loading ? "Loading..." : "查询"}
           </Button>
         </CardContent>
-        <CardFooter/>
+        <CardFooter />
       </Card>
       {/*  模拟参数*/}
       <Card>
-        <CardHeader/>
+        <CardHeader />
         <CardContent>
-          <ManualClock/>
+          <ManualClock />
         </CardContent>
-        <CardFooter/>
+        <CardFooter />
       </Card>
     </div>
   )
