@@ -10,6 +10,7 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import locale from "antd/locale/zh_CN";
 
 import "dayjs/locale/zh-cn";
+import { useTheme } from "next-themes";
 
 dayjs.extend(localizedFormat); // 如果需要使用格式化插件
 dayjs.locale("zh-cn");
@@ -223,7 +224,9 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
   const renderAttendanceRecords = (date: Dayjs) => {
     const dateStr = date.format("YYYY-MM-DD");
     const records = attendanceData[dateStr];
-
+    const { resolvedTheme } = useTheme()
+    const isDarkMode = resolvedTheme === 'dark'
+    console.info('isDarkMode:', isDarkMode)
     if (!records || records.length === 0) {
       return null;
     }
@@ -231,7 +234,7 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
     return (
       <ConfigProvider
         locale={locale}
-        theme={{algorithm: theme.darkAlgorithm}}
+        theme={{ algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm }}
       >
         <ul
           className="events"

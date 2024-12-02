@@ -24,6 +24,7 @@ import MobileAttendanceCalendar from '@/components/attendance/record-on-mobile-c
 import {ManualClock} from '@/components/attendance/manual-clock';
 import {useAuth} from "@/components/auth-provider"
 import { getEmployeeIdByUsername } from "@/lib/employee-mapping"
+import { useTheme } from "next-themes"
 
 dayjs.locale("zh-cn");
 
@@ -50,6 +51,9 @@ export function HistoryView() {
   const [loading, setLoading] = React.useState(false)
   const {toast} = useToast()
   const isMobile = useMediaQuery("(max-width: 768px)")
+  const { resolvedTheme } = useTheme()
+  const isDarkMode = resolvedTheme === 'dark'
+  console.info('isDarkMode:', isDarkMode)
   // [attendanceRecords] 改为空数组，只在组件挂载时执行一次
   useEffect(() => {
     // // 设置 startDate 默认为当天 00:00:00
@@ -199,7 +203,7 @@ export function HistoryView() {
                 attendanceData={formatAttendanceData(attendanceRecords)}
               />
             ) : (
-              <ConfigProvider locale={locale} theme={{algorithm: theme.darkAlgorithm}}>
+              <ConfigProvider locale={locale} theme={{algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm}}>
                 <AttendanceCalendar
                   attendanceData={formatAttendanceData(attendanceRecords)}
                 />
