@@ -6,7 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky install",
+    "pre-commit": "lint-staged",
+    "pre-deploy": "npm run type-check && npm run lint && npm run format:check && npm run build"
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.0",
@@ -48,8 +54,20 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.16",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.10",
     "postcss": "^8",
+    "prettier": "^3.4.1",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
   }
 }

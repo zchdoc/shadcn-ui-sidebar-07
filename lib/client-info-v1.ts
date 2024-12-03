@@ -1,3 +1,16 @@
+interface BatteryManager {
+  charging: boolean;
+  chargingTime: number;
+  dischargingTime: number;
+  level: number;
+}
+
+declare global {
+  interface Navigator {
+    getBattery?: () => Promise<BatteryManager>;
+  }
+}
+
 export interface ClientInfo {
   dnsInfo?: string;
   systemTime: string;
@@ -44,13 +57,16 @@ export async function getClientInfoV1(): Promise<ClientInfo> {
 
   // Get battery info if available
   try {
-    const battery = await (navigator as any).getBattery();
-    info.batteryInfo = {
-      charging: battery.charging,
-      level: battery.level,
-    };
+    if (navigator.getBattery) {
+      const battery = await navigator.getBattery!();
+      info.batteryInfo = {
+        charging: battery.charging,
+        level: battery.level,
+      };
+    }
   } catch (e) {
     // Battery API not available
+    console.error(e);
   }
 
   return info;
