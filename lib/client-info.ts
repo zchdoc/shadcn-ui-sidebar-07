@@ -10,11 +10,11 @@ interface ClientInfo {
     jsEnabled: boolean;
   };
   operatingSystem: string;
-  
+
   // 时间和地区信息
   systemTime: string;
   timeZone: string;
-  
+
   // 设备信息
   screenInfo: {
     width: number;
@@ -26,7 +26,7 @@ interface ClientInfo {
     width: number;
     height: number;
   };
-  
+
   // 存储信息
   storageAvailable: {
     localStorage: boolean;
@@ -37,7 +37,7 @@ interface ClientInfo {
     localStorage: Record<string, string>;
     sessionStorage: Record<string, string>;
   };
-  
+
   // 硬件信息
   hardwareInfo: {
     cpuCores: number;
@@ -50,7 +50,7 @@ interface ClientInfo {
       dischargingTime?: number;
     };
   };
-  
+
   // 网络信息
   connection?: {
     effectiveType: string;
@@ -73,10 +73,19 @@ interface NavigatorWithBattery extends Navigator {
   getBattery?: () => Promise<BatteryManager>;
 }
 
+interface ExtendedNavigator extends Navigator {
+  deviceMemory?: number;
+  connection?: {
+    effectiveType: string;
+    downlink: number;
+    rtt: number;
+  };
+}
+
 export async function getClientInfo(): Promise<ClientInfo> {
   // 检查是否在客户端环境
   const isClient = typeof window !== 'undefined';
-  
+
   if (!isClient) {
     return getServerSideDefaultInfo();
   }
@@ -129,7 +138,7 @@ export async function getClientInfo(): Promise<ClientInfo> {
     if (typeof navigator !== 'undefined') {
       try {
         console.log('Checking battery API availability...');
-        
+
         const nav = navigator as NavigatorWithBattery;
         // 检查 Battery API 实现
         const getBatteryMethod = nav.getBattery;
@@ -173,7 +182,7 @@ export async function getClientInfo(): Promise<ClientInfo> {
     // 构建硬件信息对象
     const hardwareInfo = {
       cpuCores: navigator.hardwareConcurrency || 0,
-      deviceMemory: (navigator as any).deviceMemory || 0,
+      deviceMemory: (navigator as ExtendedNavigator).deviceMemory || 0,
       maxTouchPoints: navigator.maxTouchPoints || 0,
       batteryStatus // 如果获取失败，这里会是 undefined
     };
@@ -183,12 +192,14 @@ export async function getClientInfo(): Promise<ClientInfo> {
     // 网络信息
     let connection;
     if ('connection' in navigator) {
-      const conn = (navigator as any).connection;
-      connection = {
-        effectiveType: conn.effectiveType || 'unknown',
-        downlink: conn.downlink || 0,
-        rtt: conn.rtt || 0
-      };
+      const conn = (navigator as ExtendedNavigator).connection;
+      if (conn) {
+        connection = {
+          effectiveType: conn.effectiveType || 'unknown',
+          downlink: conn.downlink || 0,
+          rtt: conn.rtt || 0
+        };
+      }
     }
 
     return {
@@ -242,6 +253,7 @@ function isStorageAvailable(type: 'localStorage' | 'sessionStorage'): boolean {
     storage.removeItem(x);
     return true;
   } catch (e) {
+    console.error(`Error checking ${type} availability:`, e);
     return false;
   }
 }
@@ -251,7 +263,7 @@ function getStorageContent(type: 'localStorage' | 'sessionStorage'): Record<stri
   try {
     const storage = window[type];
     const content: Record<string, string> = {};
-    
+
     for (let i = 0; i < storage.length; i++) {
       const key = storage.key(i);
       if (key) {
@@ -261,7 +273,7 @@ function getStorageContent(type: 'localStorage' | 'sessionStorage'): Record<stri
         }
       }
     }
-    
+
     return content;
   } catch (error) {
     console.error(`Error getting ${type} content:`, error);

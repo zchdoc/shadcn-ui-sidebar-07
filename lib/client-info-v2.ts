@@ -75,6 +75,15 @@ interface NavigatorWithBattery extends Navigator {
   webkitGetBattery?: () => Promise<BatteryManager>;
 }
 
+interface ExtendedNavigator extends Navigator {
+  deviceMemory?: number;
+  connection?: {
+    effectiveType: string;
+    downlink: number;
+    rtt: number;
+  };
+}
+
 export async function getClientInfoV2(): Promise<ClientInfo> {
   // 检查是否在客户端环境
   const isClient = typeof window !== 'undefined';
@@ -175,7 +184,7 @@ export async function getClientInfoV2(): Promise<ClientInfo> {
     // 构建硬件信息对象
     const hardwareInfo = {
       cpuCores: navigator.hardwareConcurrency || 0,
-      deviceMemory: (navigator as any).deviceMemory || 0,
+      deviceMemory: (navigator as ExtendedNavigator).deviceMemory || 0,
       maxTouchPoints: navigator.maxTouchPoints || 0,
       batteryStatus // 如果获取失败，这里会是 undefined
     };
@@ -185,12 +194,14 @@ export async function getClientInfoV2(): Promise<ClientInfo> {
     // 网络信息
     let connection;
     if ('connection' in navigator) {
-      const conn = (navigator as any).connection;
-      connection = {
-        effectiveType: conn.effectiveType || 'unknown',
-        downlink: conn.downlink || 0,
-        rtt: conn.rtt || 0
-      };
+      const conn = (navigator as ExtendedNavigator).connection;
+      if (conn) {
+        connection = {
+          effectiveType: conn.effectiveType || 'unknown',
+          downlink: conn.downlink || 0,
+          rtt: conn.rtt || 0
+        };
+      }
     }
 
     return {
@@ -244,6 +255,7 @@ function isStorageAvailable(type: 'localStorage' | 'sessionStorage'): boolean {
     storage.removeItem(x);
     return true;
   } catch (e) {
+    console.error(`Error checking ${type} availability:`, e);
     return false;
   }
 }

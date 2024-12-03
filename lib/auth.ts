@@ -28,7 +28,6 @@ export const AUTH_KEY = 'auth_token';
 
 // 获取环境变量的安全方法
 const getEnvVar = (key: string): string => {
-  // @ts-ignore
   return typeof window !== 'undefined' ? window?.__NEXT_DATA__?.props?.pageProps?.[key] || process.env[key] : process.env[key];
 };
 
