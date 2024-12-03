@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server"
-import { headers } from 'next/headers'
+// import { headers } from 'next/headers'
 
 export async function POST(req: Request) {
   try {
     const { employeeId, startDate, endDate, clientInfo } = await req.json()
-    const headersList = headers()
+    // const headersList = headers()
     
     const clientInfoStr = encodeURIComponent(JSON.stringify(clientInfo))
 

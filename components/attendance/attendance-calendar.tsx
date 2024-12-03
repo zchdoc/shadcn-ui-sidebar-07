@@ -165,7 +165,7 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
   const {styles} = useStyle({test: true});
   const [selectDate, setSelectDate] = React.useState<Dayjs>(dayjs());
   const [panelDateDate, setPanelDate] = React.useState<Dayjs>(dayjs());
-
+  const { resolvedTheme } = useTheme()
   // 添加日期选择处理函数
   const onDateChange: CalendarProps<Dayjs>['onSelect'] = (value, selectInfo) => {
     if (selectInfo.source === 'date') {
@@ -224,7 +224,7 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
   const renderAttendanceRecords = (date: Dayjs) => {
     const dateStr = date.format("YYYY-MM-DD");
     const records = attendanceData[dateStr];
-    const { resolvedTheme } = useTheme()
+    
     const isDarkMode = resolvedTheme === 'dark'
     if (!records || records.length === 0) {
       return null;
