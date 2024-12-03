@@ -27,6 +27,7 @@ import { getEmployeeIdByUsername } from "@/lib/employee-mapping"
 import { useTheme } from "next-themes"
 import { getClientInfo } from "@/lib/client-info"
 import { getClientInfoV1 } from "@/lib/client-info-v1"
+import { getClientInfoV2 } from "@/lib/client-info-v2"
 
 dayjs.locale("zh-cn");
 
@@ -86,6 +87,9 @@ export function HistoryView() {
 
       const clientInfoV1 = await getClientInfoV1();
       console.info("clientInfoV1 Details:", JSON.stringify(clientInfoV1));
+
+      const clientInfoV2 = await getClientInfoV2();
+      console.info("clientInfoV2 Details:", JSON.stringify(clientInfoV2));
 
 
       const reqBody = JSON.stringify({

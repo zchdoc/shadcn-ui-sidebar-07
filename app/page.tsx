@@ -9,10 +9,16 @@ import { useAuth } from '@/components/auth-provider'
 import { useCallback } from 'react'
 import { SecureStorage } from '@/lib/secure-storage'
 import { validateToken } from '@/lib/auth'
+
 export default function Home() {
   const { isAuthenticated, username } = useAuth()
   const router = useRouter() // 初始化 router
   const [loading, setLoading] = React.useState(false)
+
+  // 获取当前环境
+  const currentEnv = process.env.NEXT_PUBLIC_ENV
+  console.log('Current environment:', currentEnv)  // 将会显示 'development' 或 'production'
+
   const redirectToAbout = () => {
     setLoading(true)
     setTimeout(() => {

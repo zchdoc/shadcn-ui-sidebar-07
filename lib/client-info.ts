@@ -71,8 +71,6 @@ interface BatteryManager {
 
 interface NavigatorWithBattery extends Navigator {
   getBattery?: () => Promise<BatteryManager>;
-  mozGetBattery?: () => Promise<BatteryManager>;
-  webkitGetBattery?: () => Promise<BatteryManager>;
 }
 
 export async function getClientInfo(): Promise<ClientInfo> {
@@ -133,8 +131,8 @@ export async function getClientInfo(): Promise<ClientInfo> {
         console.log('Checking battery API availability...');
         
         const nav = navigator as NavigatorWithBattery;
-        // 检查不同的 Battery API 实现
-        const getBatteryMethod = nav.getBattery || nav.mozGetBattery || nav.webkitGetBattery;
+        // 检查 Battery API 实现
+        const getBatteryMethod = nav.getBattery;
 
         if (getBatteryMethod) {
           console.log('Battery API found, attempting to get battery info...');

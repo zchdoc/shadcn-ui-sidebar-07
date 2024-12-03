@@ -15,7 +15,7 @@ const DEFAULT_EMPLOYEE_ID = "0000000"
  * @returns 员工ID
  */
 export function getEmployeeIdByUsername(username?: string | null): string {
-  console.log('getEmployeeIdByUsername called with username:', username);
+  // console.log('getEmployeeIdByUsername called with username:', username);
   if (!username) return DEFAULT_EMPLOYEE_ID
   return USER_EMPLOYEE_MAPPING[username] || DEFAULT_EMPLOYEE_ID
 }

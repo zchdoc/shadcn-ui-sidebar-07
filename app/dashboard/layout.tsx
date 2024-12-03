@@ -30,7 +30,7 @@ export default function DashboardLayout({
           return;
         }
 
-        console.log('Dashboard Layout - Auth check passed');
+        // console.log('Dashboard Layout - Auth check passed');
         setIsChecking(false);
       } catch (error) {
         console.error('Dashboard Layout - Auth check error:', error);
