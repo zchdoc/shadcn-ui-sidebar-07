@@ -1,8 +1,8 @@
 {
-    "terminal.integrated.cursorStyle": "line",
-    "terminal.integrated.cursorBlinking": true,
-    "editor.fontFamily": "Monaco, 'Courier New', monospace,Menlo",
-    "editor.fontSize": 18,
-    "fittencode.showSubmenu": true,
-    "fittencode.languagePreference.displayPreference": "zh-cn",
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.cursorBlinking": true,
+  "editor.fontFamily": "Monaco, 'Courier New', monospace,Menlo",
+  "editor.fontSize": 18,
+  "fittencode.showSubmenu": true,
+  "fittencode.languagePreference.displayPreference": "zh-cn"
 }

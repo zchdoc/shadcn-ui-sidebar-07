@@ -2,22 +2,22 @@
 
 import * as React from "react";
 
-import {cn} from "@/lib/utils";
-import {Icons} from "@/components/icons";
-import {Button} from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
-import {useToast} from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
+import { Icons } from "@/components/icons";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
-import {DescriptionText} from "@/components/authentication/components/description-text";
+import { DescriptionText } from "@/components/authentication/components/description-text";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
 }
 
-export function UserAuthForm({className, ...props}: UserAuthFormProps) {
+export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const {toast} = useToast();
+  const { toast } = useToast();
   const [formData, setFormData] = React.useState({
     email: "",
     password: "",
@@ -25,10 +25,10 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = e.target;
-    setFormData(prev => ({
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -81,7 +81,7 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
       {/*    Enter your details below to create your account*/}
       {/*  </p>*/}
       {/*</div>*/}
-      <DescriptionText mode="register"/>
+      <DescriptionText mode="register" />
       <form onSubmit={onSubmit}>
         <div className="grid gap-4">
           <div className="grid gap-2">
@@ -125,7 +125,7 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
           </div>
           <Button>
             {isLoading && (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin"/>
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
             Register
           </Button>
@@ -133,28 +133,53 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
       </form>
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t"/>
+          <span className="w-full border-t" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
-              Or continue with
-            </span>
+          <span className="bg-background px-2 text-muted-foreground">
+            Or continue with
+          </span>
         </div>
       </div>
       <div className="flex items-center justify-center gap-4 mt-4">
-        <Button variant="outline" type="button" disabled={isLoading} className="w-full max-w-[100px]">
+        <Button
+          variant="outline"
+          type="button"
+          disabled={isLoading}
+          className="w-full max-w-[100px]"
+        >
           <Icons.google className="h-5 w-5" />
         </Button>
-        <Button variant="outline" type="button" disabled={isLoading} className="w-full max-w-[100px]">
+        <Button
+          variant="outline"
+          type="button"
+          disabled={isLoading}
+          className="w-full max-w-[100px]"
+        >
           <Icons.apple className="h-5 w-5" />
         </Button>
-        <Button variant="outline" type="button" disabled={isLoading} className="w-full max-w-[100px]">
+        <Button
+          variant="outline"
+          type="button"
+          disabled={isLoading}
+          className="w-full max-w-[100px]"
+        >
           <Icons.gitHub className="h-5 w-5" />
         </Button>
-        <Button variant="outline" type="button" disabled={isLoading} className="w-full max-w-[100px]">
+        <Button
+          variant="outline"
+          type="button"
+          disabled={isLoading}
+          className="w-full max-w-[100px]"
+        >
           <Icons.wechat className="h-5 w-5" />
         </Button>
-        <Button variant="outline" type="button" disabled={isLoading} className="w-full max-w-[100px]">
+        <Button
+          variant="outline"
+          type="button"
+          disabled={isLoading}
+          className="w-full max-w-[100px]"
+        >
           <Icons.alipay className="h-5 w-5" />
         </Button>
       </div>

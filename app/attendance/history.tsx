@@ -1,4 +1,4 @@
-"use client"
-import { HistoryView } from '@/components/attendance/history-view'
+"use client";
+import { HistoryView } from "@/components/attendance/history-view";
 
-<HistoryView />
+<HistoryView />;

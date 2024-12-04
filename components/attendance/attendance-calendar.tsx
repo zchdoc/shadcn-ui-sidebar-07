@@ -1,9 +1,9 @@
 import React from "react";
-import {Badge, Calendar, Tooltip, CalendarProps} from "antd";
-import {theme, ConfigProvider, Col, Radio, Row, Select} from "antd";
-import {HolidayUtil, Lunar} from "lunar-typescript";
-import {createStyles} from "antd-style";
-import type {Dayjs} from "dayjs";
+import { Badge, Calendar, Tooltip, CalendarProps } from "antd";
+import { theme, ConfigProvider, Col, Radio, Row, Select } from "antd";
+import { HolidayUtil, Lunar } from "lunar-typescript";
+import { createStyles } from "antd-style";
+import type { Dayjs } from "dayjs";
 import classNames from "classnames";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
@@ -29,7 +29,7 @@ interface AttendanceCalendarProps {
   attendanceData: AttendanceData;
 }
 
-const useStyle = createStyles(({token, css, cx}) => {
+const useStyle = createStyles(({ token, css, cx }) => {
   // font-size: ${token.fontSizeSM}px; 12px
   const lunar = css`
     color: ${token.colorTextTertiary};
@@ -85,7 +85,7 @@ const useStyle = createStyles(({token, css, cx}) => {
         inset-inline-end: 0;
         top: 0;
         bottom: 0;
-        margin: auto;     // 新增：用于居中
+        margin: auto; // 新增：用于居中
         //max-width: 40px;  // 新增：限制背景大小
         //max-height: 40px; // 新增：限制背景大小
         background: transparent;
@@ -160,15 +160,18 @@ const useStyle = createStyles(({token, css, cx}) => {
   };
 });
 const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
-                                                                 attendanceData,
-                                                               }) => {
-  const {styles} = useStyle({test: true});
+  attendanceData,
+}) => {
+  const { styles } = useStyle({ test: true });
   const [selectDate, setSelectDate] = React.useState<Dayjs>(dayjs());
   const [panelDateDate, setPanelDate] = React.useState<Dayjs>(dayjs());
-  const { resolvedTheme } = useTheme()
+  const { resolvedTheme } = useTheme();
   // 添加日期选择处理函数
-  const onDateChange: CalendarProps<Dayjs>['onSelect'] = (value, selectInfo) => {
-    if (selectInfo.source === 'date') {
+  const onDateChange: CalendarProps<Dayjs>["onSelect"] = (
+    value,
+    selectInfo
+  ) => {
+    if (selectInfo.source === "date") {
       setSelectDate(value);
       setPanelDate(value);
     }
@@ -190,22 +193,34 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
    * case "加班": return "processing";
    */
   const getBadgeStatus = (status: string) => {
-    const successKeywords = ["正常", "加班", "请假",//
-      "正常签到", "正常签退", "周六签退", "工作加班", "周日无班",//
-      "周日不考勤", "请假(系统)", "未排班(系统)"];
-    const warningKeywords = ["未签到(系统)", "未签退(系统)", "未签到", "未签退"];
+    const successKeywords = [
+      "正常",
+      "加班",
+      "请假", //
+      "正常签到",
+      "正常签退",
+      "周六签退",
+      "工作加班",
+      "周日无班", //
+      "周日不考勤",
+      "请假(系统)",
+      "未排班(系统)",
+    ];
+    const warningKeywords = [
+      "未签到(系统)",
+      "未签退(系统)",
+      "未签到",
+      "未签退",
+    ];
     const errorKeywords = ["迟到", "旷工", "早退"];
 
-    if (successKeywords.some(keyword => status.includes(keyword))) {
+    if (successKeywords.some((keyword) => status.includes(keyword))) {
       return "success";
-    }
-    else if (errorKeywords.some(keyword => status.includes(keyword))) {
+    } else if (errorKeywords.some((keyword) => status.includes(keyword))) {
       return "error";
-    }
-    else if (warningKeywords.some(keyword => status.includes(keyword))) {
+    } else if (warningKeywords.some((keyword) => status.includes(keyword))) {
       return "warning";
-    }
-    else {
+    } else {
       return "error";
     }
   };
@@ -224,8 +239,8 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
   const renderAttendanceRecords = (date: Dayjs) => {
     const dateStr = date.format("YYYY-MM-DD");
     const records = attendanceData[dateStr];
-    
-    const isDarkMode = resolvedTheme === 'dark'
+
+    const isDarkMode = resolvedTheme === "dark";
     if (!records || records.length === 0) {
       return null;
     }
@@ -233,7 +248,9 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
     return (
       <ConfigProvider
         locale={locale}
-        theme={{ algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm }}
+        theme={{
+          algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
+        }}
       >
         <ul
           className="events"
@@ -249,13 +266,13 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
               key={index}
               title={`${record.time} - ${record.signInStateStr}`}
             >
-              <li style={{margin: "2px 0"}}>
+              <li style={{ margin: "2px 0" }}>
                 <Badge
                   status={getBadgeStatus(record.signInStateStr)}
                   text={`${record.time.split(":")[0]}:${
                     record.time.split(":")[1]
                   } ${record.signInStateStr}`}
-                  style={{fontSize: "12px"}}
+                  style={{ fontSize: "12px" }}
                 />
               </li>
             </Tooltip>
@@ -289,7 +306,7 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
           <div className={styles.text}>
             <div className={styles.dateWrapper}>
               <span
-                className={classNames(styles.solarDate,{
+                className={classNames(styles.solarDate, {
                   [styles.weekend]: isWeekend,
                   gray: !panelDateDate.isSame(date, "month"),
                 })}
@@ -328,7 +345,7 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
       fullCellRender={cellRender}
       fullscreen={false}
       onSelect={onDateChange}
-      headerRender={({value, type, onChange, onTypeChange}) => {
+      headerRender={({ value, type, onChange, onTypeChange }) => {
         const start = 0;
         const end = 12;
         const monthOptions = [];
@@ -350,7 +367,7 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
         }
 
         return (
-          <Row justify="end" gutter={8} style={{padding: 8}}>
+          <Row justify="end" gutter={8} style={{ padding: 8 }}>
             <Col>
               <Select
                 size="small"

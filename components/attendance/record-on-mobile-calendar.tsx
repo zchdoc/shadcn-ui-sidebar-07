@@ -1,10 +1,10 @@
-import React from 'react';
-import {Calendar} from "@/components/ui/calendar";
-import {Label} from "@/components/ui/label";
-import {Card, CardContent} from "@/components/ui/card";
-import {cn} from "@/lib/utils";
-import {DayContent, DayContentProps} from "react-day-picker";
-import {zhCN} from 'date-fns/locale';
+import React from "react";
+import { Calendar } from "@/components/ui/calendar";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { DayContent, DayContentProps } from "react-day-picker";
+import { zhCN } from "date-fns/locale";
 
 interface AttendanceRecord {
   id: number;
@@ -22,16 +22,22 @@ interface MobileAttendanceCalendarProps {
   attendanceData: AttendanceData;
 }
 
-const MobileAttendanceCalendar: React.FC<MobileAttendanceCalendarProps> = ({attendanceData}) => {
-  const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(undefined);
-  const [selectedRecords, setSelectedRecords] = React.useState<AttendanceRecord[]>([]);
+const MobileAttendanceCalendar: React.FC<MobileAttendanceCalendarProps> = ({
+  attendanceData,
+}) => {
+  const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
+    undefined
+  );
+  const [selectedRecords, setSelectedRecords] = React.useState<
+    AttendanceRecord[]
+  >([]);
 
   // 判断日期是否有考勤记录
   const hasAttendanceRecord = (date: Date): boolean => {
     // 使用 date-fns 格式化日期，确保格式一致
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     const dateStr = `${year}-${month}-${day}`;
     return Boolean(attendanceData[dateStr]?.length > 0);
   };
@@ -41,12 +47,11 @@ const MobileAttendanceCalendar: React.FC<MobileAttendanceCalendarProps> = ({atte
     setSelectedDate(date);
     if (date) {
       const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
       const dateStr = `${year}-${month}-${day}`;
       setSelectedRecords(attendanceData[dateStr] || []);
-    }
-    else {
+    } else {
       setSelectedRecords([]);
     }
   };
@@ -61,12 +66,13 @@ const MobileAttendanceCalendar: React.FC<MobileAttendanceCalendarProps> = ({atte
         <div
           className={cn(
             "w-8 h-8 flex items-center justify-center rounded-full relative",
-            props.activeModifiers?.selected && "bg-primary text-primary-foreground",
+            props.activeModifiers?.selected &&
+              "bg-primary text-primary-foreground"
           )}
         >
           <DayContent {...props} />
           {hasRecord && (
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-blue-500 rounded-full"/>
+            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-blue-500 rounded-full" />
           )}
         </div>
       </div>
@@ -90,22 +96,38 @@ const MobileAttendanceCalendar: React.FC<MobileAttendanceCalendarProps> = ({atte
    * default: return "bg-gray-100 dark:bg-gray-800"
    */
   function getSignInStateClass(signInStateStr: string) {
-    const successKeywords = ["正常", "加班", "请假",//
-      "正常签到", "正常签退", "周六签退", "工作加班", "周日无班",//
-      "周日不考勤", "请假(系统)", "未排班(系统)"];
-    const warningKeywords = ["未签到(系统)", "未签退(系统)", "未签到", "未签退"];
+    const successKeywords = [
+      "正常",
+      "加班",
+      "请假", //
+      "正常签到",
+      "正常签退",
+      "周六签退",
+      "工作加班",
+      "周日无班", //
+      "周日不考勤",
+      "请假(系统)",
+      "未排班(系统)",
+    ];
+    const warningKeywords = [
+      "未签到(系统)",
+      "未签退(系统)",
+      "未签到",
+      "未签退",
+    ];
     const errorKeywords = ["迟到", "旷工", "早退"];
 
-    if (successKeywords.some(keyword => signInStateStr.includes(keyword))) {
+    if (successKeywords.some((keyword) => signInStateStr.includes(keyword))) {
       return "bg-green-100 dark:bg-green-900/20";
-    }
-    else if (warningKeywords.some(keyword => signInStateStr.includes(keyword))) {
+    } else if (
+      warningKeywords.some((keyword) => signInStateStr.includes(keyword))
+    ) {
       return "bg-yellow-100 dark:bg-yellow-900/20";
-    }
-    else if (errorKeywords.some(keyword => signInStateStr.includes(keyword))) {
+    } else if (
+      errorKeywords.some((keyword) => signInStateStr.includes(keyword))
+    ) {
       return "bg-red-100 dark:bg-red-900/20";
-    }
-    else {
+    } else {
       return "bg-gray-100 dark:bg-red-900/20";
     }
   }
@@ -119,7 +141,7 @@ const MobileAttendanceCalendar: React.FC<MobileAttendanceCalendarProps> = ({atte
         locale={zhCN}
         weekStartsOn={1}
         components={{
-          DayContent: renderDay
+          DayContent: renderDay,
         }}
         className="rounded-md border shadow"
         ISOWeek
@@ -149,7 +171,10 @@ const MobileAttendanceCalendar: React.FC<MobileAttendanceCalendarProps> = ({atte
                 // >
                 <div
                   key={record.id}
-                  className={cn("p-2 rounded-md", getSignInStateClass(record.signInStateStr))}
+                  className={cn(
+                    "p-2 rounded-md",
+                    getSignInStateClass(record.signInStateStr)
+                  )}
                 >
                   <div className="flex justify-between items-center">
                     <span className="font-medium">{record.signInStateStr}</span>

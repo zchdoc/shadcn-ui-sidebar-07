@@ -1,8 +1,8 @@
-import type {Metadata} from "next";
+import type { Metadata } from "next";
 // import localFont from "next/font/local";
-import {ThemeProvider} from "@/components/theme-provider";
-import {Toaster} from "@/components/toaster";
-import {AuthProvider} from "@/components/auth-provider";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/toaster";
+import { AuthProvider } from "@/components/auth-provider";
 import "./globals.css";
 
 // const geistSans = localFont({
@@ -22,34 +22,32 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>🖐</text></svg>',
-        type: 'image/svg+xml',
+        url: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>🖐</text></svg>",
+        type: "image/svg+xml",
       },
     ],
   },
 };
 
 export default function RootLayout({
-                                     children,
-                                   }: Readonly<{
+  children,
+}: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-    {/*<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>*/}
-    <body className={`antialiased`}>
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <AuthProvider>
-        {children}
-      </AuthProvider>
-      <Toaster/>
-    </ThemeProvider>
-    </body>
+      {/*<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>*/}
+      <body className={`antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AuthProvider>{children}</AuthProvider>
+          <Toaster />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

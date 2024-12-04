@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import AuthenticationPage from "@/components/authentication/auth-index";
 import { ThemeProvider } from "@/components/theme-provider";

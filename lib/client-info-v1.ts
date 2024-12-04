@@ -49,7 +49,7 @@ export async function getClientInfoV1(): Promise<ClientInfo> {
     },
     javascriptEnabled: true,
     cookiesEnabled: navigator.cookieEnabled,
-    storageAvailable: typeof localStorage !== 'undefined',
+    storageAvailable: typeof localStorage !== "undefined",
     hardwareInfo: {
       cpuCores: navigator.hardwareConcurrency || 1,
     },

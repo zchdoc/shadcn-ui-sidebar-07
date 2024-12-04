@@ -1,10 +1,10 @@
 // components/authentication/components/description-text.tsx
 interface DescriptionTextProps {
-  mode: 'login' | 'register';
+  mode: "login" | "register";
 }
 
-export function DescriptionText({mode}: DescriptionTextProps) {
-  if (mode === 'login') {
+export function DescriptionText({ mode }: DescriptionTextProps) {
+  if (mode === "login") {
     return (
       <div className="space-y-6">
         <h1 className="text-3xl font-semibold tracking-tight">
@@ -12,7 +12,8 @@ export function DescriptionText({mode}: DescriptionTextProps) {
         </h1>
         <div className="space-y-2">
           <p className="text-muted-foreground">
-            Log in to your account to access your attendance records and manage your schedule.
+            Log in to your account to access your attendance records and manage
+            your schedule.
           </p>
           {/*<ul className="list-disc list-inside space-y-2 text-muted-foreground">*/}
           {/*  <li>View your attendance history</li>*/}
@@ -32,7 +33,8 @@ export function DescriptionText({mode}: DescriptionTextProps) {
       </h1>
       <div className="space-y-2">
         <p className="text-muted-foreground">
-          Join our attendance system to streamline your work schedule management.
+          Join our attendance system to streamline your work schedule
+          management.
         </p>
         {/*<ul className="list-disc list-inside space-y-2 text-muted-foreground">*/}
         {/*  <li>Easy time tracking</li>*/}

@@ -15,12 +15,14 @@ import { getEmployeeIdByUsername } from "@/lib/employee-mapping";
 export function ManualClock() {
   const { username } = useAuth();
   const [date, setDate] = React.useState<Date>();
-  const [employeeId, setEmployeeId] = React.useState(() => getEmployeeIdByUsername(username));
+  const [employeeId, setEmployeeId] = React.useState(() =>
+    getEmployeeIdByUsername(username)
+  );
 
   // 监听 username 变化并更新 employeeId
   React.useEffect(() => {
-    setEmployeeId(getEmployeeIdByUsername(username))
-  }, [username])
+    setEmployeeId(getEmployeeIdByUsername(username));
+  }, [username]);
 
   const [loading, setLoading] = React.useState(false);
   const { toast } = useToast();
