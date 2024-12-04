@@ -40,7 +40,7 @@ const DateTimePicker = ({date, setDate, label = "Pick a date"}: DateTimePickerPr
       newDate.setSeconds(seconds)
       setDate(newDate)
     }
-  }, [hours, minutes, seconds])
+  }, [date, hours, minutes, seconds, setDate])
 
   // Generate options for hours, minutes, and seconds
   const hoursOptions = Array.from({length: 24}, (_, i) => i)
