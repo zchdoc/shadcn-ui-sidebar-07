@@ -39,7 +39,6 @@ export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
   // 检查是否已经登录
   React.useEffect(() => {
     const token = SecureStorage.getItem("auth_token")
-    console.log("Token:", token) // 调试日志
 
     if (token !== null && token !== undefined) {
       const decryptedToken = decrypt(token)
