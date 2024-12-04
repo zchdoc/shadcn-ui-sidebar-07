@@ -1,38 +1,38 @@
 interface BatteryManager {
-  charging: boolean;
-  chargingTime: number;
-  dischargingTime: number;
-  level: number;
+  charging: boolean
+  chargingTime: number
+  dischargingTime: number
+  level: number
 }
 
 declare global {
   interface Navigator {
-    getBattery?: () => Promise<BatteryManager>;
+    getBattery?: () => Promise<BatteryManager>
   }
 }
 
 export interface ClientInfo {
-  dnsInfo?: string;
-  systemTime: string;
-  timezone: string;
-  browserInfo: string;
-  operatingSystem: string;
-  cookie: string;
-  language: string;
+  dnsInfo?: string
+  systemTime: string
+  timezone: string
+  browserInfo: string
+  operatingSystem: string
+  cookie: string
+  language: string
   screenSize: {
-    width: number;
-    height: number;
-  };
-  javascriptEnabled: boolean;
-  cookiesEnabled: boolean;
-  storageAvailable: boolean;
+    width: number
+    height: number
+  }
+  javascriptEnabled: boolean
+  cookiesEnabled: boolean
+  storageAvailable: boolean
   hardwareInfo: {
-    cpuCores: number;
-  };
+    cpuCores: number
+  }
   batteryInfo?: {
-    charging: boolean;
-    level: number;
-  };
+    charging: boolean
+    level: number
+  }
 }
 
 export async function getClientInfoV1(): Promise<ClientInfo> {
@@ -53,21 +53,21 @@ export async function getClientInfoV1(): Promise<ClientInfo> {
     hardwareInfo: {
       cpuCores: navigator.hardwareConcurrency || 1,
     },
-  };
+  }
 
   // Get battery info if available
   try {
     if (navigator.getBattery) {
-      const battery = await navigator.getBattery!();
+      const battery = await navigator.getBattery!()
       info.batteryInfo = {
         charging: battery.charging,
         level: battery.level,
-      };
+      }
     }
   } catch (e) {
     // Battery API not available
-    console.error(e);
+    console.error(e)
   }
 
-  return info;
+  return info
 }

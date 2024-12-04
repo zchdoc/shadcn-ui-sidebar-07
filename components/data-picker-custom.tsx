@@ -1,28 +1,28 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+import * as React from "react"
+import { Calendar as CalendarIcon } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/components/ui/popover"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { format } from "date-fns";
+} from "@/components/ui/select"
+import { format } from "date-fns"
 
 interface DateTimePickerProps {
-  date: Date | undefined;
-  setDate: (date: Date | undefined) => void;
-  label?: string;
+  date: Date | undefined
+  setDate: (date: Date | undefined) => void
+  label?: string
 }
 
 const DateTimePicker = ({
@@ -31,25 +31,25 @@ const DateTimePicker = ({
   label = "Pick a date",
 }: DateTimePickerProps) => {
   // Split the current time into hours, minutes, seconds
-  const [hours, setHours] = React.useState(date ? date.getHours() : 0);
-  const [minutes, setMinutes] = React.useState(date ? date.getMinutes() : 0);
-  const [seconds, setSeconds] = React.useState(date ? date.getSeconds() : 0);
+  const [hours, setHours] = React.useState(date ? date.getHours() : 0)
+  const [minutes, setMinutes] = React.useState(date ? date.getMinutes() : 0)
+  const [seconds, setSeconds] = React.useState(date ? date.getSeconds() : 0)
 
   // Update the main date when time changes
   React.useEffect(() => {
     if (date) {
-      const newDate = new Date(date);
-      newDate.setHours(hours);
-      newDate.setMinutes(minutes);
-      newDate.setSeconds(seconds);
-      setDate(newDate);
+      const newDate = new Date(date)
+      newDate.setHours(hours)
+      newDate.setMinutes(minutes)
+      newDate.setSeconds(seconds)
+      setDate(newDate)
     }
-  }, [date, hours, minutes, seconds, setDate]);
+  }, [date, hours, minutes, seconds, setDate])
 
   // Generate options for hours, minutes, and seconds
-  const hoursOptions = Array.from({ length: 24 }, (_, i) => i);
-  const minutesOptions = Array.from({ length: 60 }, (_, i) => i);
-  const secondsOptions = Array.from({ length: 60 }, (_, i) => i);
+  const hoursOptions = Array.from({ length: 24 }, (_, i) => i)
+  const minutesOptions = Array.from({ length: 60 }, (_, i) => i)
+  const secondsOptions = Array.from({ length: 60 }, (_, i) => i)
 
   return (
     <Popover>
@@ -71,13 +71,13 @@ const DateTimePicker = ({
           selected={date}
           onSelect={(newDate) => {
             if (newDate) {
-              const updatedDate = new Date(newDate);
-              updatedDate.setHours(hours);
-              updatedDate.setMinutes(minutes);
-              updatedDate.setSeconds(seconds);
-              setDate(updatedDate);
+              const updatedDate = new Date(newDate)
+              updatedDate.setHours(hours)
+              updatedDate.setMinutes(minutes)
+              updatedDate.setSeconds(seconds)
+              setDate(updatedDate)
             } else {
-              setDate(undefined);
+              setDate(undefined)
             }
           }}
           initialFocus
@@ -131,7 +131,7 @@ const DateTimePicker = ({
         </div>
       </PopoverContent>
     </Popover>
-  );
-};
+  )
+}
 
-export default DateTimePicker;
+export default DateTimePicker

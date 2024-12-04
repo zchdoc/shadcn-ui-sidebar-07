@@ -1,10 +1,10 @@
-"use client";
+"use client"
 
-import { useCallback, useState } from "react";
-import { AppSidebar } from "@/components/app-sidebar";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { ManualClock } from "@/components/attendance/manual-clock";
-import { HistoryView } from "@/components/attendance/history-view";
+import { useCallback, useState } from "react"
+import { AppSidebar } from "@/components/app-sidebar"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { ManualClock } from "@/components/attendance/manual-clock"
+import { HistoryView } from "@/components/attendance/history-view"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,29 +12,29 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
+} from "@/components/ui/breadcrumb"
+import { Separator } from "@/components/ui/separator"
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { useAuth } from "@/components/auth-provider";
+} from "@/components/ui/sidebar"
+import { useAuth } from "@/components/auth-provider"
 
 export default function Page() {
   const [activeView, setActiveView] = useState<
     "default" | "history" | "manual-clock"
-  >("history");
+  >("history")
 
   const onAppSidebarViewChange = useCallback(function (e: string) {
     if (["default", "history", "manual-clock"].includes(e)) {
-      setActiveView(e as "history" | "manual-clock" | "default");
+      setActiveView(e as "history" | "manual-clock" | "default")
     }
-  }, []);
-  const { isAuthenticated } = useAuth();
+  }, [])
+  const { isAuthenticated } = useAuth()
 
   if (!isAuthenticated) {
-    return null; // 让 layout 处理未认证状态
+    return null // 让 layout 处理未认证状态
   }
   return (
     <SidebarProvider defaultOpen>
@@ -88,5 +88,5 @@ export default function Page() {
         </div>
       </SidebarInset>
     </SidebarProvider>
-  );
+  )
 }

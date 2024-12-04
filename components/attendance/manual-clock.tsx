@@ -1,58 +1,58 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { format } from "date-fns";
+import * as React from "react"
+import { format } from "date-fns"
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
-import DateTimePickerCn from "@/components/data-picker-custom-cn";
-import { useState, useEffect } from "react";
-import { Alert } from "antd";
-import { useAuth } from "@/components/auth-provider";
-import { getEmployeeIdByUsername } from "@/lib/employee-mapping";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { useToast } from "@/components/ui/use-toast"
+import DateTimePickerCn from "@/components/data-picker-custom-cn"
+import { useState, useEffect } from "react"
+import { Alert } from "antd"
+import { useAuth } from "@/components/auth-provider"
+import { getEmployeeIdByUsername } from "@/lib/employee-mapping"
 
 export function ManualClock() {
-  const { username } = useAuth();
-  const [date, setDate] = React.useState<Date>();
+  const { username } = useAuth()
+  const [date, setDate] = React.useState<Date>()
   const [employeeId, setEmployeeId] = React.useState(() =>
     getEmployeeIdByUsername(username)
-  );
+  )
 
   // 监听 username 变化并更新 employeeId
   React.useEffect(() => {
-    setEmployeeId(getEmployeeIdByUsername(username));
-  }, [username]);
+    setEmployeeId(getEmployeeIdByUsername(username))
+  }, [username])
 
-  const [loading, setLoading] = React.useState(false);
-  const { toast } = useToast();
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = React.useState(false)
+  const { toast } = useToast()
+  const [error, setError] = useState<string | null>(null)
   useEffect(() => {
     // 设置 date 默认为当前时间
-    setDate(new Date());
-  }, []);
+    setDate(new Date())
+  }, [])
 
   const handleClockIn = async () => {
-    setError(null);
+    setError(null)
     if (!date || !employeeId) {
       toast({
         title: "Error",
         description: "Please fill in all fields",
         variant: "destructive",
-      });
-      return;
+      })
+      return
     }
-    setLoading(true);
+    setLoading(true)
     try {
-      const userNo = employeeId; // Assuming this is the correct user number
-      const formattedDate = format(date, "yyyy-MM-dd HH:mm:ss");
-      const data = `${userNo}\t${formattedDate}\t0\t15\t\t0\t0`;
+      const userNo = employeeId // Assuming this is the correct user number
+      const formattedDate = format(date, "yyyy-MM-dd HH:mm:ss")
+      const data = `${userNo}\t${formattedDate}\t0\t15\t\t0\t0`
 
       const queryParams = new URLSearchParams({
         sn: "CJDE193560303",
         table: "ATTLOG",
         Stamp: formattedDate,
-      }).toString();
+      }).toString()
       // `/api/iclock/attDataCustom?${queryParams}`
       const response = await fetch(`/api/attendance/clock-in?${queryParams}`, {
         method: "POST",
@@ -60,33 +60,33 @@ export function ManualClock() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ data: data }),
-      });
+      })
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error! status: ${response.status}`)
       }
 
-      const contentType = response.headers.get("content-type");
-      let result;
-      console.info("contentType:", contentType);
+      const contentType = response.headers.get("content-type")
+      let result
+      console.info("contentType:", contentType)
 
       if (contentType && contentType.includes("application/json")) {
-        result = await response.json();
+        result = await response.json()
       } else {
-        result = await response.text();
+        result = await response.text()
       }
       // alert(result);
       toast({
         title: "Success:" + result,
         description: "Successfully clocked in",
-      });
+      })
     } catch (err) {
-      console.error("Error recording attendance:", err);
-      setError("Failed to record attendance. Please try again.");
+      console.error("Error recording attendance:", err)
+      setError("Failed to record attendance. Please try again.")
       // 添加定时器，5秒后自动清除错误信息
       setTimeout(() => {
-        setError(null);
-      }, 5000);
+        setError(null)
+      }, 5000)
 
       if (err instanceof Error) {
         // 使用instanceof检查错误是否为Error类型
@@ -94,20 +94,20 @@ export function ManualClock() {
           title: "Error",
           description: err.message || "Failed to clock in", // 显示更详细的错误信息
           variant: "destructive",
-        });
+        })
       } else {
         toast({
           title: "Error",
           description: "Failed to clock in",
           variant: "destructive",
-        });
+        })
       }
     } finally {
       setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+        setLoading(false)
+      }, 1000)
     }
-  };
+  }
 
   return (
     <div className="space-y-4">
@@ -136,5 +136,5 @@ export function ManualClock() {
         <Alert message="Error" description={error} type="error" showIcon />
       )}
     </div>
-  );
+  )
 }

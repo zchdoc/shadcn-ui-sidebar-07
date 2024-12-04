@@ -1,32 +1,32 @@
-import React from "react";
-import { Badge, Calendar, Tooltip, CalendarProps } from "antd";
-import { theme, ConfigProvider, Col, Radio, Row, Select } from "antd";
-import { HolidayUtil, Lunar } from "lunar-typescript";
-import { createStyles } from "antd-style";
-import type { Dayjs } from "dayjs";
-import classNames from "classnames";
-import dayjs from "dayjs";
-import localizedFormat from "dayjs/plugin/localizedFormat";
-import locale from "antd/locale/zh_CN";
+import React from "react"
+import { Badge, Calendar, Tooltip, CalendarProps } from "antd"
+import { theme, ConfigProvider, Col, Radio, Row, Select } from "antd"
+import { HolidayUtil, Lunar } from "lunar-typescript"
+import { createStyles } from "antd-style"
+import type { Dayjs } from "dayjs"
+import classNames from "classnames"
+import dayjs from "dayjs"
+import localizedFormat from "dayjs/plugin/localizedFormat"
+import locale from "antd/locale/zh_CN"
 
-import "dayjs/locale/zh-cn";
-import { useTheme } from "next-themes";
+import "dayjs/locale/zh-cn"
+import { useTheme } from "next-themes"
 
-dayjs.extend(localizedFormat); // 如果需要使用格式化插件
-dayjs.locale("zh-cn");
+dayjs.extend(localizedFormat) // 如果需要使用格式化插件
+dayjs.locale("zh-cn")
 
 interface AttendanceRecord {
-  date: string;
-  time: string;
-  signInStateStr: string;
+  date: string
+  time: string
+  signInStateStr: string
 }
 
 interface AttendanceData {
-  [date: string]: AttendanceRecord[];
+  [date: string]: AttendanceRecord[]
 }
 
 interface AttendanceCalendarProps {
-  attendanceData: AttendanceData;
+  attendanceData: AttendanceData
 }
 
 const useStyle = createStyles(({ token, css, cx }) => {
@@ -35,17 +35,17 @@ const useStyle = createStyles(({ token, css, cx }) => {
     color: ${token.colorTextTertiary};
     font-size: 9px;
     margin-left: 4px;
-  `;
+  `
   const weekend = css`
     color: ${token.colorError};
     &.gray {
       opacity: 0.4;
     }
-  `;
+  `
   // 添加阳历日期的样式
   const solarDate = css`
     font-size: 16px;
-  `;
+  `
 
   return {
     wrapper: css`
@@ -157,25 +157,25 @@ const useStyle = createStyles(({ token, css, cx }) => {
     `,
     weekend,
     solarDate,
-  };
-});
+  }
+})
 const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
   attendanceData,
 }) => {
-  const { styles } = useStyle({ test: true });
-  const [selectDate, setSelectDate] = React.useState<Dayjs>(dayjs());
-  const [panelDateDate, setPanelDate] = React.useState<Dayjs>(dayjs());
-  const { resolvedTheme } = useTheme();
+  const { styles } = useStyle({ test: true })
+  const [selectDate, setSelectDate] = React.useState<Dayjs>(dayjs())
+  const [panelDateDate, setPanelDate] = React.useState<Dayjs>(dayjs())
+  const { resolvedTheme } = useTheme()
   // 添加日期选择处理函数
   const onDateChange: CalendarProps<Dayjs>["onSelect"] = (
     value,
     selectInfo
   ) => {
     if (selectInfo.source === "date") {
-      setSelectDate(value);
-      setPanelDate(value);
+      setSelectDate(value)
+      setPanelDate(value)
     }
-  };
+  }
 
   /**
    * 正常 success
@@ -205,44 +205,39 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
       "周日不考勤",
       "请假(系统)",
       "未排班(系统)",
-    ];
-    const warningKeywords = [
-      "未签到(系统)",
-      "未签退(系统)",
-      "未签到",
-      "未签退",
-    ];
-    const errorKeywords = ["迟到", "旷工", "早退"];
+    ]
+    const warningKeywords = ["未签到(系统)", "未签退(系统)", "未签到", "未签退"]
+    const errorKeywords = ["迟到", "旷工", "早退"]
 
     if (successKeywords.some((keyword) => status.includes(keyword))) {
-      return "success";
+      return "success"
     } else if (errorKeywords.some((keyword) => status.includes(keyword))) {
-      return "error";
+      return "error"
     } else if (warningKeywords.some((keyword) => status.includes(keyword))) {
-      return "warning";
+      return "warning"
     } else {
-      return "error";
+      return "error"
     }
-  };
+  }
 
   const getYearLabel = (year: number) => {
-    const d = Lunar.fromDate(new Date(year + 1, 0));
-    return `${d.getYearInChinese()}年（${d.getYearInGanZhi()}${d.getYearShengXiao()}年）`;
-  };
+    const d = Lunar.fromDate(new Date(year + 1, 0))
+    return `${d.getYearInChinese()}年（${d.getYearInGanZhi()}${d.getYearShengXiao()}年）`
+  }
 
   const getMonthLabel = (month: number, value: Dayjs) => {
-    const d = Lunar.fromDate(new Date(value.year(), month));
-    const lunar = d.getMonthInChinese();
-    return `${month + 1}月（${lunar}月）`;
-  };
+    const d = Lunar.fromDate(new Date(value.year(), month))
+    const lunar = d.getMonthInChinese()
+    return `${month + 1}月（${lunar}月）`
+  }
 
   const renderAttendanceRecords = (date: Dayjs) => {
-    const dateStr = date.format("YYYY-MM-DD");
-    const records = attendanceData[dateStr];
+    const dateStr = date.format("YYYY-MM-DD")
+    const records = attendanceData[dateStr]
 
-    const isDarkMode = resolvedTheme === "dark";
+    const isDarkMode = resolvedTheme === "dark"
     if (!records || records.length === 0) {
-      return null;
+      return null
     }
 
     return (
@@ -279,21 +274,21 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
           ))}
         </ul>
       </ConfigProvider>
-    );
-  };
+    )
+  }
 
   const cellRender: CalendarProps<Dayjs>["fullCellRender"] = (date, info) => {
-    const d = Lunar.fromDate(date.toDate());
-    const lunar = d.getDayInChinese();
-    const solarTerm = d.getJieQi();
-    const isWeekend = date.day() === 6 || date.day() === 0;
+    const d = Lunar.fromDate(date.toDate())
+    const lunar = d.getDayInChinese()
+    const solarTerm = d.getJieQi()
+    const isWeekend = date.day() === 6 || date.day() === 0
     const h = HolidayUtil.getHoliday(
       date.get("year"),
       date.get("month") + 1,
       date.get("date")
-    );
+    )
     const displayHoliday =
-      h?.getTarget() === h?.getDay() ? h?.getName() : undefined;
+      h?.getTarget() === h?.getDay() ? h?.getName() : undefined
 
     if (info.type === "date") {
       return React.cloneElement(info.originNode, {
@@ -322,12 +317,12 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
             </div>
           </div>
         ),
-      });
+      })
     }
 
     if (info.type === "month") {
-      const d2 = Lunar.fromDate(new Date(date.get("year"), date.get("month")));
-      const month = d2.getMonthInChinese();
+      const d2 = Lunar.fromDate(new Date(date.get("year"), date.get("month")))
+      const month = d2.getMonthInChinese()
       return (
         <div
           className={classNames(styles.monthCell, {
@@ -336,9 +331,9 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
         >
           {date.get("month") + 1}月（{month}月）
         </div>
-      );
+      )
     }
-  };
+  }
 
   return (
     <Calendar
@@ -346,24 +341,24 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
       fullscreen={false}
       onSelect={onDateChange}
       headerRender={({ value, type, onChange, onTypeChange }) => {
-        const start = 0;
-        const end = 12;
-        const monthOptions = [];
-        const options = [];
+        const start = 0
+        const end = 12
+        const monthOptions = []
+        const options = []
 
         for (let i = start; i < end; i++) {
           monthOptions.push({
             label: getMonthLabel(i, value),
             value: i,
-          });
+          })
         }
 
-        const year = value.year();
+        const year = value.year()
         for (let i = year - 10; i < year + 10; i += 1) {
           options.push({
             label: getYearLabel(i),
             value: i,
-          });
+          })
         }
 
         return (
@@ -376,8 +371,8 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
                 value={year}
                 options={options}
                 onChange={(newYear) => {
-                  const now = value.clone().year(newYear);
-                  onChange(now);
+                  const now = value.clone().year(newYear)
+                  onChange(now)
                 }}
               />
             </Col>
@@ -388,8 +383,8 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
                 value={value.month()}
                 options={monthOptions}
                 onChange={(newMonth) => {
-                  const now = value.clone().month(newMonth);
-                  onChange(now);
+                  const now = value.clone().month(newMonth)
+                  onChange(now)
                 }}
               />
             </Col>
@@ -404,10 +399,10 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
               </Radio.Group>
             </Col>
           </Row>
-        );
+        )
       }}
     />
-  );
-};
+  )
+}
 
-export default AttendanceCalendar;
+export default AttendanceCalendar

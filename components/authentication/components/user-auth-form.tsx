@@ -1,40 +1,40 @@
-"use client";
+"use client"
 
-import * as React from "react";
+import * as React from "react"
 
-import { cn } from "@/lib/utils";
-import { Icons } from "@/components/icons";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
-import Link from "next/link";
-import { DescriptionText } from "@/components/authentication/components/description-text";
+import { cn } from "@/lib/utils"
+import { Icons } from "@/components/icons"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { useToast } from "@/components/ui/use-toast"
+import Link from "next/link"
+import { DescriptionText } from "@/components/authentication/components/description-text"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
-  className?: string;
+  className?: string
 }
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const { toast } = useToast();
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const { toast } = useToast()
   const [formData, setFormData] = React.useState({
     email: "",
     password: "",
     confirmPassword: "",
-  });
+  })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
-    setIsLoading(true);
+    event.preventDefault()
+    setIsLoading(true)
 
     try {
       if (formData.password !== formData.confirmPassword) {
@@ -42,32 +42,32 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           title: "Error",
           description: "Passwords do not match",
           variant: "destructive",
-        });
-        return;
+        })
+        return
       }
 
       // Add your registration logic here
       toast({
         title: "Success",
         description: "Registration successful! Please login.",
-      });
+      })
     } catch (error) {
       if (error instanceof Error) {
         toast({
           title: "Error",
           description: "1.Something went wrong. Please try again.",
           variant: "destructive",
-        });
+        })
       } else {
         toast({
           title: "Error",
           description: "2.Something went wrong. Please try again.",
           variant: "destructive",
-        });
-        console.error(error);
+        })
+        console.error(error)
       }
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
   }
 
@@ -201,5 +201,5 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         .
       </p>
     </div>
-  );
+  )
 }

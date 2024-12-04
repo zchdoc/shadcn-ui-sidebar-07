@@ -1,43 +1,43 @@
-"use client";
+"use client"
 
-import Image from "next/image";
+import Image from "next/image"
 // import { redirect } from 'next/navigation';
-import { useRouter } from "next/navigation"; // 改用 useRouter
-import { Button } from "@/components/ui/button";
-import * as React from "react";
-import { useAuth } from "@/components/auth-provider";
-import { useCallback } from "react";
-import { SecureStorage } from "@/lib/secure-storage";
-import { validateToken } from "@/lib/auth";
+import { useRouter } from "next/navigation" // 改用 useRouter
+import { Button } from "@/components/ui/button"
+import * as React from "react"
+import { useAuth } from "@/components/auth-provider"
+import { useCallback } from "react"
+import { SecureStorage } from "@/lib/secure-storage"
+import { validateToken } from "@/lib/auth"
 
 export default function Home() {
-  const { isAuthenticated, username } = useAuth();
-  const router = useRouter(); // 初始化 router
-  const [loading, setLoading] = React.useState(false);
+  const { isAuthenticated, username } = useAuth()
+  const router = useRouter() // 初始化 router
+  const [loading, setLoading] = React.useState(false)
 
   // 获取当前环境
-  const currentEnv = process.env.NEXT_PUBLIC_ENV;
-  console.log("Current environment:", currentEnv); // 将会显示 'development' 或 'production'
+  const currentEnv = process.env.NEXT_PUBLIC_ENV
+  console.log("Current environment:", currentEnv) // 将会显示 'development' 或 'production'
 
   const redirectToAbout = () => {
-    setLoading(true);
+    setLoading(true)
     setTimeout(() => {
-      setLoading(false);
-    }, 5000);
-    router.replace("/about");
-  };
+      setLoading(false)
+    }, 5000)
+    router.replace("/about")
+  }
 
   const redirectToDashboard = useCallback(() => {
     // 添加延时和状态检查
-    const token = SecureStorage.getItem("auth_token");
+    const token = SecureStorage.getItem("auth_token")
     if (validateToken(token)) {
       setTimeout(() => {
-        router.replace("/dashboard");
-      }, 100);
+        router.replace("/dashboard")
+      }, 100)
     } else {
-      router.replace("/login");
+      router.replace("/login")
     }
-  }, [router]);
+  }, [router])
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -152,5 +152,5 @@ export default function Home() {
         </a>
       </footer>
     </div>
-  );
+  )
 }

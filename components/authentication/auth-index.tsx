@@ -1,28 +1,28 @@
-"use client";
+"use client"
 
-import React, { useState, useRef, useEffect } from "react";
-import { cn } from "@/lib/utils";
-import { UserAuthForm } from "./components/user-auth-form";
-import { UserLoginForm } from "./components/user-login-form";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Logo } from "./components/logo";
+import React, { useState, useRef, useEffect } from "react"
+import { cn } from "@/lib/utils"
+import { UserAuthForm } from "./components/user-auth-form"
+import { UserLoginForm } from "./components/user-login-form"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Logo } from "./components/logo"
 
 export default function AuthenticationPage() {
-  const [showLogin, setShowLogin] = useState(true);
-  const [contentHeight, setContentHeight] = useState<number>(0);
-  const [contentWidth, setContentWidth] = useState<number>(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [showLogin, setShowLogin] = useState(true)
+  const [contentHeight, setContentHeight] = useState<number>(0)
+  const [contentWidth, setContentWidth] = useState<number>(0)
+  const [isTransitioning, setIsTransitioning] = useState(false)
   // 动画类型选择：可以更改这个值来切换不同的动画效果
   // 可选值: 'fade' | 'slide' | 'scale' | 'rotate' | 'flip'
-  const [animationType, setAnimationType] = useState<string>("fade");
-  const loginCardRef = useRef<HTMLDivElement>(null);
-  const registerCardRef = useRef<HTMLDivElement>(null);
+  const [animationType, setAnimationType] = useState<string>("fade")
+  const loginCardRef = useRef<HTMLDivElement>(null)
+  const registerCardRef = useRef<HTMLDivElement>(null)
 
   // 根据动画类型获取对应的动画类名
   const getAnimationClasses = () => {
-    const baseClasses = "bg-background flex flex-col";
+    const baseClasses = "bg-background flex flex-col"
     const transitionClasses = {
       // 1. 淡入淡出效果
       fade: {
@@ -57,44 +57,44 @@ export default function AuthenticationPage() {
           ? "transform rotateY-180 opacity-0"
           : "transform rotateY-0 opacity-100",
       },
-    };
+    }
 
     const selectedAnimation =
-      transitionClasses[animationType as keyof typeof transitionClasses];
-    return cn(baseClasses, selectedAnimation.base, selectedAnimation.active);
-  };
+      transitionClasses[animationType as keyof typeof transitionClasses]
+    return cn(baseClasses, selectedAnimation.base, selectedAnimation.active)
+  }
 
   const handleFormSwitch = () => {
-    setIsTransitioning(true);
+    setIsTransitioning(true)
     // 根据不同动画类型调整时间
-    const timing = animationType === "flip" ? 250 : 150;
+    const timing = animationType === "flip" ? 250 : 150
     setTimeout(() => {
-      setShowLogin(!showLogin);
+      setShowLogin(!showLogin)
       setTimeout(() => {
-        setIsTransitioning(false);
-      }, timing);
-    }, timing);
-  };
+        setIsTransitioning(false)
+      }, timing)
+    }, timing)
+  }
 
   useEffect(() => {
     const updateDimensions = () => {
-      const loginHeight = loginCardRef.current?.offsetHeight || 0;
-      const registerHeight = registerCardRef.current?.offsetHeight || 0;
-      const loginWidth = loginCardRef.current?.offsetWidth || 0;
-      const registerWidth = registerCardRef.current?.offsetWidth || 0;
+      const loginHeight = loginCardRef.current?.offsetHeight || 0
+      const registerHeight = registerCardRef.current?.offsetHeight || 0
+      const loginWidth = loginCardRef.current?.offsetWidth || 0
+      const registerWidth = registerCardRef.current?.offsetWidth || 0
 
-      const maxHeight = Math.max(loginHeight, registerHeight);
-      const maxWidth = Math.max(loginWidth, registerWidth);
+      const maxHeight = Math.max(loginHeight, registerHeight)
+      const maxWidth = Math.max(loginWidth, registerWidth)
 
-      setContentHeight(maxHeight);
-      setContentWidth(maxWidth);
-      setAnimationType("fade");
-    };
+      setContentHeight(maxHeight)
+      setContentWidth(maxWidth)
+      setAnimationType("fade")
+    }
 
-    updateDimensions();
-    window.addEventListener("resize", updateDimensions);
-    return () => window.removeEventListener("resize", updateDimensions);
-  }, [showLogin]);
+    updateDimensions()
+    window.addEventListener("resize", updateDimensions)
+    return () => window.removeEventListener("resize", updateDimensions)
+  }, [showLogin])
 
   return (
     <div>
@@ -147,5 +147,5 @@ export default function AuthenticationPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

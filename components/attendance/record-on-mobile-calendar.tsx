@@ -1,25 +1,25 @@
-import React from "react";
-import { Calendar } from "@/components/ui/calendar";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import { DayContent, DayContentProps } from "react-day-picker";
-import { zhCN } from "date-fns/locale";
+import React from "react"
+import { Calendar } from "@/components/ui/calendar"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
+import { DayContent, DayContentProps } from "react-day-picker"
+import { zhCN } from "date-fns/locale"
 
 interface AttendanceRecord {
-  id: number;
-  date: string;
-  time: string;
-  signInStateStr: string;
-  beLateTime: string;
+  id: number
+  date: string
+  time: string
+  signInStateStr: string
+  beLateTime: string
 }
 
 interface AttendanceData {
-  [key: string]: AttendanceRecord[];
+  [key: string]: AttendanceRecord[]
 }
 
 interface MobileAttendanceCalendarProps {
-  attendanceData: AttendanceData;
+  attendanceData: AttendanceData
 }
 
 const MobileAttendanceCalendar: React.FC<MobileAttendanceCalendarProps> = ({
@@ -27,39 +27,39 @@ const MobileAttendanceCalendar: React.FC<MobileAttendanceCalendarProps> = ({
 }) => {
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
     undefined
-  );
+  )
   const [selectedRecords, setSelectedRecords] = React.useState<
     AttendanceRecord[]
-  >([]);
+  >([])
 
   // 判断日期是否有考勤记录
   const hasAttendanceRecord = (date: Date): boolean => {
     // 使用 date-fns 格式化日期，确保格式一致
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const dateStr = `${year}-${month}-${day}`;
-    return Boolean(attendanceData[dateStr]?.length > 0);
-  };
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, "0")
+    const day = String(date.getDate()).padStart(2, "0")
+    const dateStr = `${year}-${month}-${day}`
+    return Boolean(attendanceData[dateStr]?.length > 0)
+  }
 
   // 处理日期选择
   const handleSelect = (date: Date | undefined) => {
-    setSelectedDate(date);
+    setSelectedDate(date)
     if (date) {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      const dateStr = `${year}-${month}-${day}`;
-      setSelectedRecords(attendanceData[dateStr] || []);
+      const year = date.getFullYear()
+      const month = String(date.getMonth() + 1).padStart(2, "0")
+      const day = String(date.getDate()).padStart(2, "0")
+      const dateStr = `${year}-${month}-${day}`
+      setSelectedRecords(attendanceData[dateStr] || [])
     } else {
-      setSelectedRecords([]);
+      setSelectedRecords([])
     }
-  };
+  }
 
   // 自定义日期渲染
   const renderDay = (props: DayContentProps) => {
-    const date = props.date;
-    const hasRecord = hasAttendanceRecord(date);
+    const date = props.date
+    const hasRecord = hasAttendanceRecord(date)
 
     return (
       <div className="relative w-full h-full flex items-center justify-center">
@@ -76,8 +76,8 @@ const MobileAttendanceCalendar: React.FC<MobileAttendanceCalendarProps> = ({
           )}
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   /**
    * 正常 success
@@ -108,27 +108,22 @@ const MobileAttendanceCalendar: React.FC<MobileAttendanceCalendarProps> = ({
       "周日不考勤",
       "请假(系统)",
       "未排班(系统)",
-    ];
-    const warningKeywords = [
-      "未签到(系统)",
-      "未签退(系统)",
-      "未签到",
-      "未签退",
-    ];
-    const errorKeywords = ["迟到", "旷工", "早退"];
+    ]
+    const warningKeywords = ["未签到(系统)", "未签退(系统)", "未签到", "未签退"]
+    const errorKeywords = ["迟到", "旷工", "早退"]
 
     if (successKeywords.some((keyword) => signInStateStr.includes(keyword))) {
-      return "bg-green-100 dark:bg-green-900/20";
+      return "bg-green-100 dark:bg-green-900/20"
     } else if (
       warningKeywords.some((keyword) => signInStateStr.includes(keyword))
     ) {
-      return "bg-yellow-100 dark:bg-yellow-900/20";
+      return "bg-yellow-100 dark:bg-yellow-900/20"
     } else if (
       errorKeywords.some((keyword) => signInStateStr.includes(keyword))
     ) {
-      return "bg-red-100 dark:bg-red-900/20";
+      return "bg-red-100 dark:bg-red-900/20"
     } else {
-      return "bg-gray-100 dark:bg-red-900/20";
+      return "bg-gray-100 dark:bg-red-900/20"
     }
   }
 
@@ -192,7 +187,7 @@ const MobileAttendanceCalendar: React.FC<MobileAttendanceCalendarProps> = ({
         </Card>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default MobileAttendanceCalendar;
+export default MobileAttendanceCalendar

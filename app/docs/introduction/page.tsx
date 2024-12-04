@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   Card,
@@ -6,7 +6,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/ui/card"
 
 export default function IntroductionPage() {
   return (
@@ -58,5 +58,5 @@ export default function IntroductionPage() {
         </Card>
       </div>
     </div>
-  );
+  )
 }

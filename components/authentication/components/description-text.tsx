@@ -1,6 +1,6 @@
 // components/authentication/components/description-text.tsx
 interface DescriptionTextProps {
-  mode: "login" | "register";
+  mode: "login" | "register"
 }
 
 export function DescriptionText({ mode }: DescriptionTextProps) {
@@ -23,7 +23,7 @@ export function DescriptionText({ mode }: DescriptionTextProps) {
           {/*</ul>*/}
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -44,5 +44,5 @@ export function DescriptionText({ mode }: DescriptionTextProps) {
         {/*</ul>*/}
       </div>
     </div>
-  );
+  )
 }

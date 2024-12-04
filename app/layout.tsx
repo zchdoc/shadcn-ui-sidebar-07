@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata } from "next"
 // import localFont from "next/font/local";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/toaster";
-import { AuthProvider } from "@/components/auth-provider";
-import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider"
+import { Toaster } from "@/components/toaster"
+import { AuthProvider } from "@/components/auth-provider"
+import "./globals.css"
 
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",
@@ -27,12 +27,12 @@ export const metadata: Metadata = {
       },
     ],
   },
-};
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -49,5 +49,5 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   BadgeCheck,
@@ -8,9 +8,9 @@ import {
   LogOut,
   Sparkles,
   Trash2,
-} from "lucide-react";
+} from "lucide-react"
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,35 +19,35 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu"
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar";
-import { clearAuth } from "@/lib/auth";
-import { useAuth } from "@/components/auth-provider";
-import { useRouter } from "next/navigation";
+} from "@/components/ui/sidebar"
+import { clearAuth } from "@/lib/auth"
+import { useAuth } from "@/components/auth-provider"
+import { useRouter } from "next/navigation"
 
 export function NavUser({
   user,
 }: {
   user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
+    name: string
+    email: string
+    avatar: string
+  }
 }) {
-  const { isMobile } = useSidebar();
-  const { setIsAuthenticated } = useAuth();
-  const router = useRouter();
+  const { isMobile } = useSidebar()
+  const { setIsAuthenticated } = useAuth()
+  const router = useRouter()
 
   const handleReset = () => {
-    clearAuth();
-    setIsAuthenticated(false);
-    router.push("/login");
-  };
+    clearAuth()
+    setIsAuthenticated(false)
+    router.push("/login")
+  }
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -122,5 +122,5 @@ export function NavUser({
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
-  );
+  )
 }
