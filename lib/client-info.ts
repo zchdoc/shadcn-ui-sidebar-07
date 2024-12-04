@@ -11,6 +11,9 @@ interface ClientInfo {
   }
   operatingSystem: string
 
+  // IP 地址信息
+  ipAddress?: string
+
   // 时间和地区信息
   systemTime: string
   timeZone: string
@@ -91,6 +94,16 @@ export async function getClientInfo(): Promise<ClientInfo> {
   }
 
   try {
+    // 尝试获取 IP 地址
+    let ipAddress = "unknown"
+    try {
+      const response = await fetch("https://api.ipify.org?format=json")
+      const data = await response.json()
+      ipAddress = data.ip
+    } catch (error) {
+      console.error("Error fetching IP address:", error)
+    }
+
     // 基本浏览器信息
     const ua = navigator.userAgent
     const browserInfo = {
@@ -211,6 +224,7 @@ export async function getClientInfo(): Promise<ClientInfo> {
       userAgent: ua,
       browserInfo,
       operatingSystem,
+      ipAddress,
       systemTime,
       timeZone,
       screenInfo,
@@ -302,6 +316,7 @@ function getServerSideDefaultInfo(): ClientInfo {
       jsEnabled: false,
     },
     operatingSystem: "server-side",
+    ipAddress: "unknown",
     systemTime: new Date().toISOString(),
     timeZone: "UTC",
     screenInfo: {
