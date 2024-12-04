@@ -1,4 +1,6 @@
 "use client"
 import { HistoryView } from "@/components/attendance/history-view"
 
-;<HistoryView />
+export default function History() {
+  return <HistoryView />
+}
