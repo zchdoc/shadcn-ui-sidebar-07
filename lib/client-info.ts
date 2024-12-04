@@ -128,6 +128,7 @@ export async function getClientInfo(): Promise<ClientInfo> {
       cookiesEnabled: navigator.cookieEnabled,
     }
 
+    // 存储内容
     const storageContent = {
       localStorage: storageAvailable.localStorage
         ? getStorageContent("localStorage")

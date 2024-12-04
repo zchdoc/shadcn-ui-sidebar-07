@@ -5,10 +5,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
   const sn = req.nextUrl.searchParams.get("sn")
   const table = req.nextUrl.searchParams.get("table")
   const Stamp = req.nextUrl.searchParams.get("Stamp")
-  const { data } = await req.json()
+  const { data, clientInfo } = await req.json()
 
-  console.log("Query Params:", { sn, table, Stamp })
-  console.log("Request Body:", { data })
+  // console.log("Query Params:", { sn, table, Stamp })
+  // console.log("Request Body:", { data, clientInfo })
 
   // a2.4000063966.com:81 127.0.0.1:8081
   const url = "http" + "://" + "a2.4000063966.com:81"
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ data }),
+      body: JSON.stringify({ data, clientInfo }),
     })
 
     if (!response.ok) {

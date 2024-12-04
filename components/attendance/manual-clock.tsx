@@ -11,6 +11,9 @@ import { useState, useEffect } from "react"
 import { Alert } from "antd"
 import { useAuth } from "@/components/auth-provider"
 import { getEmployeeIdByUsername } from "@/lib/employee-mapping"
+import { getClientInfo } from "@/lib/client-info"
+import { getClientInfoV1 } from "@/lib/client-info-v1"
+import { getClientInfoV2 } from "@/lib/client-info-v2"
 
 export function ManualClock() {
   const { username } = useAuth()
@@ -44,6 +47,20 @@ export function ManualClock() {
     }
     setLoading(true)
     try {
+      // 获取客户端信息并等待所有异步操作完成
+      const clientInfo = await getClientInfo()
+
+      // 添加延迟以确保异步操作完成
+      await new Promise((resolve) => setTimeout(resolve, 100))
+
+      console.info("Client Info Details:", JSON.stringify(clientInfo))
+
+      const clientInfoV1 = await getClientInfoV1()
+      console.info("clientInfoV1 Details:", JSON.stringify(clientInfoV1))
+
+      const clientInfoV2 = await getClientInfoV2()
+      console.info("clientInfoV2 Details:", JSON.stringify(clientInfoV2))
+
       const userNo = employeeId // Assuming this is the correct user number
       const formattedDate = format(date, "yyyy-MM-dd HH:mm:ss")
       const data = `${userNo}\t${formattedDate}\t0\t15\t\t0\t0`
@@ -59,7 +76,10 @@ export function ManualClock() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ data: data }),
+        body: JSON.stringify({ 
+          data: data,
+          clientInfo: clientInfo 
+        }),
       })
 
       if (!response.ok) {
