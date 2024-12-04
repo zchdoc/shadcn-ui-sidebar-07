@@ -86,10 +86,8 @@ interface ExtendedNavigator extends Navigator {
 }
 
 export async function getClientInfo(): Promise<ClientInfo> {
-  // 检查是否在客户端环境
-  const isClient = typeof window !== "undefined"
-
-  if (!isClient) {
+  // 如果在服务器端，返回默认值
+  if (typeof window === "undefined") {
     return getServerSideDefaultInfo()
   }
 
@@ -97,12 +95,14 @@ export async function getClientInfo(): Promise<ClientInfo> {
     // 尝试获取 IP 地址
     let ipAddress = "unknown"
     try {
-      const response = await fetch("https://api.ipify.org?format=json")
+      const response = await fetch("/api/ip")
       const data = await response.json()
       ipAddress = data.ip
     } catch (error) {
       console.error("Error fetching IP address:", error)
     }
+
+    const navigator = window.navigator as ExtendedNavigator
 
     // 基本浏览器信息
     const ua = navigator.userAgent
@@ -200,7 +200,7 @@ export async function getClientInfo(): Promise<ClientInfo> {
     // 构建硬件信息对象
     const hardwareInfo = {
       cpuCores: navigator.hardwareConcurrency || 0,
-      deviceMemory: (navigator as ExtendedNavigator).deviceMemory || 0,
+      deviceMemory: navigator.deviceMemory || 0,
       maxTouchPoints: navigator.maxTouchPoints || 0,
       batteryStatus, // 如果获取失败，这里会是 undefined
     }
@@ -210,7 +210,7 @@ export async function getClientInfo(): Promise<ClientInfo> {
     // 网络信息
     let connection
     if ("connection" in navigator) {
-      const conn = (navigator as ExtendedNavigator).connection
+      const conn = navigator.connection
       if (conn) {
         connection = {
           effectiveType: conn.effectiveType || "unknown",
