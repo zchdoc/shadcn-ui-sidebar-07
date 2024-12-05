@@ -60,7 +60,11 @@ const DateTimePickerCn = ({
       const currentMinutes = date.getMinutes()
       const currentSeconds = date.getSeconds()
 
-      if (currentHours !== hours || currentMinutes !== minutes || currentSeconds !== seconds) {
+      if (
+        currentHours !== hours ||
+        currentMinutes !== minutes ||
+        currentSeconds !== seconds
+      ) {
         const newDate = new Date(date)
         newDate.setHours(hours)
         newDate.setMinutes(minutes)
