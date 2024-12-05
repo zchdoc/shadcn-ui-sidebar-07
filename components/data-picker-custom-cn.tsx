@@ -48,7 +48,7 @@ const DateTimePickerCn = ({
       setMinutes(date.getMinutes())
       setSeconds(date.getSeconds())
     }
-  }, [date])
+  }, [date, setDate, hours, minutes, seconds])
 
   // 添加 Popover 开关状态控制
   const [open, setOpen] = React.useState(false)
@@ -72,7 +72,7 @@ const DateTimePickerCn = ({
         setDate(newDate)
       }
     }
-  }, [hours, minutes, seconds])
+  }, [hours, minutes, seconds, date, setDate])
 
   const hoursOptions = Array.from({ length: 24 }, (_, i) => i)
   const minutesOptions = Array.from({ length: 60 }, (_, i) => i)
