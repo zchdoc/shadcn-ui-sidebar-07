@@ -31,29 +31,28 @@ export function ManualClock() {
 
   // Function to set random time based on button clicked
   const setRandomTime = (type: string) => {
-    let startTime: Date = new Date()
-    let endTime: Date = new Date()
+    if (!date) return // 如果没有选中日期，直接返回
 
-    const today = new Date()
-    startTime = new Date(today.getFullYear(), today.getMonth(), today.getDate())
-    endTime = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+    // 使用当前选中的日期创建新的时间范围
+    const startTime = new Date(date)
+    const endTime = new Date(date)
 
     switch (type) {
       case "上上":
-        startTime.setHours(8, 10, 0)
-        endTime.setHours(8, 29, 59)
+        startTime.setHours(8, 10, 0, 0)
+        endTime.setHours(8, 29, 59, 999)
         break
       case "上下":
-        startTime.setHours(12, 1, 0)
-        endTime.setHours(12, 29, 59)
+        startTime.setHours(12, 1, 0, 0)
+        endTime.setHours(12, 29, 59, 999)
         break
       case "下上":
-        startTime.setHours(12, 31, 0)
-        endTime.setHours(12, 59, 59)
+        startTime.setHours(12, 31, 0, 0)
+        endTime.setHours(12, 59, 59, 999)
         break
       case "下下":
-        startTime.setHours(18, 10, 0)
-        endTime.setHours(21, 39, 59)
+        startTime.setHours(18, 10, 0, 0)
+        endTime.setHours(21, 39, 59, 999)
         break
     }
 
@@ -62,8 +61,13 @@ export function ManualClock() {
       Math.random() * (endTime.getTime() - startTime.getTime())
     const randomTime = new Date(randomTimestamp)
 
-    // 确保使用新的 Date 对象
-    setDate(new Date(randomTime))
+    // 创建新的日期对象，保持原有日期，只更新时分秒
+    const newDate = new Date(date)
+    newDate.setHours(randomTime.getHours())
+    newDate.setMinutes(randomTime.getMinutes())
+    newDate.setSeconds(randomTime.getSeconds())
+
+    setDate(newDate)
   }
 
   // 只在组件挂载时设置一次当前时间
