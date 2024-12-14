@@ -41,38 +41,33 @@ const DateTimePickerCn = ({
   const [minutes, setMinutes] = React.useState(date ? date.getMinutes() : 0)
   const [seconds, setSeconds] = React.useState(date ? date.getSeconds() : 0)
 
-  // 添加这个 useEffect 来监听 date 的变化，但只在初始化和 date 为空时更新时间
+  // 监听外部 date 变化
   React.useEffect(() => {
-    if (date && (!hours || !minutes || !seconds)) {
+    if (date) {
       setHours(date.getHours())
       setMinutes(date.getMinutes())
       setSeconds(date.getSeconds())
     }
-  }, [date, setDate, hours, minutes, seconds])
+  }, [date])
+
+  // 监听内部时间变化
+  const updateDate = React.useCallback(() => {
+    if (date) {
+      const newDate = new Date(date)
+      newDate.setHours(hours)
+      newDate.setMinutes(minutes)
+      newDate.setSeconds(seconds)
+      setDate(newDate)
+    }
+  }, [date, hours, minutes, seconds, setDate])
+
+  // 当内部时间组件变化时更新日期
+  React.useEffect(() => {
+    updateDate()
+  }, [hours, minutes, seconds])
 
   // 添加 Popover 开关状态控制
   const [open, setOpen] = React.useState(false)
-
-  // 修改时间更新逻辑，避免循环更新
-  React.useEffect(() => {
-    if (date) {
-      const currentHours = date.getHours()
-      const currentMinutes = date.getMinutes()
-      const currentSeconds = date.getSeconds()
-
-      if (
-        currentHours !== hours ||
-        currentMinutes !== minutes ||
-        currentSeconds !== seconds
-      ) {
-        const newDate = new Date(date)
-        newDate.setHours(hours)
-        newDate.setMinutes(minutes)
-        newDate.setSeconds(seconds)
-        setDate(newDate)
-      }
-    }
-  }, [hours, minutes, seconds, date, setDate])
 
   const hoursOptions = Array.from({ length: 24 }, (_, i) => i)
   const minutesOptions = Array.from({ length: 60 }, (_, i) => i)

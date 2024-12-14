@@ -28,8 +28,46 @@ export function ManualClock() {
   const [loading, setLoading] = React.useState(false)
   const { toast } = useToast()
   const [error, setError] = useState<string | null>(null)
+
+  // Function to set random time based on button clicked
+  const setRandomTime = (type: string) => {
+    let startTime: Date = new Date()
+    let endTime: Date = new Date()
+
+    const today = new Date()
+    startTime = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+    endTime = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+
+    switch (type) {
+      case "上上":
+        startTime.setHours(8, 10, 0)
+        endTime.setHours(8, 29, 59)
+        break
+      case "上下":
+        startTime.setHours(12, 1, 0)
+        endTime.setHours(12, 29, 59)
+        break
+      case "下上":
+        startTime.setHours(12, 31, 0)
+        endTime.setHours(12, 59, 59)
+        break
+      case "下下":
+        startTime.setHours(18, 10, 0)
+        endTime.setHours(21, 39, 59)
+        break
+    }
+
+    const randomTimestamp =
+      startTime.getTime() +
+      Math.random() * (endTime.getTime() - startTime.getTime())
+    const randomTime = new Date(randomTimestamp)
+
+    // 确保使用新的 Date 对象
+    setDate(new Date(randomTime))
+  }
+
+  // 只在组件挂载时设置一次当前时间
   useEffect(() => {
-    // 设置 date 默认为当前时间
     setDate(new Date())
   }, [])
 
@@ -142,6 +180,40 @@ export function ManualClock() {
       <Button className="w-full" onClick={handleClockIn} disabled={loading}>
         {loading ? "Processing..." : "模拟"}
       </Button>
+      <div className="flex gap-2 mt-2">
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex-1"
+          onClick={() => setRandomTime("上上")}
+        >
+          上上
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex-1"
+          onClick={() => setRandomTime("上下")}
+        >
+          上下
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex-1"
+          onClick={() => setRandomTime("下上")}
+        >
+          下上
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex-1"
+          onClick={() => setRandomTime("下下")}
+        >
+          下下
+        </Button>
+      </div>
       {error && (
         <Alert message="Error" description={error} type="error" showIcon />
       )}
