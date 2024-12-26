@@ -4,5 +4,10 @@
   "editor.fontFamily": "Monaco, 'Courier New', monospace,Menlo",
   "editor.fontSize": 18,
   "fittencode.showSubmenu": true,
-  "fittencode.languagePreference.displayPreference": "zh-cn"
+  "fittencode.languagePreference.displayPreference": "zh-cn",
+  "git.autoStash": true,
+  "git.enableSmartCommit": true,
+  "git.smartCommitChanges": "all",
+  "git.suggestSmartCommit": true,
+  "git.autoRepositoryDetection": true,
 }
