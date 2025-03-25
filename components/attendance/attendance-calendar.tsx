@@ -206,6 +206,7 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
       "请假(系统)",
       "未排班(系统)",
     ]
+
     const warningKeywords = ["未签到(系统)", "未签退(系统)", "未签到", "未签退"]
     const errorKeywords = ["迟到", "旷工", "早退"]
 

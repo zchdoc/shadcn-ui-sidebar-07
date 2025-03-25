@@ -22,11 +22,7 @@ import {
 export function TeamSwitcher({
   teams,
 }: {
-  teams: {
-    name: string
-    logo: React.ElementType
-    plan: string
-  }[]
+  teams: { name: string; logo: React.ElementType; plan: string }[]
 }) {
   const { isMobile } = useSidebar()
   const [activeTeam, setActiveTeam] = React.useState(teams[0])

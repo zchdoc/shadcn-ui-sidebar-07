@@ -52,6 +52,7 @@ const data = {
       plan: "Free",
     },
   ],
+
   navMain: [
     {
       title: "Playground",
@@ -137,6 +138,7 @@ const data = {
       ],
     },
   ],
+
   projects: [
     {
       name: "Design Engineering",

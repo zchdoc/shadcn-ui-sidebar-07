@@ -33,11 +33,7 @@ import { useRouter } from "next/navigation"
 export function NavUser({
   user,
 }: {
-  user: {
-    name: string
-    email: string
-    avatar: string
-  }
+  user: { name: string; email: string; avatar: string }
 }) {
   const { isMobile } = useSidebar()
   const { setIsAuthenticated } = useAuth()

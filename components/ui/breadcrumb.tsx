@@ -86,6 +86,7 @@ const BreadcrumbSeparator = ({
     {children ?? <ChevronRightIcon />}
   </li>
 )
+
 BreadcrumbSeparator.displayName = "BreadcrumbSeparator"
 
 const BreadcrumbEllipsis = ({
@@ -102,6 +103,7 @@ const BreadcrumbEllipsis = ({
     <span className="sr-only">More</span>
   </span>
 )
+
 BreadcrumbEllipsis.displayName = "BreadcrumbElipssis"
 
 export {

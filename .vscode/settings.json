@@ -9,5 +9,5 @@
   "git.enableSmartCommit": true,
   "git.smartCommitChanges": "all",
   "git.suggestSmartCommit": true,
-  "git.autoRepositoryDetection": true,
+  "git.autoRepositoryDetection": true
 }

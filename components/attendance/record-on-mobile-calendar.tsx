@@ -109,6 +109,7 @@ const MobileAttendanceCalendar: React.FC<MobileAttendanceCalendarProps> = ({
       "请假(系统)",
       "未排班(系统)",
     ]
+
     const warningKeywords = ["未签到(系统)", "未签退(系统)", "未签到", "未签退"]
     const errorKeywords = ["迟到", "旷工", "早退"]
 
@@ -141,6 +142,7 @@ const MobileAttendanceCalendar: React.FC<MobileAttendanceCalendarProps> = ({
         className="rounded-md border shadow"
         ISOWeek
       />
+
       {selectedDate && selectedRecords.length > 0 && (
         <Card>
           <CardContent className="pt-4">
