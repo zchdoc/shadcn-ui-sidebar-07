@@ -87,19 +87,19 @@ interface ExtendedNavigator extends Navigator {
 
 export async function getClientInfo(): Promise<ClientInfo> {
   // 如果在服务器端，返回默认值
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     return getServerSideDefaultInfo()
   }
 
   try {
     // 尝试获取 IP 地址
-    let ipAddress = "unknown"
+    let ipAddress = 'unknown'
     try {
-      const response = await fetch("/api/ip")
+      const response = await fetch('/api/ip')
       const data = await response.json()
       ipAddress = data.ip
     } catch (error) {
-      console.error("Error fetching IP address:", error)
+      console.error('Error fetching IP address:', error)
     }
 
     const navigator = window.navigator as ExtendedNavigator
@@ -109,7 +109,7 @@ export async function getClientInfo(): Promise<ClientInfo> {
     const browserInfo = {
       name: getBrowserName(ua),
       version: getBrowserVersion(ua),
-      language: navigator.language || "unknown",
+      language: navigator.language || 'unknown',
       cookiesEnabled: navigator.cookieEnabled,
       jsEnabled: true,
     }
@@ -136,35 +136,35 @@ export async function getClientInfo(): Promise<ClientInfo> {
 
     // 存储可用性和内容
     const storageAvailable = {
-      localStorage: isStorageAvailable("localStorage"),
-      sessionStorage: isStorageAvailable("sessionStorage"),
+      localStorage: isStorageAvailable('localStorage'),
+      sessionStorage: isStorageAvailable('sessionStorage'),
       cookiesEnabled: navigator.cookieEnabled,
     }
 
     // 存储内容
     const storageContent = {
       localStorage: storageAvailable.localStorage
-        ? getStorageContent("localStorage")
+        ? getStorageContent('localStorage')
         : {},
       sessionStorage: storageAvailable.sessionStorage
-        ? getStorageContent("sessionStorage")
+        ? getStorageContent('sessionStorage')
         : {},
     }
 
     // 获取电池信息
     let batteryStatus
-    if (typeof navigator !== "undefined") {
+    if (typeof navigator !== 'undefined') {
       try {
-        console.log("Checking battery API availability...")
+        console.log('Checking battery API availability...')
 
         const nav = navigator as NavigatorWithBattery
         // 检查 Battery API 实现
         const getBatteryMethod = nav.getBattery
 
         if (getBatteryMethod) {
-          console.log("Battery API found, attempting to get battery info...")
+          console.log('Battery API found, attempting to get battery info...')
           const battery = await getBatteryMethod.call(nav)
-          console.log("Raw battery info:", battery)
+          console.log('Raw battery info:', battery)
 
           if (battery) {
             batteryStatus = {
@@ -175,26 +175,26 @@ export async function getClientInfo(): Promise<ClientInfo> {
             }
 
             // 添加电池事件监听器
-            battery.addEventListener("chargingchange", () => {
-              console.log("Battery charging changed:", battery.charging)
+            battery.addEventListener('chargingchange', () => {
+              console.log('Battery charging changed:', battery.charging)
             })
 
-            battery.addEventListener("levelchange", () => {
-              console.log("Battery level changed:", battery.level)
+            battery.addEventListener('levelchange', () => {
+              console.log('Battery level changed:', battery.level)
             })
 
-            console.log("Processed battery status:", batteryStatus)
+            console.log('Processed battery status:', batteryStatus)
           } else {
-            console.log("Battery object is null or undefined")
+            console.log('Battery object is null or undefined')
           }
         } else {
-          console.log("No Battery API implementation found")
+          console.log('No Battery API implementation found')
         }
       } catch (e) {
-        console.warn("Battery API error:", e)
+        console.warn('Battery API error:', e)
       }
     } else {
-      console.log("Navigator not available (server-side rendering)")
+      console.log('Navigator not available (server-side rendering)')
     }
 
     // 构建硬件信息对象
@@ -205,15 +205,15 @@ export async function getClientInfo(): Promise<ClientInfo> {
       batteryStatus, // 如果获取失败，这里会是 undefined
     }
 
-    console.log("Final hardware info:", hardwareInfo)
+    console.log('Final hardware info:', hardwareInfo)
 
     // 网络信息
     let connection
-    if ("connection" in navigator) {
+    if ('connection' in navigator) {
       const conn = navigator.connection
       if (conn) {
         connection = {
-          effectiveType: conn.effectiveType || "unknown",
+          effectiveType: conn.effectiveType || 'unknown',
           downlink: conn.downlink || 0,
           rtt: conn.rtt || 0,
         }
@@ -235,41 +235,41 @@ export async function getClientInfo(): Promise<ClientInfo> {
       connection,
     }
   } catch (error) {
-    console.error("Error getting client info:", error)
+    console.error('Error getting client info:', error)
     return getServerSideDefaultInfo()
   }
 }
 
 // 辅助函数
 function getBrowserName(ua: string): string {
-  if (ua.includes("Firefox")) return "Firefox"
-  if (ua.includes("Chrome")) return "Chrome"
-  if (ua.includes("Safari")) return "Safari"
-  if (ua.includes("Edge")) return "Edge"
-  if (ua.includes("Opera")) return "Opera"
-  return "Unknown"
+  if (ua.includes('Firefox')) return 'Firefox'
+  if (ua.includes('Chrome')) return 'Chrome'
+  if (ua.includes('Safari')) return 'Safari'
+  if (ua.includes('Edge')) return 'Edge'
+  if (ua.includes('Opera')) return 'Opera'
+  return 'Unknown'
 }
 
 function getBrowserVersion(ua: string): string {
   const match = ua.match(
     /(firefox|chrome|safari|opera|edge)[/\s](\d+(\.\d+)?)/i
   )
-  return match ? match[2] : "unknown"
+  return match ? match[2] : 'unknown'
 }
 
 function getOperatingSystem(ua: string): string {
-  if (ua.includes("Windows")) return "Windows"
-  if (ua.includes("Mac")) return "MacOS"
-  if (ua.includes("Linux")) return "Linux"
-  if (ua.includes("Android")) return "Android"
-  if (ua.includes("iOS")) return "iOS"
-  return "Unknown"
+  if (ua.includes('Windows')) return 'Windows'
+  if (ua.includes('Mac')) return 'MacOS'
+  if (ua.includes('Linux')) return 'Linux'
+  if (ua.includes('Android')) return 'Android'
+  if (ua.includes('iOS')) return 'iOS'
+  return 'Unknown'
 }
 
-function isStorageAvailable(type: "localStorage" | "sessionStorage"): boolean {
+function isStorageAvailable(type: 'localStorage' | 'sessionStorage'): boolean {
   try {
     const storage = window[type]
-    const x = "__storage_test__"
+    const x = '__storage_test__'
     storage.setItem(x, x)
     storage.removeItem(x)
     return true
@@ -281,7 +281,7 @@ function isStorageAvailable(type: "localStorage" | "sessionStorage"): boolean {
 
 // 获取存储内容
 function getStorageContent(
-  type: "localStorage" | "sessionStorage"
+  type: 'localStorage' | 'sessionStorage'
 ): Record<string, string> {
   try {
     const storage = window[type]
@@ -307,18 +307,18 @@ function getStorageContent(
 // 服务器端默认信息
 function getServerSideDefaultInfo(): ClientInfo {
   return {
-    userAgent: "server-side",
+    userAgent: 'server-side',
     browserInfo: {
-      name: "server-side",
-      version: "server-side",
-      language: "server-side",
+      name: 'server-side',
+      version: 'server-side',
+      language: 'server-side',
       cookiesEnabled: false,
       jsEnabled: false,
     },
-    operatingSystem: "server-side",
-    ipAddress: "unknown",
+    operatingSystem: 'server-side',
+    ipAddress: 'unknown',
     systemTime: new Date().toISOString(),
-    timeZone: "UTC",
+    timeZone: 'UTC',
     screenInfo: {
       width: 0,
       height: 0,

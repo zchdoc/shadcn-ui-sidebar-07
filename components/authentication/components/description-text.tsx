@@ -1,10 +1,10 @@
 // components/authentication/components/description-text.tsx
 interface DescriptionTextProps {
-  mode: "login" | "register"
+  mode: 'login' | 'register'
 }
 
 export function DescriptionText({ mode }: DescriptionTextProps) {
-  if (mode === "login") {
+  if (mode === 'login') {
     return (
       <div className="space-y-6">
         <h1 className="text-3xl font-semibold tracking-tight">

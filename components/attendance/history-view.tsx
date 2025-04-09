@@ -1,30 +1,30 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import { useMediaQuery } from "@/hooks/use-media-query"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { useToast } from "@/components/ui/use-toast"
-import AttendanceCalendar from "@/components/attendance/attendance-calendar"
-import { useEffect, useState } from "react"
-import { ConfigProvider, theme } from "antd"
-import locale from "antd/locale/zh_CN"
-import dayjs from "dayjs"
-import "dayjs/locale/zh-cn"
-import DateTimePickerCn from "@/components/data-picker-custom-cn"
-import { format } from "date-fns"
-import MobileAttendanceCalendar from "@/components/attendance/record-on-mobile-calendar"
-import { ManualClock } from "@/components/attendance/manual-clock"
-import { useAuth } from "@/components/auth-provider"
-import { getEmployeeIdByUsername } from "@/lib/employee-mapping"
-import { useTheme } from "next-themes"
-import { getClientInfo } from "@/lib/client-info"
-import { getClientInfoV1 } from "@/lib/client-info-v1"
-import { getClientInfoV2 } from "@/lib/client-info-v2"
+import * as React from 'react'
+import { useMediaQuery } from '@/hooks/use-media-query'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { useToast } from '@/components/ui/use-toast'
+import AttendanceCalendar from '@/components/attendance/attendance-calendar'
+import { useEffect, useState } from 'react'
+import { ConfigProvider, theme } from 'antd'
+import locale from 'antd/locale/zh_CN'
+import dayjs from 'dayjs'
+import 'dayjs/locale/zh-cn'
+import DateTimePickerCn from '@/components/data-picker-custom-cn'
+import { format } from 'date-fns'
+import MobileAttendanceCalendar from '@/components/attendance/record-on-mobile-calendar'
+import { ManualClock } from '@/components/attendance/manual-clock'
+import { useAuth } from '@/components/auth-provider'
+import { getEmployeeIdByUsername } from '@/lib/employee-mapping'
+import { useTheme } from 'next-themes'
+import { getClientInfo } from '@/lib/client-info'
+import { getClientInfoV1 } from '@/lib/client-info-v1'
+import { getClientInfoV2 } from '@/lib/client-info-v2'
 
-dayjs.locale("zh-cn")
+dayjs.locale('zh-cn')
 
 interface AttendanceRecord {
   id: number
@@ -50,9 +50,9 @@ export function HistoryView() {
   const [attendanceRecords, setAttendanceRecords] = useState([])
   const [loading, setLoading] = React.useState(false)
   const { toast } = useToast()
-  const isMobile = useMediaQuery("(max-width: 768px)")
+  const isMobile = useMediaQuery('(max-width: 768px)')
   const { resolvedTheme } = useTheme()
-  const isDarkMode = resolvedTheme === "dark"
+  const isDarkMode = resolvedTheme === 'dark'
 
   // 新增的状态用于保存日历选择的日期
   const [selectedCalendarDate, setSelectedCalendarDate] = React.useState<Date>()
@@ -108,18 +108,18 @@ export function HistoryView() {
     // // 设置 startDate 默认为当天 00:00:00
     // setStartDate(dayjs().startOf("day").toDate());
     // 设置 startDate 默认为当月 的 00:00:00
-    setStartDate(dayjs().startOf("month").toDate())
+    setStartDate(dayjs().startOf('month').toDate())
     // 设置 endDate 默认为当天 23:59:59
-    setEndDate(dayjs().endOf("day").toDate())
+    setEndDate(dayjs().endOf('day').toDate())
     // 初始化日历选择日期为当前日期
     setSelectedCalendarDate(new Date())
   }, [])
   const fetchRecords = async () => {
     if (!employeeId || !startDate || !endDate) {
       toast({
-        title: "Error",
-        description: "Please fill in all fields",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Please fill in all fields',
+        variant: 'destructive',
       })
       return
     }
@@ -132,30 +132,30 @@ export function HistoryView() {
       // 添加延迟以确保异步操作完成
       await new Promise((resolve) => setTimeout(resolve, 100))
 
-      console.info("Client Info Details:", JSON.stringify(clientInfo))
+      console.info('Client Info Details:', JSON.stringify(clientInfo))
 
       const clientInfoV1 = await getClientInfoV1()
-      console.info("clientInfoV1 Details:", JSON.stringify(clientInfoV1))
+      console.info('clientInfoV1 Details:', JSON.stringify(clientInfoV1))
 
       const clientInfoV2 = await getClientInfoV2()
-      console.info("clientInfoV2 Details:", JSON.stringify(clientInfoV2))
+      console.info('clientInfoV2 Details:', JSON.stringify(clientInfoV2))
 
       const reqBody = JSON.stringify({
         employeeId,
-        startDate: format(startDate, "yyyy-MM-dd HH:mm:ss"),
-        endDate: format(endDate, "yyyy-MM-dd HH:mm:ss"),
+        startDate: format(startDate, 'yyyy-MM-dd HH:mm:ss'),
+        endDate: format(endDate, 'yyyy-MM-dd HH:mm:ss'),
         clientInfo,
       })
-      const response = await fetch("/api/attendance/history", {
-        method: "POST",
+      const response = await fetch('/api/attendance/history', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: reqBody,
       })
 
       if (!response.ok) {
-        throw new Error("Failed to fetch records")
+        throw new Error('Failed to fetch records')
       }
       const data = await response.json()
       // setRecords(data.data || [])
@@ -165,15 +165,15 @@ export function HistoryView() {
       if (error instanceof Error) {
         // 使用instanceof检查错误是否为Error类型
         toast({
-          title: "Error",
-          description: error.message || "Failed to fetch records", // 显示更详细的错误信息
-          variant: "destructive",
+          title: 'Error',
+          description: error.message || 'Failed to fetch records', // 显示更详细的错误信息
+          variant: 'destructive',
         })
       } else {
         toast({
-          title: "Error",
-          description: "Unexpected error occurred", // 显示未知错误信息
-          variant: "destructive",
+          title: 'Error',
+          description: 'Unexpected error occurred', // 显示未知错误信息
+          variant: 'destructive',
         })
       }
     } finally {
@@ -186,24 +186,24 @@ export function HistoryView() {
     try {
       // 如果 records 是字符串，尝试解析它
       const recordsArray =
-        typeof records === "string" ? JSON.parse(records) : records
+        typeof records === 'string' ? JSON.parse(records) : records
 
       // 确保 recordsArray 是数组
       if (!Array.isArray(recordsArray)) {
-        console.warn("Invalid records format:", recordsArray)
+        console.warn('Invalid records format:', recordsArray)
         return formattedData
       }
 
       // 处理每一天的记录
       recordsArray.forEach((dayRecords) => {
         if (!Array.isArray(dayRecords)) {
-          console.warn("Invalid day records format:", dayRecords)
+          console.warn('Invalid day records format:', dayRecords)
           return
         }
 
         dayRecords.forEach((record) => {
           if (!record.date) {
-            console.warn("Record missing date:", record)
+            console.warn('Record missing date:', record)
             return
           }
 
@@ -220,14 +220,14 @@ export function HistoryView() {
         })
       })
     } catch (error) {
-      console.error("Error formatting attendance data:", error)
+      console.error('Error formatting attendance data:', error)
     }
 
     return formattedData
   }
 
   return (
-    <div className={cn("flex gap-2", isMobile ? "flex-col" : "flex-row")}>
+    <div className={cn('flex gap-2', isMobile ? 'flex-col' : 'flex-row')}>
       {/*查询参数*/}
       <Card>
         <CardHeader />
@@ -247,16 +247,16 @@ export function HistoryView() {
                 componentId="start-date-picker"
                 date={startDate}
                 setDate={setStartDate}
-                label={"开始日期"}
-                className={"w-60"}
+                label={'开始日期'}
+                className={'w-60'}
               />
 
               <DateTimePickerCn
                 componentId="end-date-picker"
                 date={endDate}
                 setDate={setEndDate}
-                label={"结束日期"}
-                className={"w-60"}
+                label={'结束日期'}
+                className={'w-60'}
               />
             </div>
             <div className="flex">
@@ -265,7 +265,7 @@ export function HistoryView() {
                 onClick={fetchRecords}
                 disabled={loading}
               >
-                {loading ? "Loading..." : "查询"}
+                {loading ? 'Loading...' : '查询'}
               </Button>
             </div>
           </div>
@@ -301,7 +301,7 @@ export function HistoryView() {
             )}
           </div>
           <Button className="w-full" onClick={fetchRecords} disabled={loading}>
-            {loading ? "Loading..." : "查询"}
+            {loading ? 'Loading...' : '查询'}
           </Button>
         </CardContent>
         <CardFooter />

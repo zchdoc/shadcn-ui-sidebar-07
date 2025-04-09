@@ -1,10 +1,10 @@
-"use client"
+'use client'
 
-import React, { createContext, useContext, useEffect, useState } from "react"
-import { useRouter, usePathname } from "next/navigation"
-import { AUTH_KEY, validateToken } from "@/lib/auth"
-import { SecureStorage } from "@/lib/secure-storage"
-import { decrypt } from "@/lib/crypto"
+import React, { createContext, useContext, useEffect, useState } from 'react'
+import { useRouter, usePathname } from 'next/navigation'
+import { AUTH_KEY, validateToken } from '@/lib/auth'
+import { SecureStorage } from '@/lib/secure-storage'
+import { decrypt } from '@/lib/crypto'
 
 interface AuthContextType {
   isAuthenticated: boolean
@@ -27,8 +27,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const isValid = validateToken(token)
 
       // Avoid state updates if on login page and token is valid
-      if (pathname === "/login" && isValid) {
-        router.replace("/dashboard")
+      if (pathname === '/login' && isValid) {
+        router.replace('/dashboard')
         setIsLoading(false)
         return
       }
@@ -39,10 +39,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
           const decryptedToken = decrypt(token)
           const decoded = atob(decryptedToken)
-          const extractedUsername = decoded.split("_")[0]
+          const extractedUsername = decoded.split('_')[0]
           setUsername(extractedUsername)
         } catch (error) {
-          console.error("Token decryption error:", error)
+          console.error('Token decryption error:', error)
           setUsername(null)
           setIsAuthenticated(false)
         }
@@ -51,7 +51,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       // Redirect if not authenticated and not on login page
-      if (!isValid && pathname !== "/login") {
+      if (!isValid && pathname !== '/login') {
         router.replace(`/login?callbackUrl=${encodeURIComponent(pathname)}`)
       }
 
@@ -81,7 +81,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext)
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider")
+    throw new Error('useAuth must be used within an AuthProvider')
   }
   return context
 }

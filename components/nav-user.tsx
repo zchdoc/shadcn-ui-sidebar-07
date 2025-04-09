@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {
   BadgeCheck,
@@ -8,9 +8,9 @@ import {
   LogOut,
   Sparkles,
   Trash2,
-} from "lucide-react"
+} from 'lucide-react'
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,16 +19,16 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from '@/components/ui/dropdown-menu'
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
-import { clearAuth } from "@/lib/auth"
-import { useAuth } from "@/components/auth-provider"
-import { useRouter } from "next/navigation"
+} from '@/components/ui/sidebar'
+import { clearAuth } from '@/lib/auth'
+import { useAuth } from '@/components/auth-provider'
+import { useRouter } from 'next/navigation'
 
 export function NavUser({
   user,
@@ -42,7 +42,7 @@ export function NavUser({
   const handleReset = () => {
     clearAuth()
     setIsAuthenticated(false)
-    router.push("/login")
+    router.push('/login')
   }
   return (
     <SidebarMenu>
@@ -66,7 +66,7 @@ export function NavUser({
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-            side={isMobile ? "bottom" : "bottom"}
+            side={isMobile ? 'bottom' : 'bottom'}
             align="end"
             sideOffset={4}
           >

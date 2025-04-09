@@ -1,15 +1,15 @@
 // /lib/secure-storage.ts
-import { decrypt, encrypt } from "@/lib/crypto"
+import { decrypt, encrypt } from '@/lib/crypto'
 
 export class SecureStorage {
-  private static readonly ENCRYPTION_KEY = "your-secure-key"
+  private static readonly ENCRYPTION_KEY = 'your-secure-key'
 
   static setItem(key: string, value: string): void {
     try {
       const encryptedValue = encrypt(value)
       localStorage.setItem(key, encryptedValue)
     } catch (error) {
-      console.error("Error saving to secure storage:", error)
+      console.error('Error saving to secure storage:', error)
     }
   }
 
@@ -19,7 +19,7 @@ export class SecureStorage {
       if (!encryptedValue) return null
       return decrypt(encryptedValue)
     } catch (error) {
-      console.error("Error reading from secure storage:", error)
+      console.error('Error reading from secure storage:', error)
       return null
     }
   }

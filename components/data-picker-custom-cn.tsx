@@ -1,24 +1,24 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import { Calendar as CalendarIcon } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import * as React from 'react'
+import { Calendar as CalendarIcon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from '@/components/ui/popover'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { format } from "date-fns"
-import { zhCN } from "date-fns/locale"
+} from '@/components/ui/select'
+import { format } from 'date-fns'
+import { zhCN } from 'date-fns/locale'
 
 interface DateTimePickerProps {
   date: Date | undefined
@@ -31,9 +31,9 @@ interface DateTimePickerProps {
 const DateTimePickerCn = ({
   date,
   setDate,
-  label = "选择日期和时间",
+  label = '选择日期和时间',
   className,
-  componentId = "DateTimePickerCn",
+  componentId = 'DateTimePickerCn',
 }: DateTimePickerProps) => {
   if (componentId) {
   }
@@ -77,13 +77,13 @@ const DateTimePickerCn = ({
 
   // 添加处理时间变化的函数
   const handleTimeChange = (
-    type: "hours" | "minutes" | "seconds",
+    type: 'hours' | 'minutes' | 'seconds',
     value: number
   ) => {
     timeChangedByUser.current = true
-    if (type === "hours") setHours(value)
-    else if (type === "minutes") setMinutes(value)
-    else if (type === "seconds") setSeconds(value)
+    if (type === 'hours') setHours(value)
+    else if (type === 'minutes') setMinutes(value)
+    else if (type === 'seconds') setSeconds(value)
   }
 
   // 添加 Popover 开关状态控制
@@ -94,17 +94,17 @@ const DateTimePickerCn = ({
   const secondsOptions = Array.from({ length: 60 }, (_, i) => i)
 
   const formatDate = (date: Date) => {
-    return format(date, "PPP HH:mm:ss", { locale: zhCN })
+    return format(date, 'PPP HH:mm:ss', { locale: zhCN })
   }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          variant={"outline"}
+          variant={'outline'}
           className={cn(
-            "justify-start text-left font-normal", // 移除固定宽度
-            !date && "text-muted-foreground",
+            'justify-start text-left font-normal', // 移除固定宽度
+            !date && 'text-muted-foreground',
             className // 应用传入的 className
           )}
         >
@@ -135,7 +135,7 @@ const DateTimePickerCn = ({
           <Select
             value={hours.toString()}
             onValueChange={(value) =>
-              handleTimeChange("hours", parseInt(value))
+              handleTimeChange('hours', parseInt(value))
             }
           >
             <SelectTrigger className="w-[70px]">
@@ -144,7 +144,7 @@ const DateTimePickerCn = ({
             <SelectContent position="popper" className="h-48">
               {hoursOptions.map((hour) => (
                 <SelectItem key={hour} value={hour.toString()}>
-                  {hour.toString().padStart(2, "0")}
+                  {hour.toString().padStart(2, '0')}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -152,7 +152,7 @@ const DateTimePickerCn = ({
           <Select
             value={minutes.toString()}
             onValueChange={(value) =>
-              handleTimeChange("minutes", parseInt(value))
+              handleTimeChange('minutes', parseInt(value))
             }
           >
             <SelectTrigger className="w-[70px]">
@@ -161,7 +161,7 @@ const DateTimePickerCn = ({
             <SelectContent position="popper" className="h-48">
               {minutesOptions.map((minute) => (
                 <SelectItem key={minute} value={minute.toString()}>
-                  {minute.toString().padStart(2, "0")}
+                  {minute.toString().padStart(2, '0')}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -169,7 +169,7 @@ const DateTimePickerCn = ({
           <Select
             value={seconds.toString()}
             onValueChange={(value) =>
-              handleTimeChange("seconds", parseInt(value))
+              handleTimeChange('seconds', parseInt(value))
             }
           >
             <SelectTrigger className="w-[70px]">
@@ -178,7 +178,7 @@ const DateTimePickerCn = ({
             <SelectContent position="popper" className="h-48">
               {secondsOptions.map((second) => (
                 <SelectItem key={second} value={second.toString()}>
-                  {second.toString().padStart(2, "0")}
+                  {second.toString().padStart(2, '0')}
                 </SelectItem>
               ))}
             </SelectContent>

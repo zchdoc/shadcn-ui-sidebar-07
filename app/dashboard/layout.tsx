@@ -1,10 +1,10 @@
-"use client"
+'use client'
 
-import React, { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import { useAuth } from "@/components/auth-provider"
-import { SecureStorage } from "@/lib/secure-storage"
-import { validateToken } from "@/lib/auth"
+import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/components/auth-provider'
+import { SecureStorage } from '@/lib/secure-storage'
+import { validateToken } from '@/lib/auth'
 
 export default function DashboardLayout({
   children,
@@ -18,25 +18,25 @@ export default function DashboardLayout({
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const token = SecureStorage.getItem("auth_token")
-        console.log("Dashboard Layout - Checking auth:", {
-          token: token ? "exists" : "missing",
+        const token = SecureStorage.getItem('auth_token')
+        console.log('Dashboard Layout - Checking auth:', {
+          token: token ? 'exists' : 'missing',
           isAuthenticated,
         })
 
         if (!isAuthenticated || !validateToken(token)) {
           console.log(
-            "Dashboard Layout - Auth check failed, redirecting to login"
+            'Dashboard Layout - Auth check failed, redirecting to login'
           )
-          router.replace("/login")
+          router.replace('/login')
           return
         }
 
         // console.log('Dashboard Layout - Auth check passed');
         setIsChecking(false)
       } catch (error) {
-        console.error("Dashboard Layout - Auth check error:", error)
-        router.replace("/login")
+        console.error('Dashboard Layout - Auth check error:', error)
+        router.replace('/login')
       }
     }
 

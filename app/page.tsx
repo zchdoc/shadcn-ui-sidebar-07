@@ -1,16 +1,16 @@
-"use client"
+'use client'
 
-import Image from "next/image"
+import Image from 'next/image'
 // import { redirect } from 'next/navigation';
-import { useRouter } from "next/navigation" // 改用 useRouter
-import { Button } from "@/components/ui/button"
-import * as React from "react"
-import { useAuth } from "@/components/auth-provider"
-import { useCallback } from "react"
-import { SecureStorage } from "@/lib/secure-storage"
-import { validateToken } from "@/lib/auth"
-import { Flower2, LayoutDashboard, Moon, Sun } from "lucide-react"
-import { useTheme } from "next-themes"
+import { useRouter } from 'next/navigation' // 改用 useRouter
+import { Button } from '@/components/ui/button'
+import * as React from 'react'
+import { useAuth } from '@/components/auth-provider'
+import { useCallback } from 'react'
+import { SecureStorage } from '@/lib/secure-storage'
+import { validateToken } from '@/lib/auth'
+import { Flower2, LayoutDashboard, Moon, Sun } from 'lucide-react'
+import { useTheme } from 'next-themes'
 export default function Home() {
   const { isAuthenticated, username } = useAuth()
   const router = useRouter() // 初始化 router
@@ -23,25 +23,25 @@ export default function Home() {
   }, [])
   // 获取当前环境
   const currentEnv = process.env.NEXT_PUBLIC_ENV
-  console.log("Current environment:", currentEnv) // 将会显示 'development' 或 'production'
+  console.log('Current environment:', currentEnv) // 将会显示 'development' 或 'production'
 
   const redirectToAbout = () => {
     setLoading(true)
     setTimeout(() => {
       setLoading(false)
     }, 5000)
-    router.replace("/about")
+    router.replace('/about')
   }
 
   const redirectToDashboard = useCallback(() => {
     // 添加延时和状态检查
-    const token = SecureStorage.getItem("auth_token")
+    const token = SecureStorage.getItem('auth_token')
     if (validateToken(token)) {
       setTimeout(() => {
-        router.replace("/dashboard")
+        router.replace('/dashboard')
       }, 100)
     } else {
-      router.replace("/login")
+      router.replace('/login')
     }
   }, [router])
 
@@ -167,12 +167,12 @@ export default function Home() {
           alt="Next.js logo"
           width={180}
           height={38}
-          style={{ width: "180px", height: "38px" }}
+          style={{ width: '180px', height: '38px' }}
           priority
         />
         <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2">
-            Get started by editing{" "}
+            Get started by editing{' '}
             <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
               src/app/page.tsx
             </code>
@@ -209,7 +209,7 @@ export default function Home() {
               alt="Vercel logomark"
               width={20}
               height={20}
-              style={{ width: "20px", height: "20px" }}
+              style={{ width: '20px', height: '20px' }}
             />
             Deploy now
           </a>
@@ -229,7 +229,7 @@ export default function Home() {
               alt="Vercel logomark"
               width={60}
               height={60}
-              style={{ width: "60px", height: "60px" }}
+              style={{ width: '60px', height: '60px' }}
               priority
             />
             Docs
@@ -255,14 +255,14 @@ export default function Home() {
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4 cursor-pointer"
-          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
         >
-          {mounted && theme === "light" ? (
+          {mounted && theme === 'light' ? (
             <Moon className="h-4 w-4" />
           ) : (
             <Sun className="h-4 w-4" />
           )}
-          {mounted && theme === "light" ? "Switch to Dark" : "Switch to Light"}
+          {mounted && theme === 'light' ? 'Switch to Dark' : 'Switch to Light'}
         </a>
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"

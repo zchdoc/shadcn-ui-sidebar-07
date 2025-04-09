@@ -1,10 +1,10 @@
-"use client"
+'use client'
 
-import { useCallback, useState } from "react"
-import { AppSidebar } from "@/components/app-sidebar"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { ManualClock } from "@/components/attendance/manual-clock"
-import { HistoryView } from "@/components/attendance/history-view"
+import { useCallback, useState } from 'react'
+import { AppSidebar } from '@/components/app-sidebar'
+import { ThemeToggle } from '@/components/theme-toggle'
+import { ManualClock } from '@/components/attendance/manual-clock'
+import { HistoryView } from '@/components/attendance/history-view'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,23 +12,23 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
+} from '@/components/ui/breadcrumb'
+import { Separator } from '@/components/ui/separator'
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
-import { useAuth } from "@/components/auth-provider"
+} from '@/components/ui/sidebar'
+import { useAuth } from '@/components/auth-provider'
 
 export default function Page() {
   const [activeView, setActiveView] = useState<
-    "default" | "history" | "manual-clock"
-  >("history")
+    'default' | 'history' | 'manual-clock'
+  >('history')
 
   const onAppSidebarViewChange = useCallback(function (e: string) {
-    if (["default", "history", "manual-clock"].includes(e)) {
-      setActiveView(e as "history" | "manual-clock" | "default")
+    if (['default', 'history', 'manual-clock'].includes(e)) {
+      setActiveView(e as 'history' | 'manual-clock' | 'default')
     }
   }, [])
   const { isAuthenticated } = useAuth()
@@ -53,11 +53,11 @@ export default function Page() {
                   <BreadcrumbSeparator className="hidden md:block" />
                   <BreadcrumbItem>
                     <BreadcrumbPage>
-                      {activeView === "history"
-                        ? "History"
-                        : activeView === "manual-clock"
-                          ? "Manual Clock"
-                          : "Management"}
+                      {activeView === 'history'
+                        ? 'History'
+                        : activeView === 'manual-clock'
+                          ? 'Manual Clock'
+                          : 'Management'}
                     </BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
@@ -67,12 +67,12 @@ export default function Page() {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          {activeView === "history" ? (
+          {activeView === 'history' ? (
             <div className="container mx-auto p-4">
               {/*<h1 className="text-2xl font-bold mb-4">Attendance History</h1>*/}
               <HistoryView />
             </div>
-          ) : activeView === "manual-clock" ? (
+          ) : activeView === 'manual-clock' ? (
             <div className="container mx-auto p-4">
               <h1 className="text-2xl font-bold mb-4">Manual Clock</h1>
               <div className="max-w-md mx-auto">

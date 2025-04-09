@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import AuthenticationPage from "@/components/authentication/auth-index"
-import { ThemeProvider } from "@/components/theme-provider"
+import AuthenticationPage from '@/components/authentication/auth-index'
+import { ThemeProvider } from '@/components/theme-provider'
 
 export default function LoginPage() {
   return (

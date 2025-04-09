@@ -1,15 +1,15 @@
-"use client"
+'use client'
 
-import * as React from "react"
+import * as React from 'react'
 
-import { cn } from "@/lib/utils"
-import { Icons } from "@/components/icons"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useToast } from "@/components/ui/use-toast"
-import Link from "next/link"
-import { DescriptionText } from "@/components/authentication/components/description-text"
+import { cn } from '@/lib/utils'
+import { Icons } from '@/components/icons'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { useToast } from '@/components/ui/use-toast'
+import Link from 'next/link'
+import { DescriptionText } from '@/components/authentication/components/description-text'
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string
@@ -19,9 +19,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const { toast } = useToast()
   const [formData, setFormData] = React.useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
+    email: '',
+    password: '',
+    confirmPassword: '',
   })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,30 +39,30 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     try {
       if (formData.password !== formData.confirmPassword) {
         toast({
-          title: "Error",
-          description: "Passwords do not match",
-          variant: "destructive",
+          title: 'Error',
+          description: 'Passwords do not match',
+          variant: 'destructive',
         })
         return
       }
 
       // Add your registration logic here
       toast({
-        title: "Success",
-        description: "Registration successful! Please login.",
+        title: 'Success',
+        description: 'Registration successful! Please login.',
       })
     } catch (error) {
       if (error instanceof Error) {
         toast({
-          title: "Error",
-          description: "1.Something went wrong. Please try again.",
-          variant: "destructive",
+          title: 'Error',
+          description: '1.Something went wrong. Please try again.',
+          variant: 'destructive',
         })
       } else {
         toast({
-          title: "Error",
-          description: "2.Something went wrong. Please try again.",
-          variant: "destructive",
+          title: 'Error',
+          description: '2.Something went wrong. Please try again.',
+          variant: 'destructive',
         })
         console.error(error)
       }
@@ -72,7 +72,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   }
 
   return (
-    <div className={cn("grid gap-6", className)} {...props}>
+    <div className={cn('grid gap-6', className)} {...props}>
       {/*<div className="flex flex-col space-y-2 text-center">*/}
       {/*  <h1 className="text-2xl font-semibold tracking-tight">*/}
       {/*    Create an account*/}
@@ -184,14 +184,14 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         </Button>
       </div>
       <p className="px-8 text-center text-sm text-muted-foreground">
-        By clicking continue, you agree to our{" "}
+        By clicking continue, you agree to our{' '}
         <Link
           href="/terms"
           className="underline underline-offset-4 hover:text-primary"
         >
           Terms of Service
-        </Link>{" "}
-        and{" "}
+        </Link>{' '}
+        and{' '}
         <Link
           href="/privacy"
           className="underline underline-offset-4 hover:text-primary"

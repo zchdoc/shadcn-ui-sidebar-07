@@ -1,19 +1,19 @@
-import React from "react"
-import { Badge, Calendar, Tooltip, CalendarProps } from "antd"
-import { theme, ConfigProvider, Col, Radio, Row, Select } from "antd"
-import { HolidayUtil, Lunar } from "lunar-typescript"
-import { createStyles } from "antd-style"
-import type { Dayjs } from "dayjs"
-import classNames from "classnames"
-import dayjs from "dayjs"
-import localizedFormat from "dayjs/plugin/localizedFormat"
-import locale from "antd/locale/zh_CN"
+import React from 'react'
+import { Badge, Calendar, Tooltip, CalendarProps } from 'antd'
+import { theme, ConfigProvider, Col, Radio, Row, Select } from 'antd'
+import { HolidayUtil, Lunar } from 'lunar-typescript'
+import { createStyles } from 'antd-style'
+import type { Dayjs } from 'dayjs'
+import classNames from 'classnames'
+import dayjs from 'dayjs'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+import locale from 'antd/locale/zh_CN'
 
-import "dayjs/locale/zh-cn"
-import { useTheme } from "next-themes"
+import 'dayjs/locale/zh-cn'
+import { useTheme } from 'next-themes'
 
 dayjs.extend(localizedFormat) // 如果需要使用格式化插件
-dayjs.locale("zh-cn")
+dayjs.locale('zh-cn')
 
 interface AttendanceRecord {
   date: string
@@ -80,7 +80,7 @@ const useStyle = createStyles(({ token, css, cx }) => {
       position: relative;
       height: 100%;
       &:before {
-        content: "";
+        content: '';
         position: absolute;
         inset-inline-start: 0;
         inset-inline-end: 0;
@@ -169,11 +169,11 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
   const [panelDateDate, setPanelDate] = React.useState<Dayjs>(dayjs())
   const { resolvedTheme } = useTheme()
   // 添加日期选择处理函数
-  const onDateChange: CalendarProps<Dayjs>["onSelect"] = (
+  const onDateChange: CalendarProps<Dayjs>['onSelect'] = (
     value,
     selectInfo
   ) => {
-    if (selectInfo.source === "date") {
+    if (selectInfo.source === 'date') {
       setSelectDate(value)
       setPanelDate(value)
       // 调用父组件传入的回调函数
@@ -200,30 +200,30 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
    */
   const getBadgeStatus = (status: string) => {
     const successKeywords = [
-      "正常",
-      "加班",
-      "请假", //
-      "正常签到",
-      "正常签退",
-      "周六签退",
-      "工作加班",
-      "周日无班", //
-      "周日不考勤",
-      "请假(系统)",
-      "未排班(系统)",
+      '正常',
+      '加班',
+      '请假', //
+      '正常签到',
+      '正常签退',
+      '周六签退',
+      '工作加班',
+      '周日无班', //
+      '周日不考勤',
+      '请假(系统)',
+      '未排班(系统)',
     ]
 
-    const warningKeywords = ["未签到(系统)", "未签退(系统)", "未签到", "未签退"]
-    const errorKeywords = ["迟到", "旷工", "早退"]
+    const warningKeywords = ['未签到(系统)', '未签退(系统)', '未签到', '未签退']
+    const errorKeywords = ['迟到', '旷工', '早退']
 
     if (successKeywords.some((keyword) => status.includes(keyword))) {
-      return "success"
+      return 'success'
     } else if (errorKeywords.some((keyword) => status.includes(keyword))) {
-      return "error"
+      return 'error'
     } else if (warningKeywords.some((keyword) => status.includes(keyword))) {
-      return "warning"
+      return 'warning'
     } else {
-      return "error"
+      return 'error'
     }
   }
 
@@ -239,10 +239,10 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
   }
 
   const renderAttendanceRecords = (date: Dayjs) => {
-    const dateStr = date.format("YYYY-MM-DD")
+    const dateStr = date.format('YYYY-MM-DD')
     const records = attendanceData[dateStr]
 
-    const isDarkMode = resolvedTheme === "dark"
+    const isDarkMode = resolvedTheme === 'dark'
     if (!records || records.length === 0) {
       return null
     }
@@ -257,10 +257,10 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
         <ul
           className="events"
           style={{
-            listStyle: "none",
+            listStyle: 'none',
             padding: 0,
             margin: 0,
-            fontSize: "8px",
+            fontSize: '8px',
           }}
         >
           {records.map((record, index) => (
@@ -268,13 +268,13 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
               key={index}
               title={`${record.time} - ${record.signInStateStr}`}
             >
-              <li style={{ margin: "2px 0" }}>
+              <li style={{ margin: '2px 0' }}>
                 <Badge
                   status={getBadgeStatus(record.signInStateStr)}
-                  text={`${record.time.split(":")[0]}:${
-                    record.time.split(":")[1]
+                  text={`${record.time.split(':')[0]}:${
+                    record.time.split(':')[1]
                   } ${record.signInStateStr}`}
-                  style={{ fontSize: "12px" }}
+                  style={{ fontSize: '12px' }}
                 />
               </li>
             </Tooltip>
@@ -284,25 +284,25 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
     )
   }
 
-  const cellRender: CalendarProps<Dayjs>["fullCellRender"] = (date, info) => {
+  const cellRender: CalendarProps<Dayjs>['fullCellRender'] = (date, info) => {
     const d = Lunar.fromDate(date.toDate())
     const lunar = d.getDayInChinese()
     const solarTerm = d.getJieQi()
     const isWeekend = date.day() === 6 || date.day() === 0
     const h = HolidayUtil.getHoliday(
-      date.get("year"),
-      date.get("month") + 1,
-      date.get("date")
+      date.get('year'),
+      date.get('month') + 1,
+      date.get('date')
     )
     const displayHoliday =
       h?.getTarget() === h?.getDay() ? h?.getName() : undefined
 
-    if (info.type === "date") {
+    if (info.type === 'date') {
       return React.cloneElement(info.originNode, {
         ...info.originNode.props,
         className: classNames(styles.dateCell, {
-          [styles.current]: selectDate.isSame(date, "date"),
-          [styles.today]: date.isSame(dayjs(), "date"),
+          [styles.current]: selectDate.isSame(date, 'date'),
+          [styles.today]: date.isSame(dayjs(), 'date'),
         }),
         children: (
           <div className={styles.text}>
@@ -310,10 +310,10 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
               <span
                 className={classNames(styles.solarDate, {
                   [styles.weekend]: isWeekend,
-                  gray: !panelDateDate.isSame(date, "month"),
+                  gray: !panelDateDate.isSame(date, 'month'),
                 })}
               >
-                {date.get("date")}
+                {date.get('date')}
               </span>
               <span className={styles.lunar}>
                 {displayHoliday || solarTerm || lunar}
@@ -327,16 +327,16 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
       })
     }
 
-    if (info.type === "month") {
-      const d2 = Lunar.fromDate(new Date(date.get("year"), date.get("month")))
+    if (info.type === 'month') {
+      const d2 = Lunar.fromDate(new Date(date.get('year'), date.get('month')))
       const month = d2.getMonthInChinese()
       return (
         <div
           className={classNames(styles.monthCell, {
-            [styles.monthCellCurrent]: selectDate.isSame(date, "month"),
+            [styles.monthCellCurrent]: selectDate.isSame(date, 'month'),
           })}
         >
-          {date.get("month") + 1}月（{month}月）
+          {date.get('month') + 1}月（{month}月）
         </div>
       )
     }
