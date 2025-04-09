@@ -13,7 +13,11 @@ import { useAuth } from "@/components/auth-provider"
 import { getEmployeeIdByUsername } from "@/lib/employee-mapping"
 import { getClientInfo } from "@/lib/client-info"
 
-export function ManualClock() {
+interface ManualClockProps {
+  selectedDate?: Date
+}
+
+export function ManualClock({ selectedDate }: ManualClockProps) {
   const { username } = useAuth()
   const [date, setDate] = React.useState<Date>()
   const [employeeId, setEmployeeId] = React.useState(() =>
@@ -24,6 +28,13 @@ export function ManualClock() {
   React.useEffect(() => {
     setEmployeeId(getEmployeeIdByUsername(username))
   }, [username])
+
+  // 监听外部传入的selectedDate变化
+  React.useEffect(() => {
+    if (selectedDate) {
+      setDate(selectedDate)
+    }
+  }, [selectedDate])
 
   const [loading, setLoading] = React.useState(false)
   const { toast } = useToast()

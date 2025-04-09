@@ -53,6 +53,52 @@ export function HistoryView() {
   const isMobile = useMediaQuery("(max-width: 768px)")
   const { resolvedTheme } = useTheme()
   const isDarkMode = resolvedTheme === "dark"
+  
+  // 新增的状态用于保存日历选择的日期
+  const [selectedCalendarDate, setSelectedCalendarDate] = React.useState<Date>()
+
+  // 处理日历日期选择的函数
+  const handleCalendarDateSelect = (date: dayjs.Dayjs) => {
+    // 创建新的 Date 对象，只使用日历中选择的年月日
+    const newDate = new Date(date.year(), date.month(), date.date())
+    
+    // 如果已经有一个手动时钟的日期，保留其时分秒
+    if (selectedCalendarDate) {
+      newDate.setHours(selectedCalendarDate.getHours())
+      newDate.setMinutes(selectedCalendarDate.getMinutes())
+      newDate.setSeconds(selectedCalendarDate.getSeconds())
+    } else {
+      // 默认设置为当前时间
+      const now = new Date()
+      newDate.setHours(now.getHours())
+      newDate.setMinutes(now.getMinutes())
+      newDate.setSeconds(now.getSeconds())
+    }
+    
+    setSelectedCalendarDate(newDate)
+  }
+  
+  // 处理移动端日历日期选择的函数
+  const handleMobileCalendarDateSelect = (date: Date) => {
+    // 创建新的 Date 对象，只使用日历中选择的年月日
+    const newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+    
+    // 如果已经有一个手动时钟的日期，保留其时分秒
+    if (selectedCalendarDate) {
+      newDate.setHours(selectedCalendarDate.getHours())
+      newDate.setMinutes(selectedCalendarDate.getMinutes())
+      newDate.setSeconds(selectedCalendarDate.getSeconds())
+    } else {
+      // 默认设置为当前时间
+      const now = new Date()
+      newDate.setHours(now.getHours())
+      newDate.setMinutes(now.getMinutes())
+      newDate.setSeconds(now.getSeconds())
+    }
+    
+    setSelectedCalendarDate(newDate)
+  }
+  
   // [attendanceRecords] 改为空数组，只在组件挂载时执行一次
   useEffect(() => {
     // // 设置 startDate 默认为当天 00:00:00
@@ -61,6 +107,8 @@ export function HistoryView() {
     setStartDate(dayjs().startOf("month").toDate())
     // 设置 endDate 默认为当天 23:59:59
     setEndDate(dayjs().endOf("day").toDate())
+    // 初始化日历选择日期为当前日期
+    setSelectedCalendarDate(new Date())
   }, [])
   const fetchRecords = async () => {
     if (!employeeId || !startDate || !endDate) {
@@ -230,6 +278,7 @@ export function HistoryView() {
               // />
               <MobileAttendanceCalendar
                 attendanceData={formatAttendanceData(attendanceRecords)}
+                onDateSelect={handleMobileCalendarDateSelect}
               />
             ) : (
               <ConfigProvider
@@ -242,6 +291,7 @@ export function HistoryView() {
               >
                 <AttendanceCalendar
                   attendanceData={formatAttendanceData(attendanceRecords)}
+                  onDateSelect={handleCalendarDateSelect}
                 />
               </ConfigProvider>
             )}
@@ -256,7 +306,7 @@ export function HistoryView() {
       <Card>
         <CardHeader />
         <CardContent>
-          <ManualClock />
+          <ManualClock selectedDate={selectedCalendarDate} />
         </CardContent>
         <CardFooter />
       </Card>

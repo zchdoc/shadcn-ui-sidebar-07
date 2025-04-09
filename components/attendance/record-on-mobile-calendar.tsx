@@ -20,10 +20,12 @@ interface AttendanceData {
 
 interface MobileAttendanceCalendarProps {
   attendanceData: AttendanceData
+  onDateSelect?: (date: Date) => void
 }
 
 const MobileAttendanceCalendar: React.FC<MobileAttendanceCalendarProps> = ({
   attendanceData,
+  onDateSelect,
 }) => {
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
     undefined
@@ -51,6 +53,11 @@ const MobileAttendanceCalendar: React.FC<MobileAttendanceCalendarProps> = ({
       const day = String(date.getDate()).padStart(2, "0")
       const dateStr = `${year}-${month}-${day}`
       setSelectedRecords(attendanceData[dateStr] || [])
+      
+      // 调用父组件传入的回调函数
+      if (onDateSelect) {
+        onDateSelect(date)
+      }
     } else {
       setSelectedRecords([])
     }
@@ -151,21 +158,6 @@ const MobileAttendanceCalendar: React.FC<MobileAttendanceCalendarProps> = ({
                 {`${selectedDate.getFullYear()}年${selectedDate.getMonth() + 1}月${selectedDate.getDate()}日 考勤记录:`}
               </Label>
               {selectedRecords.map((record) => (
-                // <div
-                //   key={record.id}
-                //   className={cn(
-                //     "p-2 rounded-md",
-                //     record.signInStateStr === "正常签到" || record.signInStateStr === "正常签退"
-                //       ? "bg-green-100 dark:bg-green-900/20"
-                //       : record.signInStateStr === "迟到"
-                //         ? "bg-yellow-100 dark:bg-yellow-900/20"
-                //         : record.signInStateStr === "未签退"
-                //           ? "bg-red-100 dark:bg-red-900/20"
-                //           : record.signInStateStr === "加班"
-                //             ? "bg-blue-100 dark:bg-blue-900/20"
-                //             : "bg-gray-100 dark:bg-gray-800"
-                //   )}
-                // >
                 <div
                   key={record.id}
                   className={cn(

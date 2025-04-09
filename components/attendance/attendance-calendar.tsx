@@ -27,6 +27,7 @@ interface AttendanceData {
 
 interface AttendanceCalendarProps {
   attendanceData: AttendanceData
+  onDateSelect?: (date: Dayjs) => void
 }
 
 const useStyle = createStyles(({ token, css, cx }) => {
@@ -161,6 +162,7 @@ const useStyle = createStyles(({ token, css, cx }) => {
 })
 const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
   attendanceData,
+  onDateSelect,
 }) => {
   const { styles } = useStyle({ test: true })
   const [selectDate, setSelectDate] = React.useState<Dayjs>(dayjs())
@@ -174,6 +176,10 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
     if (selectInfo.source === "date") {
       setSelectDate(value)
       setPanelDate(value)
+      // 调用父组件传入的回调函数
+      if (onDateSelect) {
+        onDateSelect(value)
+      }
     }
   }
 
