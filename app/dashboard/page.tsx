@@ -37,7 +37,7 @@ export default function Page() {
     return null // 让 layout 处理未认证状态
   }
   return (
-    <SidebarProvider defaultOpen>
+    <SidebarProvider defaultOpen={false}>
       <AppSidebar onViewChange={onAppSidebarViewChange} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
