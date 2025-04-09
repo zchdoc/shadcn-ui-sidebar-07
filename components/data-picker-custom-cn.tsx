@@ -64,7 +64,7 @@ const DateTimePickerCn = ({
   // 当内部时间组件变化时更新日期
   React.useEffect(() => {
     updateDate()
-  }, [hours, minutes, seconds])
+  }, [hours, minutes, seconds, updateDate])
 
   // 添加 Popover 开关状态控制
   const [open, setOpen] = React.useState(false)
