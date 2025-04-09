@@ -21,6 +21,10 @@ export const AUTH_CREDENTIALS = [
     username: "13783567624",
     password: "l13783567624",
   },
+  {
+    username: "15738855246",
+    password: "z15738855246",
+  },
 ]
 
 // localStorage和cookie的key

@@ -176,7 +176,7 @@ export function ManualClock({ selectedDate }: ManualClockProps) {
     <div className="space-y-4">
       <div className="space-y-2">
         <Input
-          disabled
+          disabled={employeeId !== '3000002'}
           type="text"
           placeholder="Employee ID"
           value={employeeId}

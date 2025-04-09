@@ -4,6 +4,7 @@
 const USER_EMPLOYEE_MAPPING: Record<string, string> = {
   "15824821718": "3000002",
   "13783567624": "5000001",
+  "15738855246": "4000003",
 }
 
 // 默认的员工ID
