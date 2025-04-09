@@ -244,7 +244,7 @@ export function HistoryView() {
             </div>
             <div className="flex flex-col space-y-1.5 w-60">
               <DateTimePickerCn
-                componentId={`1${startDate}`}
+                componentId="start-date-picker"
                 date={startDate}
                 setDate={setStartDate}
                 label={"开始日期"}
@@ -252,7 +252,7 @@ export function HistoryView() {
               />
 
               <DateTimePickerCn
-                componentId={`2${endDate}`}
+                componentId="end-date-picker"
                 date={endDate}
                 setDate={setEndDate}
                 label={"结束日期"}

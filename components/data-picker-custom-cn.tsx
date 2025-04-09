@@ -44,6 +44,8 @@ const DateTimePickerCn = ({
   // 监听外部 date 变化
   React.useEffect(() => {
     if (date) {
+      // 防止useEffect触发时间更新标志
+      timeChangedByUser.current = false
       setHours(date.getHours())
       setMinutes(date.getMinutes())
       setSeconds(date.getSeconds())
@@ -61,10 +63,25 @@ const DateTimePickerCn = ({
     }
   }, [date, hours, minutes, seconds, setDate])
 
+  // 使用ref跟踪时间组件是否由用户手动更改
+  const timeChangedByUser = React.useRef(false)
+  
   // 当内部时间组件变化时更新日期
   React.useEffect(() => {
-    updateDate()
-  }, [hours, minutes, seconds, updateDate])
+    // 只有当时间组件由用户手动更改时才更新日期
+    if (timeChangedByUser.current) {
+      updateDate()
+      timeChangedByUser.current = false
+    }
+  }, [updateDate])
+
+  // 添加处理时间变化的函数
+  const handleTimeChange = (type: 'hours' | 'minutes' | 'seconds', value: number) => {
+    timeChangedByUser.current = true
+    if (type === 'hours') setHours(value)
+    else if (type === 'minutes') setMinutes(value)
+    else if (type === 'seconds') setSeconds(value)
+  }
 
   // 添加 Popover 开关状态控制
   const [open, setOpen] = React.useState(false)
@@ -114,7 +131,7 @@ const DateTimePickerCn = ({
         <div className="border-t p-3 flex gap-2">
           <Select
             value={hours.toString()}
-            onValueChange={(value) => setHours(parseInt(value))}
+            onValueChange={(value) => handleTimeChange('hours', parseInt(value))}
           >
             <SelectTrigger className="w-[70px]">
               <SelectValue placeholder="时" />
@@ -129,7 +146,7 @@ const DateTimePickerCn = ({
           </Select>
           <Select
             value={minutes.toString()}
-            onValueChange={(value) => setMinutes(parseInt(value))}
+            onValueChange={(value) => handleTimeChange('minutes', parseInt(value))}
           >
             <SelectTrigger className="w-[70px]">
               <SelectValue placeholder="分" />
@@ -144,7 +161,7 @@ const DateTimePickerCn = ({
           </Select>
           <Select
             value={seconds.toString()}
-            onValueChange={(value) => setSeconds(parseInt(value))}
+            onValueChange={(value) => handleTimeChange('seconds', parseInt(value))}
           >
             <SelectTrigger className="w-[70px]">
               <SelectValue placeholder="秒" />
