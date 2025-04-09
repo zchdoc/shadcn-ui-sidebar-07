@@ -65,7 +65,7 @@ const DateTimePickerCn = ({
 
   // 使用ref跟踪时间组件是否由用户手动更改
   const timeChangedByUser = React.useRef(false)
-  
+
   // 当内部时间组件变化时更新日期
   React.useEffect(() => {
     // 只有当时间组件由用户手动更改时才更新日期
@@ -76,11 +76,14 @@ const DateTimePickerCn = ({
   }, [updateDate])
 
   // 添加处理时间变化的函数
-  const handleTimeChange = (type: 'hours' | 'minutes' | 'seconds', value: number) => {
+  const handleTimeChange = (
+    type: "hours" | "minutes" | "seconds",
+    value: number
+  ) => {
     timeChangedByUser.current = true
-    if (type === 'hours') setHours(value)
-    else if (type === 'minutes') setMinutes(value)
-    else if (type === 'seconds') setSeconds(value)
+    if (type === "hours") setHours(value)
+    else if (type === "minutes") setMinutes(value)
+    else if (type === "seconds") setSeconds(value)
   }
 
   // 添加 Popover 开关状态控制
@@ -131,7 +134,9 @@ const DateTimePickerCn = ({
         <div className="border-t p-3 flex gap-2">
           <Select
             value={hours.toString()}
-            onValueChange={(value) => handleTimeChange('hours', parseInt(value))}
+            onValueChange={(value) =>
+              handleTimeChange("hours", parseInt(value))
+            }
           >
             <SelectTrigger className="w-[70px]">
               <SelectValue placeholder="时" />
@@ -146,7 +151,9 @@ const DateTimePickerCn = ({
           </Select>
           <Select
             value={minutes.toString()}
-            onValueChange={(value) => handleTimeChange('minutes', parseInt(value))}
+            onValueChange={(value) =>
+              handleTimeChange("minutes", parseInt(value))
+            }
           >
             <SelectTrigger className="w-[70px]">
               <SelectValue placeholder="分" />
@@ -161,7 +168,9 @@ const DateTimePickerCn = ({
           </Select>
           <Select
             value={seconds.toString()}
-            onValueChange={(value) => handleTimeChange('seconds', parseInt(value))}
+            onValueChange={(value) =>
+              handleTimeChange("seconds", parseInt(value))
+            }
           >
             <SelectTrigger className="w-[70px]">
               <SelectValue placeholder="秒" />
