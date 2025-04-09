@@ -53,7 +53,7 @@ const MobileAttendanceCalendar: React.FC<MobileAttendanceCalendarProps> = ({
       const day = String(date.getDate()).padStart(2, "0")
       const dateStr = `${year}-${month}-${day}`
       setSelectedRecords(attendanceData[dateStr] || [])
-      
+
       // 调用父组件传入的回调函数
       if (onDateSelect) {
         onDateSelect(date)

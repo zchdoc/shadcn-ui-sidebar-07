@@ -53,7 +53,7 @@ export function HistoryView() {
   const isMobile = useMediaQuery("(max-width: 768px)")
   const { resolvedTheme } = useTheme()
   const isDarkMode = resolvedTheme === "dark"
-  
+
   // 新增的状态用于保存日历选择的日期
   const [selectedCalendarDate, setSelectedCalendarDate] = React.useState<Date>()
 
@@ -61,7 +61,7 @@ export function HistoryView() {
   const handleCalendarDateSelect = (date: dayjs.Dayjs) => {
     // 创建新的 Date 对象，只使用日历中选择的年月日
     const newDate = new Date(date.year(), date.month(), date.date())
-    
+
     // 如果已经有一个手动时钟的日期，保留其时分秒
     if (selectedCalendarDate) {
       newDate.setHours(selectedCalendarDate.getHours())
@@ -74,15 +74,19 @@ export function HistoryView() {
       newDate.setMinutes(now.getMinutes())
       newDate.setSeconds(now.getSeconds())
     }
-    
+
     setSelectedCalendarDate(newDate)
   }
-  
+
   // 处理移动端日历日期选择的函数
   const handleMobileCalendarDateSelect = (date: Date) => {
     // 创建新的 Date 对象，只使用日历中选择的年月日
-    const newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
-    
+    const newDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    )
+
     // 如果已经有一个手动时钟的日期，保留其时分秒
     if (selectedCalendarDate) {
       newDate.setHours(selectedCalendarDate.getHours())
@@ -95,10 +99,10 @@ export function HistoryView() {
       newDate.setMinutes(now.getMinutes())
       newDate.setSeconds(now.getSeconds())
     }
-    
+
     setSelectedCalendarDate(newDate)
   }
-  
+
   // [attendanceRecords] 改为空数组，只在组件挂载时执行一次
   useEffect(() => {
     // // 设置 startDate 默认为当天 00:00:00
