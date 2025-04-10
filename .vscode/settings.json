@@ -33,5 +33,7 @@
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
     "**/.vscode": false
-  }
+  },
+  "IDX.aI.enableInlineCompletion": true,
+  "IDX.aI.enableCodebaseIndexing": true
 }
