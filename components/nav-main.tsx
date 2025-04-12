@@ -1,6 +1,7 @@
 'use client'
 
 import { ChevronRight, type LucideIcon } from 'lucide-react'
+import Link from 'next/link'
 
 import {
   Collapsible,
@@ -34,11 +35,6 @@ interface NavMainProps {
 }
 
 export function NavMain({ items, onViewChange }: NavMainProps) {
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, url: string) => {
-    e.preventDefault()
-    onViewChange?.(url)
-  }
-
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -63,13 +59,10 @@ export function NavMain({ items, onViewChange }: NavMainProps) {
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
-                        <a
-                          href={subItem.url}
-                          onClick={(e) => handleClick(e, subItem.url)}
-                        >
+                        <Link href={subItem.url} >
                           {subItem.icon && <subItem.icon className="mr-2" />}
                           <span>{subItem.title}</span>
-                        </a>
+                        </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}

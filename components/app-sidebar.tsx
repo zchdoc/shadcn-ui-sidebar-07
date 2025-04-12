@@ -14,6 +14,7 @@ import {
   SquareTerminal,
   History,
   Clock,
+  FlaskConical,
 } from 'lucide-react'
 
 import { NavMain } from '@/components/nav-main'
@@ -62,12 +63,13 @@ const data = {
       items: [
         {
           title: 'History',
-          url: 'history',
+          // url: '/dashboard',
+          url: '/dashboard/attendance/history',
           icon: History,
         },
         {
           title: 'Manual Clock',
-          url: 'manual-clock',
+          url: '/dashboard/attendance/manual-clock',
           icon: Clock,
         },
       ],
@@ -137,6 +139,18 @@ const data = {
         },
       ],
     },
+    {
+      title: 'Test',
+      url: '#',
+      icon: FlaskConical,
+      items: [
+        {
+          title: 'Crypto',
+          url: '/dashboard/test/crypto',
+        },
+      ],
+    },
+
   ],
 
   projects: [

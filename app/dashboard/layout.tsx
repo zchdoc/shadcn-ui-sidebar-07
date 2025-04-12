@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/auth-provider'
 import { SecureStorage } from '@/lib/secure-storage'
 import { validateToken } from '@/lib/auth'
+import { AppSidebar } from '@/components/app-sidebar'
+import { SidebarProvider } from '@/components/ui/sidebar'
 
 export default function DashboardLayout({
   children,
@@ -54,5 +56,14 @@ export default function DashboardLayout({
     )
   }
 
-  return isAuthenticated ? <>{children}</> : null
+  return isAuthenticated ? (
+    <SidebarProvider>
+      <div className="flex h-screen bg-background">
+        <AppSidebar />
+        <main className="flex-1 overflow-y-auto p-4 md:p-6">
+          {children}
+        </main>
+      </div>
+    </SidebarProvider>
+  ) : null
 }
