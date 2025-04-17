@@ -37,7 +37,8 @@ const generateBreadcrumbs = (pathname: string) => {
     const href = '/dashboard/' + pathSegments.slice(0, index + 1).join('/')
     const isLast = index === pathSegments.length - 1
     // Capitalize the first letter
-    const title = segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ')
+    const title =
+      segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ')
 
     return {
       href,
@@ -66,9 +67,16 @@ function DashboardHeader() {
             className="hidden md:flex"
             aria-label={state === 'expanded' ? '折叠侧边栏' : '展开侧边栏'}
           >
-            {state === 'expanded' ? <PanelLeftClose className="h-4 w-4" /> : <PanelLeftOpen className="h-4 w-4" />}
+            {state === 'expanded' ? (
+              <PanelLeftClose className="h-4 w-4" />
+            ) : (
+              <PanelLeftOpen className="h-4 w-4" />
+            )}
           </Button>
-          <Separator orientation="vertical" className="mr-2 h-4 hidden md:block" />
+          <Separator
+            orientation="vertical"
+            className="mr-2 h-4 hidden md:block"
+          />
           <Breadcrumb>
             <BreadcrumbList>
               {breadcrumbs.map((crumb, index) => (
@@ -157,7 +165,9 @@ export default function DashboardLayout({
         <SidebarInset className="flex-1">
           <main className="flex-1 flex flex-col overflow-y-auto w-full">
             <DashboardHeader />
-            <div className="flex-1 p-4 md:p-8 w-full max-w-[calc(100vw-var(--sidebar-width))] mx-auto">{children}</div>
+            <div className="flex-1 p-4 md:p-8 w-full max-w-[calc(100vw-var(--sidebar-width))] mx-auto">
+              {children}
+            </div>
           </main>
         </SidebarInset>
       </div>

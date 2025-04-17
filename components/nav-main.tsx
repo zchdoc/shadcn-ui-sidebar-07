@@ -59,7 +59,7 @@ export function NavMain({ items, onViewChange }: NavMainProps) {
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
-                        <Link href={subItem.url} >
+                        <Link href={subItem.url}>
                           {subItem.icon && <subItem.icon className="mr-2" />}
                           <span>{subItem.title}</span>
                         </Link>

@@ -1,6 +1,12 @@
 'use client'
 import { ManualClock } from '@/components/attendance/manual-clock'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/components/ui/card'
 
 export default function ManualClockPage() {
   return (

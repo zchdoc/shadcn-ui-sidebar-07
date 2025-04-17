@@ -38,12 +38,18 @@ const getEnvVar = (key: string): string => {
 }
 
 // 验证用户凭证
-export function verifyCredentials(inputUsername: string, inputPassword: string): boolean {
+export function verifyCredentials(
+  inputUsername: string,
+  inputPassword: string
+): boolean {
   return AUTH_CREDENTIALS.some((cred) => {
     try {
       const decryptedUsername = decrypt(cred.username)
       const decryptedPassword = decrypt(cred.password)
-      return decryptedUsername === inputUsername && decryptedPassword === inputPassword
+      return (
+        decryptedUsername === inputUsername &&
+        decryptedPassword === inputPassword
+      )
     } catch {
       return false
     }
@@ -62,10 +68,10 @@ export function validateToken(token: string | null): boolean {
   try {
     const decryptedToken = decrypt(token)
     const decoded = atob(decryptedToken)
-    
+
     // 从dec后的token中提取用户名
     const username = decoded.split('_')[0]
-    
+
     // 检查用户名是否有效
     return AUTH_CREDENTIALS.some((cred) => {
       try {

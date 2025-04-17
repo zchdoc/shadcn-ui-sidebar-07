@@ -155,7 +155,6 @@ const data = {
         },
       ],
     },
-
   ],
 
   projects: [
@@ -183,7 +182,7 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 
 export function AppSidebar({ onViewChange, ...props }: AppSidebarProps) {
   const { state, toggleSidebar } = useSidebar()
-  
+
   return (
     <Sidebar collapsible="offcanvas" {...props} variant="floating" side="left">
       <SidebarHeader>

@@ -41,9 +41,13 @@ export function getEmployeeIdByUsername(username?: string | null): string {
  * @param encryptedUsername 用户名
  * @returns 员工ID
  */
-export function getEmployeeIdByEncryptedUsername(encryptedUsername?: string | null): string {
+export function getEmployeeIdByEncryptedUsername(
+  encryptedUsername?: string | null
+): string {
   if (!encryptedUsername) return DEFAULT_EMPLOYEE_ID
-  return ENCRYPTED_USER_EMPLOYEE_MAPPING[encryptedUsername] || DEFAULT_EMPLOYEE_ID
+  return (
+    ENCRYPTED_USER_EMPLOYEE_MAPPING[encryptedUsername] || DEFAULT_EMPLOYEE_ID
+  )
 }
 
 // 导出常量以便其他地方可能需要使用
