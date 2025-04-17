@@ -50,12 +50,12 @@ export default function CryptoTestPage() {
   return (
     <div className="w-full mx-auto p-4">
       <Card className="w-full shadow-lg">
-        <CardHeader className="bg-gray-50">
-          <CardTitle className="text-xl">加密/解密测试</CardTitle>
+        <CardHeader className="dark:bg-gray-800 bg-gray-50">
+          <CardTitle className="text-xl dark:text-white">加密/解密测试</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6 p-6">
           <div>
-            <label htmlFor="inputText" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="inputText" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               输入文本:
             </label>
             <Input
@@ -76,19 +76,19 @@ export default function CryptoTestPage() {
           {error && <p className="text-red-500 text-sm font-medium">{error}</p>}
 
           {encryptedText && (
-            <div className="border rounded-md p-4 bg-gray-50">
-              <h3 className="text-lg font-semibold mb-2">加密结果:</h3>
+            <div className="border rounded-md p-4 bg-gray-50 dark:bg-gray-800">
+              <h3 className="text-lg font-semibold mb-2 dark:text-white">加密结果:</h3>
               <div className="max-h-64 overflow-y-auto">
-                <pre className="break-all whitespace-pre-wrap bg-white p-4 rounded border text-base font-mono">{encryptedText}</pre>
+                <pre className="break-all whitespace-pre-wrap bg-white dark:bg-gray-700 p-4 rounded border text-base font-mono dark:text-gray-200">{encryptedText}</pre>
               </div>
             </div>
           )}
 
           {decryptedText && (
-            <div className="border rounded-md p-4 bg-gray-50">
-              <h3 className="text-lg font-semibold mb-2">解密结果:</h3>
+            <div className="border rounded-md p-4 bg-gray-50 dark:bg-gray-800">
+              <h3 className="text-lg font-semibold mb-2 dark:text-white">解密结果:</h3>
               <div className="max-h-64 overflow-y-auto">
-                <pre className="break-all whitespace-pre-wrap bg-white p-4 rounded border text-base font-mono">{decryptedText}</pre>
+                <pre className="break-all whitespace-pre-wrap bg-white dark:bg-gray-700 p-4 rounded border text-base font-mono dark:text-gray-200">{decryptedText}</pre>
               </div>
             </div>
           )}
