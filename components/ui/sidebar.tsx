@@ -188,7 +188,8 @@ const Sidebar = React.forwardRef<
     },
     ref
   ) => {
-    const { isMobile, isMounted, state, openMobile, setOpenMobile } = useSidebar()
+    const { isMobile, isMounted, state, openMobile, setOpenMobile } =
+      useSidebar()
 
     if (!isMounted) {
       return null // Prevent rendering until mounted
@@ -216,7 +217,9 @@ const Sidebar = React.forwardRef<
             data-sidebar="sidebar"
             data-mobile="true"
             className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
-            style={{ '--sidebar-width': SIDEBAR_WIDTH_MOBILE } as React.CSSProperties}
+            style={
+              { '--sidebar-width': SIDEBAR_WIDTH_MOBILE } as React.CSSProperties
+            }
             side={side}
           >
             <SheetHeader className="sr-only">
