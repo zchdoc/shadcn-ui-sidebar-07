@@ -15,8 +15,6 @@ import {
   History,
   Clock,
   FlaskConical,
-  PanelLeftClose,
-  PanelLeftOpen,
 } from 'lucide-react'
 
 import { NavMain } from '@/components/nav-main'
@@ -31,8 +29,6 @@ import {
   SidebarRail,
   useSidebar,
 } from '@/components/ui/sidebar'
-import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
 
 // This is sample data.
 const data = {
@@ -182,7 +178,8 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 
 export function AppSidebar({ onViewChange, ...props }: AppSidebarProps) {
   const { state, toggleSidebar } = useSidebar()
-
+  console.info('state:', state, typeof state)
+  console.info('toggleSidebar:', toggleSidebar, typeof toggleSidebar)
   return (
     <Sidebar collapsible="offcanvas" {...props} variant="floating" side="left">
       <SidebarHeader>

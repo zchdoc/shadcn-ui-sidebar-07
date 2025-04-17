@@ -1,15 +1,15 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useRouter, usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useAuth } from '@/components/auth-provider'
 import { SecureStorage } from '@/lib/secure-storage'
 import { validateToken } from '@/lib/auth'
 import { AppSidebar } from '@/components/app-sidebar'
 import {
+  SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-  SidebarInset,
   useSidebar,
 } from '@/components/ui/sidebar'
 import {
@@ -33,7 +33,7 @@ const generateBreadcrumbs = (pathname: string) => {
     pathSegments.shift()
   }
 
-  const breadcrumbs = pathSegments.map((segment, index) => {
+  return pathSegments.map((segment, index) => {
     const href = '/dashboard/' + pathSegments.slice(0, index + 1).join('/')
     const isLast = index === pathSegments.length - 1
     // Capitalize the first letter
@@ -46,8 +46,6 @@ const generateBreadcrumbs = (pathname: string) => {
       isLast,
     }
   })
-
-  return breadcrumbs
 }
 
 function DashboardHeader() {
@@ -89,6 +87,7 @@ function DashboardHeader() {
                         {crumb.title}
                       </BreadcrumbLink>
                     )}
+                    {index >= 10 && <div> too many breadcrumbs... </div>}
                   </BreadcrumbItem>
                   {!crumb.isLast && <BreadcrumbSeparator />}
                 </React.Fragment>
@@ -142,7 +141,9 @@ export default function DashboardLayout({
       }
     }
 
-    checkAuth()
+    checkAuth().then((r) =>
+      console.log('Dashboard Layout - CheckAuth result:', r)
+    )
   }, [isAuthenticated, router])
 
   if (isChecking) {
@@ -157,7 +158,7 @@ export default function DashboardLayout({
   }
 
   const breadcrumbs = generateBreadcrumbs(pathname)
-
+  console.info('Breadcrumbs:', breadcrumbs)
   return isAuthenticated ? (
     <SidebarProvider>
       <div className="flex h-screen bg-background">

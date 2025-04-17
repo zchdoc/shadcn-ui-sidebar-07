@@ -35,6 +35,7 @@ interface NavMainProps {
 }
 
 export function NavMain({ items, onViewChange }: NavMainProps) {
+  console.info('onViewChange:', onViewChange, typeof onViewChange)
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
