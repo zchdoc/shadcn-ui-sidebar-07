@@ -10,6 +10,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
   SidebarInset,
+  useSidebar,
 } from '@/components/ui/sidebar'
 import {
   Breadcrumb,
@@ -21,6 +22,8 @@ import {
 } from '@/components/ui/breadcrumb'
 import { Separator } from '@/components/ui/separator'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { Button } from '@/components/ui/button'
+import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 
 // Helper function to generate breadcrumbs based on pathname
 const generateBreadcrumbs = (pathname: string) => {
@@ -44,6 +47,56 @@ const generateBreadcrumbs = (pathname: string) => {
   })
 
   return breadcrumbs
+}
+
+function DashboardHeader() {
+  const pathname = usePathname()
+  const { state, toggleSidebar } = useSidebar()
+  const breadcrumbs = generateBreadcrumbs(pathname)
+
+  return (
+    <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 md:px-6">
+      <div className="flex items-center gap-2 w-full justify-between">
+        <div className="flex items-center gap-2">
+          <SidebarTrigger className="-ml-1 md:hidden" />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleSidebar}
+            className="hidden md:flex"
+            aria-label={state === 'expanded' ? '折叠侧边栏' : '展开侧边栏'}
+          >
+            {state === 'expanded' ? <PanelLeftClose className="h-4 w-4" /> : <PanelLeftOpen className="h-4 w-4" />}
+          </Button>
+          <Separator orientation="vertical" className="mr-2 h-4 hidden md:block" />
+          <Breadcrumb>
+            <BreadcrumbList>
+              {breadcrumbs.map((crumb, index) => (
+                <React.Fragment key={crumb.href}>
+                  <BreadcrumbItem>
+                    {crumb.isLast ? (
+                      <BreadcrumbPage>{crumb.title}</BreadcrumbPage>
+                    ) : (
+                      <BreadcrumbLink href={crumb.href}>
+                        {crumb.title}
+                      </BreadcrumbLink>
+                    )}
+                  </BreadcrumbItem>
+                  {!crumb.isLast && <BreadcrumbSeparator />}
+                </React.Fragment>
+              ))}
+              {breadcrumbs.length === 0 && (
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Dashboard</BreadcrumbPage>
+                </BreadcrumbItem>
+              )}
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+        <ThemeToggle />
+      </div>
+    </header>
+  )
 }
 
 export default function DashboardLayout({
@@ -103,38 +156,7 @@ export default function DashboardLayout({
         <AppSidebar />
         <SidebarInset className="flex-1">
           <main className="flex-1 flex flex-col overflow-y-auto w-full">
-            <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 md:px-6">
-              <div className="flex items-center gap-2 w-full justify-between">
-                <div className="flex items-center gap-2">
-                  <SidebarTrigger className="-ml-1 md:hidden" />
-                  <Separator orientation="vertical" className="mr-2 h-4 hidden md:block" />
-                  <Breadcrumb>
-                    <BreadcrumbList>
-                      {breadcrumbs.map((crumb, index) => (
-                        <React.Fragment key={crumb.href}>
-                          <BreadcrumbItem>
-                            {crumb.isLast ? (
-                              <BreadcrumbPage>{crumb.title}</BreadcrumbPage>
-                            ) : (
-                              <BreadcrumbLink href={crumb.href}>
-                                {crumb.title}
-                              </BreadcrumbLink>
-                            )}
-                          </BreadcrumbItem>
-                          {!crumb.isLast && <BreadcrumbSeparator />}
-                        </React.Fragment>
-                      ))}
-                      {breadcrumbs.length === 0 && (
-                        <BreadcrumbItem>
-                          <BreadcrumbPage>Dashboard</BreadcrumbPage>
-                        </BreadcrumbItem>
-                      )}
-                    </BreadcrumbList>
-                  </Breadcrumb>
-                </div>
-                <ThemeToggle />
-              </div>
-            </header>
+            <DashboardHeader />
             <div className="flex-1 p-4 md:p-8 w-full max-w-[calc(100vw-var(--sidebar-width))] mx-auto">{children}</div>
           </main>
         </SidebarInset>
