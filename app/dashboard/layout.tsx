@@ -166,7 +166,8 @@ export default function DashboardLayout({
         <SidebarInset className="flex-1">
           <main className="flex-1 flex flex-col overflow-y-auto w-full">
             <DashboardHeader />
-            <div className="flex-1 p-4 md:p-8 w-full max-w-[calc(100vw-var(--sidebar-width))] mx-auto">
+            {/* Removed max-w-[calc(100vw-var(--sidebar-width))] */}
+            <div className="flex-1 p-4 md:p-8 w-full mx-auto">
               {children}
             </div>
           </main>
