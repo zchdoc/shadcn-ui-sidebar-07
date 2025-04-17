@@ -1,24 +1,6 @@
 'use client'
 
-import { useCallback, useState } from 'react'
-import { AppSidebar } from '@/components/app-sidebar'
-import { ThemeToggle } from '@/components/theme-toggle'
-import { ManualClock } from '@/components/attendance/manual-clock'
 import { HistoryView } from '@/components/attendance/history-view'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Separator } from '@/components/ui/separator'
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from '@/components/ui/sidebar'
 import { useAuth } from '@/components/auth-provider'
 
 export default function Page() {

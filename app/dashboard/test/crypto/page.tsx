@@ -48,52 +48,79 @@ export default function CryptoTestPage() {
   }
 
   return (
-    <div className="w-full mx-auto p-4">
-      <Card className="w-full shadow-lg">
-        <CardHeader className="dark:bg-gray-800 bg-gray-50">
-          <CardTitle className="text-xl dark:text-white">加密/解密测试</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6 p-6">
-          <div>
-            <label htmlFor="inputText" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              输入文本:
-            </label>
-            <Input
-              id="inputText"
-              type="text"
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              placeholder="输入要加密的字符串"
-              className="w-full text-base py-2"
-            />
-          </div>
-
-          <div className="flex space-x-4">
-            <Button onClick={handleEncrypt} className="px-6 py-2 text-base">加密</Button>
-            <Button onClick={handleDecrypt} disabled={!encryptedText} className="px-6 py-2 text-base">解密</Button>
-          </div>
-
-          {error && <p className="text-red-500 text-sm font-medium">{error}</p>}
-
-          {encryptedText && (
-            <div className="border rounded-md p-4 bg-gray-50 dark:bg-gray-800">
-              <h3 className="text-lg font-semibold mb-2 dark:text-white">加密结果:</h3>
-              <div className="max-h-64 overflow-y-auto">
-                <pre className="break-all whitespace-pre-wrap bg-white dark:bg-gray-700 p-4 rounded border text-base font-mono dark:text-gray-200">{encryptedText}</pre>
-              </div>
+    <div className="w-full min-h-screen px-4 py-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card className="w-full shadow-md min-h-[300px]">
+          <CardHeader className="border-b">
+            <CardTitle className="text-xl">加密/解密测试</CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="mb-6">
+              <label htmlFor="inputText" className="block text-sm font-medium mb-2">
+                输入文本:
+              </label>
+              <Input
+                id="inputText"
+                type="text"
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                placeholder="输入要加密的字符串"
+                className="w-full text-base py-2"
+              />
             </div>
-          )}
 
-          {decryptedText && (
-            <div className="border rounded-md p-4 bg-gray-50 dark:bg-gray-800">
-              <h3 className="text-lg font-semibold mb-2 dark:text-white">解密结果:</h3>
-              <div className="max-h-64 overflow-y-auto">
-                <pre className="break-all whitespace-pre-wrap bg-white dark:bg-gray-700 p-4 rounded border text-base font-mono dark:text-gray-200">{decryptedText}</pre>
-              </div>
+            <div className="grid grid-cols-2 gap-4 w-full">
+              <Button 
+                onClick={handleEncrypt} 
+                className="w-full px-6 py-2"
+              >
+                加密
+              </Button>
+              <Button 
+                onClick={handleDecrypt} 
+                disabled={!encryptedText} 
+                variant={!encryptedText ? "outline" : "default"}
+                className="w-full px-6 py-2"
+              >
+                解密
+              </Button>
             </div>
-          )}
-        </CardContent>
-      </Card>
+
+            {error && <p className="text-red-500 text-sm font-medium mt-4">{error}</p>}
+          </CardContent>
+        </Card>
+
+        <Card className="w-full shadow-md min-h-[300px]">
+          <CardHeader className="border-b">
+            <CardTitle className="text-xl">结果</CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            {encryptedText && (
+              <div className="mb-4">
+                <h3 className="text-lg font-semibold mb-2">加密结果:</h3>
+                <div className="p-4 rounded max-h-32 overflow-y-auto">
+                  <pre className="break-all whitespace-pre-wrap text-sm">{encryptedText}</pre>
+                </div>
+              </div>
+            )}
+
+            {decryptedText && (
+              <div>
+                <h3 className="text-lg font-semibold mb-2">解密结果:</h3>
+                <div className="bg-muted p-4 rounded max-h-32 overflow-y-auto">
+                  <pre className="break-all whitespace-pre-wrap text-sm">{decryptedText}</pre>
+                </div>
+              </div>
+            )}
+
+            {!encryptedText && !decryptedText && (
+              <div className="flex items-center justify-center py-16 text-muted-foreground">
+                请先输入文本并进行加密或解密操作
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 } 
