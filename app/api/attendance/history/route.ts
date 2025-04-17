@@ -1,5 +1,12 @@
 import { NextResponse } from 'next/server'
 // import { headers } from 'next/headers'
+// lib/employee-mapping.ts
+import { decrypt } from '@/lib/crypto'
+
+// 加密的用户名映射常量
+const ENCRYPTED_USERNAMES = {
+  USER1: 'S1ZQAgAJBktUWQg=', // z
+}
 
 export async function POST(req: Request) {
   try {
@@ -17,7 +24,8 @@ export async function POST(req: Request) {
     const url = 'http' + '://' + 'a2.4000063966.com:81'
     const uri = '/xb/zk/attendance/v2/record.do'
     const tmpOpenId = 'o45LO4l28n6aa4dFCXB3BBYOFWNs'
-    const tmpUserVerifyNumber = '15824821718'
+    // const tmpUserVerifyNumber = '158'
+    const tmpUserVerifyNumber = decrypt(ENCRYPTED_USERNAMES.USER1)
 
     // 基础参数
     const baseParams = new URLSearchParams({

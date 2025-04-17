@@ -10,10 +10,10 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useToast } from '@/components/ui/use-toast'
 import {
-  AUTH_CREDENTIALS,
   generateToken,
   saveAuth,
   validateToken,
+  verifyCredentials,
 } from '@/lib/auth'
 import { useAuth } from '@/components/auth-provider'
 import { SecureStorage } from '@/lib/secure-storage'
@@ -66,14 +66,10 @@ export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
     setIsLoading(true)
 
     try {
-      // 验证用户名和密码
-      const validUser = AUTH_CREDENTIALS.find(
-        (cred) =>
-          cred.username === formData.username &&
-          cred.password === formData.password
-      )
+      // 使用 verifyCredentials 函数验证用户名和密码
+      const isValid = verifyCredentials(formData.username, formData.password)
 
-      if (validUser) {
+      if (isValid) {
         try {
           const token = generateToken(formData.username)
           console.log('Generated token:', token)

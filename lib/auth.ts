@@ -11,19 +11,19 @@ declare global {
   }
 }
 
-// 预设的用户名和密码
+// 加密存储的用户凭证
 export const AUTH_CREDENTIALS = [
   {
-    username: '15824821718',
-    password: 'zch15824821718',
+    username: 'S1ZQAgAJBktUWQg=', // 158
+    password: 'AAAAAQEJBk5bWgEDAAw=', // zch158
   },
   {
-    username: '13783567624',
-    password: 'l13783567624',
+    username: 'S1BfCAcEAk1VWgQ=', // 137
+    password: 'FlJbBwwCAUxUXgIA', // l137
   },
   {
-    username: '15738855246',
-    password: 'z15738855246',
+    username: 'S1ZfAwwJAU9RXAY', // 157
+    password: 'AA5ZBQMCDEJWXQIABw==', // zm157
   },
 ]
 
@@ -35,6 +35,19 @@ const getEnvVar = (key: string): string => {
   return typeof window !== 'undefined'
     ? window?.__NEXT_DATA__?.props?.pageProps?.[key] || process.env[key]
     : process.env[key]
+}
+
+// 验证用户凭证
+export function verifyCredentials(inputUsername: string, inputPassword: string): boolean {
+  return AUTH_CREDENTIALS.some((cred) => {
+    try {
+      const decryptedUsername = decrypt(cred.username)
+      const decryptedPassword = decrypt(cred.password)
+      return decryptedUsername === inputUsername && decryptedPassword === inputPassword
+    } catch {
+      return false
+    }
+  })
 }
 
 // 生成token时进行加密
@@ -49,8 +62,19 @@ export function validateToken(token: string | null): boolean {
   try {
     const decryptedToken = decrypt(token)
     const decoded = atob(decryptedToken)
-    // Check if token starts with any of the valid usernames
-    return AUTH_CREDENTIALS.some((cred) => decoded.startsWith(cred.username))
+    
+    // 从解密后的token中提取用户名
+    const username = decoded.split('_')[0]
+    
+    // 检查用户名是否有效
+    return AUTH_CREDENTIALS.some((cred) => {
+      try {
+        const decryptedUsername = decrypt(cred.username)
+        return username === decryptedUsername
+      } catch {
+        return false
+      }
+    })
   } catch {
     return false
   }
