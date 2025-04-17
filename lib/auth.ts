@@ -11,7 +11,7 @@ declare global {
   }
 }
 
-// 加密存储的用户凭证
+// 存储的用户凭证
 export const AUTH_CREDENTIALS = [
   {
     username: 'S1ZQAgAJBktUWQg=', // 158
@@ -50,20 +50,20 @@ export function verifyCredentials(inputUsername: string, inputPassword: string):
   })
 }
 
-// 生成token时进行加密
+// 生成token时 enc
 export function generateToken(username: string): string {
   const token = btoa(`${username}_${Date.now()}`)
   return encrypt(token)
 }
 
-// 验证token时先解密
+// 验证token时先 dec
 export function validateToken(token: string | null): boolean {
   if (!token) return false
   try {
     const decryptedToken = decrypt(token)
     const decoded = atob(decryptedToken)
     
-    // 从解密后的token中提取用户名
+    // 从dec后的token中提取用户名
     const username = decoded.split('_')[0]
     
     // 检查用户名是否有效

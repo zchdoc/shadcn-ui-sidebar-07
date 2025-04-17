@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 // lib/employee-mapping.ts
 import { decrypt } from '@/lib/crypto'
 
-// 加密的用户名映射常量
+// 用户名映射常量
 const ENCRYPTED_USERNAMES = {
   USER1: 'S1ZQAgAJBktUWQg=', // z
 }
