@@ -54,10 +54,13 @@ function DashboardHeader() {
   const breadcrumbs = generateBreadcrumbs(pathname)
 
   return (
-    <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 md:px-6">
+    // Added relative positioning and z-index
+    <header className="relative z-20 flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 md:px-6">
       <div className="flex items-center gap-2 w-full justify-between">
         <div className="flex items-center gap-2">
+          {/* This is the trigger for mobile */}
           <SidebarTrigger className="-ml-1 md:hidden" />
+          {/* This is the trigger for desktop */}
           <Button
             variant="ghost"
             size="icon"
@@ -166,7 +169,6 @@ export default function DashboardLayout({
         <SidebarInset className="flex-1">
           <main className="flex-1 flex flex-col overflow-y-auto w-full">
             <DashboardHeader />
-            {/* Removed max-w-[calc(100vw-var(--sidebar-width))] and mx-auto */}
             <div className="flex-1 p-4 md:p-8 w-full">
               {children}
             </div>
