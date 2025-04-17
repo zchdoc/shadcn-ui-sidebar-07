@@ -48,7 +48,8 @@ export function NavMain({ items, onViewChange }: NavMainProps) {
             className="group/collapsible"
           >
             <SidebarMenuItem>
-              <CollapsibleTrigger asChild={false}>
+              {/* Changed asChild to true */}
+              <CollapsibleTrigger asChild={true}>
                 <SidebarMenuButton tooltip={item.title}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
