@@ -275,45 +275,21 @@ export function HistoryView() {
                 size="sm"
                 className="flex-1"
                 onClick={() => {
-                  // 前一天：第一次点击时基于当前日期，之后基于上次选择的日期
-                  if (startDate) {
+                  // 前一天：基于当前选择的日期往前推一天
+                  if (startDate && endDate) {
                     // 获取当前选择的开始日期
                     const currentStartDate = new Date(startDate)
 
-                    // 判断当前选择的日期是否为一整天（00:00:00 到 23:59:59）
-                    const isFullDay =
-                      currentStartDate.getHours() === 0 &&
-                      currentStartDate.getMinutes() === 0 &&
-                      currentStartDate.getSeconds() === 0 &&
-                      endDate &&
-                      endDate.getHours() === 23 &&
-                      endDate.getMinutes() === 59 &&
-                      endDate.getSeconds() === 59;
+                    // 往前推一天
+                    const newStartDate = new Date(currentStartDate)
+                    newStartDate.setDate(currentStartDate.getDate() - 1)
+                    newStartDate.setHours(0, 0, 0, 0)
+                    setStartDate(newStartDate)
 
-                    // 如果是一整天，则直接往前推一天
-                    if (isFullDay) {
-                      // 往前推一天
-                      const newStartDate = new Date(currentStartDate)
-                      newStartDate.setDate(currentStartDate.getDate() - 1)
-                      newStartDate.setHours(0, 0, 0, 0)
-                      setStartDate(newStartDate)
-
-                      // 结束日期也往前推一天
-                      const newEndDate = new Date(newStartDate)
-                      newEndDate.setHours(23, 59, 59, 999)
-                      setEndDate(newEndDate)
-                    } else {
-                      // 如果不是一整天，则设置为当前日期的前一天
-                      const today = new Date()
-                      const yesterday = new Date(today)
-                      yesterday.setDate(today.getDate() - 1)
-                      yesterday.setHours(0, 0, 0, 0)
-                      setStartDate(yesterday)
-
-                      const yesterdayEnd = new Date(yesterday)
-                      yesterdayEnd.setHours(23, 59, 59, 999)
-                      setEndDate(yesterdayEnd)
-                    }
+                    // 结束日期也往前推一天
+                    const newEndDate = new Date(newStartDate)
+                    newEndDate.setHours(23, 59, 59, 999)
+                    setEndDate(newEndDate)
                   } else {
                     // 如果没有选择日期，则默认设置为昨天
                     const today = new Date()
@@ -429,6 +405,25 @@ export function HistoryView() {
                 size="sm"
                 className="flex-1"
                 onClick={() => {
+                  const today = new Date()
+                  const yesterday = new Date(today)
+                  yesterday.setDate(today.getDate() - 1)
+                  yesterday.setHours(0, 0, 0, 0)
+                  setStartDate(yesterday)
+
+                  const yesterdayEnd = new Date(yesterday)
+                  yesterdayEnd.setHours(23, 59, 59, 999)
+                  setEndDate(yesterdayEnd)
+                }}
+              >
+                昨日
+              </Button>
+
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1"
+                onClick={() => {
                   // 当天：设置为今天的00:00:00到23:59:59
                   const today = new Date()
                   const todayStart = new Date(today)
@@ -440,7 +435,7 @@ export function HistoryView() {
                   setEndDate(todayEnd)
                 }}
               >
-                当天
+                今日
               </Button>
               <Button
                 variant="outline"
@@ -464,7 +459,7 @@ export function HistoryView() {
                   setEndDate(thisSunday)
                 }}
               >
-                当周
+                本周
               </Button>
               <Button
                 variant="outline"
@@ -475,17 +470,25 @@ export function HistoryView() {
                   const today = new Date()
 
                   // 本月的第一天
-                  const firstDayThisMonth = new Date(today.getFullYear(), today.getMonth(), 1)
+                  const firstDayThisMonth = new Date(
+                    today.getFullYear(),
+                    today.getMonth(),
+                    1
+                  )
                   firstDayThisMonth.setHours(0, 0, 0, 0)
                   setStartDate(firstDayThisMonth)
 
                   // 本月的最后一天
-                  const lastDayThisMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
+                  const lastDayThisMonth = new Date(
+                    today.getFullYear(),
+                    today.getMonth() + 1,
+                    0
+                  )
                   lastDayThisMonth.setHours(23, 59, 59, 999)
                   setEndDate(lastDayThisMonth)
                 }}
               >
-                当月
+                本月
               </Button>
             </div>
           </div>
