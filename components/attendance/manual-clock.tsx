@@ -65,6 +65,14 @@ export function ManualClock({ selectedDate }: ManualClockProps) {
         startTime.setHours(18, 10, 0, 0)
         endTime.setHours(21, 39, 59, 999)
         break
+      case '五一后下上':
+        startTime.setHours(12, 30, 0, 0)
+        endTime.setHours(13, 29, 59, 999)
+        break
+      case '五一后下下':
+        startTime.setHours(18, 0, 0, 0)
+        endTime.setHours(23, 59, 59, 999)
+        break
     }
 
     const randomTimestamp =
@@ -227,6 +235,24 @@ export function ManualClock({ selectedDate }: ManualClockProps) {
           onClick={() => setRandomTime('下下')}
         >
           下下
+        </Button>
+      </div>
+      <div className="flex gap-2 mt-2">
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex-1"
+          onClick={() => setRandomTime('五一后下上')}
+        >
+          五一后下上
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex-1"
+          onClick={() => setRandomTime('五一后下下')}
+        >
+          五一后下下
         </Button>
       </div>
       {error && (

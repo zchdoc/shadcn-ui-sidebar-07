@@ -268,6 +268,226 @@ export function HistoryView() {
                 {loading ? 'Loading...' : '查询'}
               </Button>
             </div>
+            {/* 上一周期按钮 */}
+            <div className="flex gap-2 mt-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1"
+                onClick={() => {
+                  // 前一天：第一次点击时基于当前日期，之后基于上次选择的日期
+                  if (startDate) {
+                    // 获取当前选择的开始日期
+                    const currentStartDate = new Date(startDate)
+
+                    // 判断当前选择的日期是否为一整天（00:00:00 到 23:59:59）
+                    const isFullDay =
+                      currentStartDate.getHours() === 0 &&
+                      currentStartDate.getMinutes() === 0 &&
+                      currentStartDate.getSeconds() === 0 &&
+                      endDate &&
+                      endDate.getHours() === 23 &&
+                      endDate.getMinutes() === 59 &&
+                      endDate.getSeconds() === 59;
+
+                    // 如果是一整天，则直接往前推一天
+                    if (isFullDay) {
+                      // 往前推一天
+                      const newStartDate = new Date(currentStartDate)
+                      newStartDate.setDate(currentStartDate.getDate() - 1)
+                      newStartDate.setHours(0, 0, 0, 0)
+                      setStartDate(newStartDate)
+
+                      // 结束日期也往前推一天
+                      const newEndDate = new Date(newStartDate)
+                      newEndDate.setHours(23, 59, 59, 999)
+                      setEndDate(newEndDate)
+                    } else {
+                      // 如果不是一整天，则设置为当前日期的前一天
+                      const today = new Date()
+                      const yesterday = new Date(today)
+                      yesterday.setDate(today.getDate() - 1)
+                      yesterday.setHours(0, 0, 0, 0)
+                      setStartDate(yesterday)
+
+                      const yesterdayEnd = new Date(yesterday)
+                      yesterdayEnd.setHours(23, 59, 59, 999)
+                      setEndDate(yesterdayEnd)
+                    }
+                  } else {
+                    // 如果没有选择日期，则默认设置为昨天
+                    const today = new Date()
+                    const yesterday = new Date(today)
+                    yesterday.setDate(today.getDate() - 1)
+                    yesterday.setHours(0, 0, 0, 0)
+                    setStartDate(yesterday)
+
+                    const yesterdayEnd = new Date(yesterday)
+                    yesterdayEnd.setHours(23, 59, 59, 999)
+                    setEndDate(yesterdayEnd)
+                  }
+                }}
+              >
+                前一天
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1"
+                onClick={() => {
+                  // 前一周：始终基于当前选择的日期往前推一周
+                  if (startDate && endDate) {
+                    // 无论当前选择的是什么，都直接往前推7天
+                    const newStartDate = new Date(startDate)
+                    newStartDate.setDate(startDate.getDate() - 7)
+                    newStartDate.setHours(0, 0, 0, 0)
+                    setStartDate(newStartDate)
+
+                    const newEndDate = new Date(endDate)
+                    newEndDate.setDate(endDate.getDate() - 7)
+                    newEndDate.setHours(23, 59, 59, 999)
+                    setEndDate(newEndDate)
+                  } else {
+                    // 如果没有选择日期，则默认设置为上周
+                    const today = new Date()
+                    const currentDay = today.getDay() || 7 // 将0（周日）转换为7
+
+                    // 计算上周一的日期
+                    const lastMonday = new Date(today)
+                    lastMonday.setDate(today.getDate() - currentDay - 6) // 回到上周一
+                    lastMonday.setHours(0, 0, 0, 0)
+                    setStartDate(lastMonday)
+
+                    // 计算上周日的日期
+                    const lastSunday = new Date(lastMonday)
+                    lastSunday.setDate(lastMonday.getDate() + 6) // 上周一 + 6天 = 上周日
+                    lastSunday.setHours(23, 59, 59, 999)
+                    setEndDate(lastSunday)
+                  }
+                }}
+              >
+                前一周
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1"
+                onClick={() => {
+                  // 前一月：始终基于当前选择的日期往前推一个月
+                  if (startDate && endDate) {
+                    // 获取当前选择的开始日期
+                    const currentStartDate = new Date(startDate)
+
+                    // 获取当前选择的年月
+                    const currentYear = currentStartDate.getFullYear()
+                    const currentMonth = currentStartDate.getMonth()
+
+                    // 计算上一个月的第一天
+                    const newStartDate = new Date(
+                      currentYear,
+                      currentMonth - 1,
+                      1
+                    )
+                    newStartDate.setHours(0, 0, 0, 0)
+                    setStartDate(newStartDate)
+
+                    // 计算上一个月的最后一天
+                    const newEndDate = new Date(currentYear, currentMonth, 0)
+                    newEndDate.setHours(23, 59, 59, 999)
+                    setEndDate(newEndDate)
+                  } else {
+                    // 如果没有选择日期，则默认设置为上个月
+                    const today = new Date()
+
+                    // 上个月的第一天
+                    const firstDayLastMonth = new Date(
+                      today.getFullYear(),
+                      today.getMonth() - 1,
+                      1
+                    )
+                    firstDayLastMonth.setHours(0, 0, 0, 0)
+                    setStartDate(firstDayLastMonth)
+
+                    // 上个月的最后一天
+                    const lastDayLastMonth = new Date(
+                      today.getFullYear(),
+                      today.getMonth(),
+                      0
+                    )
+                    lastDayLastMonth.setHours(23, 59, 59, 999)
+                    setEndDate(lastDayLastMonth)
+                  }
+                }}
+              >
+                前一月
+              </Button>
+            </div>
+            {/* 当前周期按钮 */}
+            <div className="flex gap-2 mt-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1"
+                onClick={() => {
+                  // 当天：设置为今天的00:00:00到23:59:59
+                  const today = new Date()
+                  const todayStart = new Date(today)
+                  todayStart.setHours(0, 0, 0, 0)
+                  setStartDate(todayStart)
+
+                  const todayEnd = new Date(today)
+                  todayEnd.setHours(23, 59, 59, 999)
+                  setEndDate(todayEnd)
+                }}
+              >
+                当天
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1"
+                onClick={() => {
+                  // 当周：设置为本周一00:00:00到本周日23:59:59
+                  const today = new Date()
+                  const currentDay = today.getDay() || 7 // 将0（周日）转换为7
+
+                  // 计算本周一的日期
+                  const thisMonday = new Date(today)
+                  thisMonday.setDate(today.getDate() - currentDay + 1) // 调整到本周一
+                  thisMonday.setHours(0, 0, 0, 0)
+                  setStartDate(thisMonday)
+
+                  // 计算本周日的日期
+                  const thisSunday = new Date(thisMonday)
+                  thisSunday.setDate(thisMonday.getDate() + 6) // 本周一 + 6天 = 本周日
+                  thisSunday.setHours(23, 59, 59, 999)
+                  setEndDate(thisSunday)
+                }}
+              >
+                当周
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1"
+                onClick={() => {
+                  // 当月：设置为本月1号00:00:00到本月最后一天23:59:59
+                  const today = new Date()
+
+                  // 本月的第一天
+                  const firstDayThisMonth = new Date(today.getFullYear(), today.getMonth(), 1)
+                  firstDayThisMonth.setHours(0, 0, 0, 0)
+                  setStartDate(firstDayThisMonth)
+
+                  // 本月的最后一天
+                  const lastDayThisMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
+                  lastDayThisMonth.setHours(23, 59, 59, 999)
+                  setEndDate(lastDayThisMonth)
+                }}
+              >
+                当月
+              </Button>
+            </div>
           </div>
         </CardContent>
         <CardFooter />
